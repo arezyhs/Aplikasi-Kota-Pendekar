@@ -1,0 +1,83 @@
+# Miscellaneous
+*.class
+*.log
+*.pyc
+*.swp
+.DS_Store
+.atom/
+.buildlog/
+.history
+.svn/
+migrate_working_dir/
+
+# IntelliJ related
+*.iml
+*.ipr
+*.iws
+.idea/
+
+# The .vscode folder contains launch configuration and tasks you configure in
+# VS Code which you may wish to be included in version control, so this line
+# is commented out by default.
+#.vscode/
+
+# Flutter/Dart/Pub related
+**/doc/api/
+**/ios/Flutter/.last_build_id
+.dart_tool/
+# Ignore common OS and editor files
+.DS_Store
+*.class
+*.log
+*.pyc
+*.swp
+
+# IntelliJ / Android Studio
+*.iml
+*.ipr
+*.iws
+.idea/
+
+# VS Code
+.vscode/
+
+# Flutter / Dart
+.dart_tool/
+.packages
+pubspec.lock
+.flutter-plugins
+.flutter-plugins-dependencies
+.pub/
+/.flutter-plugins
+/.flutter-plugins-dependencies
+/.pub-cache
+/.pub
+build/
+/**/doc/api/
+
+# Android
+/android/.gradle/
+/android/local.properties
+/android/app/build/
+/android/build/
+/.gradle
+/*.iml
+
+# iOS
+ios/Pods/
+ios/.symlinks/
+ios/Flutter/Flutter.framework
+ios/Flutter/Flutter.podspec
+Runner.xcworkspace/
+Podfile.lock
+
+# Generated files
+.metadata
+
+# Logs
+.log
+
+# Keep config files (uncomment if you want to track them)
+# .vscode/
+
+# Add other ignores as needed

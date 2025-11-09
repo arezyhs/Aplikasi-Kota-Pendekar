@@ -1,0 +1,14 @@
+# Normalize line endings across the repository
+# Treat all files as text and let Git handle normalization. On checkout,
+# files will use the client OS native line endings unless overridden.
+* text=auto
+
+# Force .gitattributes itself and .gitignore to use CRLF on Windows checkouts
+# (useful for editors on Windows). If you prefer LF in the working copy,
+# change "eol=crlf" to "eol=lf" or remove these lines.
+.gitattributes text eol=crlf
+.gitignore text eol=crlf
+
+# Ensure common script files keep LF (useful for POSIX shells)
+# Uncomment or extend as needed for your repo.
+#*.sh text eol=lf
