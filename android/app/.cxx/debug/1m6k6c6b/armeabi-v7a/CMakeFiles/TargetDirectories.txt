@@ -1,0 +1,2 @@
+D:/Aplikasi-Pendekar/android/app/.cxx/debug/1m6k6c6b/armeabi-v7a/CMakeFiles/edit_cache.dir
+D:/Aplikasi-Pendekar/android/app/.cxx/debug/1m6k6c6b/armeabi-v7a/CMakeFiles/rebuild_cache.dir

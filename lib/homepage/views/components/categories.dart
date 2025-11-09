@@ -1,0 +1,161 @@
+// ignore_for_file: duplicate_import, unused_import, deprecated_member_use
+
+// import 'package:flutter_launcher_name/flutter_launcher_name.dart';
+import 'dart:async';
+import 'dart:convert';
+
+import 'package:audio_session/audio_session.dart';
+import 'package:carousel_slider/carousel_slider.dart';
+import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:http/http.dart' as http;
+import 'package:just_audio/just_audio.dart';
+import 'package:marquee/marquee.dart';
+import 'package:pendekar/constants/constant.dart';
+import 'package:pendekar/daftarAplikasi/aplikasi%20ASN/manekin.dart';
+import 'package:pendekar/daftarAplikasi/aplikasi%20warga/awaksigap.dart';
+import 'package:pendekar/daftarAplikasi/aplikasi%20warga/madiuntoday.dart';
+import 'package:pendekar/daftarAplikasi/aplikasi%20warga/mbangunswarga.dart';
+import 'package:pendekar/daftarAplikasi/aplikasi%20warga/opendata.dart';
+import 'package:pendekar/daftarAplikasi/aplikasi%20warga/peceltumpang.dart';
+import 'package:pendekar/homepage/menu/layananAsn.dart';
+import 'package:pendekar/homepage/menu/layanankesehatan.dart';
+import 'package:pendekar/homepage/menu/layananpengaduan.dart';
+import 'package:pendekar/homepage/menu/layananpublik.dart';
+import 'package:pendekar/homepage/menu/layananinformasi.dart';
+import 'package:pendekar/homepage/menu/lainnya.dart';
+import 'package:pendekar/homepage/views/components/Screen_aplikasi%20_lainya.dart';
+import 'package:pendekar/homepage/size_config.dart';
+import 'package:pendekar/homepage/views/components/dialogWarning.dart';
+import 'package:siri_wave/siri_wave.dart';
+import 'package:url_launcher/url_launcher.dart';
+import 'circle_category.dart';
+import 'category_card.dart';
+
+class Categories extends StatefulWidget {
+  @override
+  _CategoriesState createState() => _CategoriesState();
+}
+
+class _CategoriesState extends State<Categories> with TickerProviderStateMixin {
+  late AnimationController controller;
+
+  @override
+  initState() {
+    super.initState();
+    controller = BottomSheet.createAnimationController(this);
+    controller.duration = Duration(milliseconds: 500);
+  }
+
+  @override
+  void dispose() {
+    controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    // Combine all categories into a single list
+    final combined = [
+      {
+        "icon": "assets/images/imgicon/mbangun.png",
+        "text": "MBANGUN SWARGA",
+        "page": WebMcm(),
+      },
+      {
+        "icon": "assets/images/imgicon/manekin.png",
+        "text": "MANEKIN",
+        "page": webmanekin(),
+      },
+      {
+        "icon": "assets/images/imgicon/pecel.png",
+        "text": "Layanan Kesehatan",
+        "page": LayananKesehatan(),
+      },
+      {
+        "icon": "assets/images/imgicon/ekinerja.png",
+        "text": "CCTV",
+        "appId": "id.olean.cctv_madiun",
+        "uriScheme": "cctv://",
+      },
+      {
+        "icon": "assets/images/imgicon/peceltumpang.png",
+        "text": "INFORMASI",
+        "page": LayananInformasi(),
+      },
+      {
+        "icon": "assets/images/imgicon/menu.png",
+        "text": "Semua layanan",
+        "page": Semuaaplikasi(),
+      },
+    ];
+
+    Future<void> launchPlayStore(String appId) async {
+      final String playStoreUrl =
+          'https://play.google.com/store/apps/details?id=$appId';
+      await launch(playStoreUrl);
+    }
+
+    void openApp(String appId, String uriScheme) async {
+      if (await canLaunch(uriScheme)) {
+        await launch(uriScheme);
+      } else {
+        await launchPlayStore(appId);
+      }
+    }
+
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8),
+      child: GridView.count(
+        crossAxisCount: 4,
+        crossAxisSpacing: 12,
+        mainAxisSpacing: 12,
+        childAspectRatio: 0.85,
+        shrinkWrap: true,
+        physics: const NeverScrollableScrollPhysics(),
+        children: List.generate(
+          combined.length,
+          (index) {
+            final item = combined[index];
+            return GestureDetector(
+              onTap: () {
+                if (item.containsKey('page')) {
+                  final page = item['page'];
+                  if (page is DialogWarning) {
+                    DialogWarning.show(context);
+                  } else {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => page as Widget),
+                    );
+                  }
+                } else if (item.containsKey('appId')) {
+                  openApp(item['appId'] as String, item['uriScheme'] as String);
+                }
+              },
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  CircleCategory(iconPath: item['icon'] as String),
+                  const SizedBox(height: 6),
+                  Flexible(
+                    child: Text(
+                      item['text'] as String,
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        fontSize: MediaQuery.of(context).size.width * 0.028,
+                        fontWeight: FontWeight.w600,
+                      ),
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ),
+                ],
+              ),
+            );
+          },
+        ),
+      ),
+    );
+  }
+}

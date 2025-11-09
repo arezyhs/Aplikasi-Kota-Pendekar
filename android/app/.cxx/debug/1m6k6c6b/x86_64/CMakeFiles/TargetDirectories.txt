@@ -1,0 +1,2 @@
+D:/Aplikasi-Pendekar/android/app/.cxx/debug/1m6k6c6b/x86_64/CMakeFiles/edit_cache.dir
+D:/Aplikasi-Pendekar/android/app/.cxx/debug/1m6k6c6b/x86_64/CMakeFiles/rebuild_cache.dir
