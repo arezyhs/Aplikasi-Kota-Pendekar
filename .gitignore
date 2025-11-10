@@ -1,44 +1,76 @@
-# Miscellaneous
+# Git ignore file for Flutter projects
+
+# Misc
+.DS_Store
 *.class
 *.log
 *.pyc
 *.swp
-.DS_Store
-.atom/
-.buildlog/
-.history
-.svn/
-migrate_working_dir/
 
-# IntelliJ related
-*.iml
-*.ipr
-*.iws
+# Editor directories and files
 .idea/
+*.iml
+.vscode/
+.history/
 
-# The .vscode folder contains launch configuration and tasks you configure in
-# VS Code which you may wish to be included in version control, so this line
-# is commented out by default.
-#.vscode/
-
-# Flutter/Dart/Pub related
-**/doc/api/
-**/ios/Flutter/.last_build_id
+# Flutter & Dart
 .dart_tool/
 .flutter-plugins
 .flutter-plugins-dependencies
 .packages
-.pub-cache/
 .pub/
+.pub-cache/
+
+# Build outputs
 /build/
+**/build/
 
-# Symbolication related
-app.*.symbols
+# Android specific
+android/.gradle/
+android/app/build/
+android/build/
+local.properties
+/.gradle/
+*.keystore
+android/key.properties
 
-# Obfuscation related
-app.*.map.json
+# iOS/macOS specific
+ios/Pods/
+ios/Flutter/Flutter.framework
+ios/Flutter/Flutter.podspec
+ios/Runner/GeneratedPluginRegistrant.*
+ios/Runner.xcworkspace/
+*.xcuserdata
+*.xcuserstate
+*.xcsettings
+*.xcscmblueprint
 
-# Android Studio will place build artifacts here
-/android/app/debug
-/android/app/profile
-/android/app/release
+macos/Flutter/ephemeral/
+macos/Build/
+
+# Linux/Windows specific
+windows/Flutter/ephemeral/
+windows/runner/Debug/
+windows/runner/Release/
+linux/Flutter/ephemeral/
+
+# Generated files
+**/GeneratedPluginRegistrant.*
+
+# Logs
+
+
+# Coverage
+.coverage
+.pub/
+
+# Packaging
+*.zip
+*.tar.gz
+
+# Ignore build artifacts and IDE workspace files
+/.flutter-plugins
+/.flutter-plugins-dependencies
+
+# Do not ignore pubspec.lock for apps; keep for reproducible builds.
+# If you're developing a package, consider ignoring pubspec.lock.
