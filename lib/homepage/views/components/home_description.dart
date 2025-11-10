@@ -20,11 +20,11 @@ class HomeDescription extends StatelessWidget {
           ),
           width: double.infinity,
           child: Text(
-            "Berita Terkini :",
+            "Ringkasan berita terbaru dari portal kota.",
             style: TextStyle(
                 color: Colors.black.withOpacity(0.8),
-                fontSize: 18,
-                fontWeight: FontWeight.bold),
+                fontSize: 14,
+                fontWeight: FontWeight.w600),
           ),
         ),
       ],

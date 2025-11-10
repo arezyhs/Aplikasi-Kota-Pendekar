@@ -27,20 +27,14 @@ class _HomePlayerState extends State<HomePlayer>
   final player = AudioPlayer();
 
   bool _isAudioPlaying = false;
-  late Timer _timer;
 
   @override
   void dispose() {
+    // Stop playback and dispose player here (owner of player)
+    try {
+      player.stop();
+    } catch (_) {}
     player.dispose();
-
-    SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual,
-        overlays: SystemUiOverlay.values); // Show the system status bar
-    _timer.cancel(); // Menghentikan timer
-
-    SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual,
-        overlays: SystemUiOverlay.values); // Show the system status bar
-    _timer.cancel(); // Menghentikan timer
-
     super.dispose();
   }
 
@@ -62,17 +56,11 @@ class _HomePlayerState extends State<HomePlayer>
 
     initAudioSession();
 
-    // Mengunci orientasi layar ke mode potret
-    SystemChrome.setPreferredOrientations([
-      DeviceOrientation.portraitUp,
-      DeviceOrientation.portraitDown,
-    ]);
-
-    SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual,
-        overlays: [SystemUiOverlay.top]); // Show only the status bar
-
-    SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual,
-        overlays: [SystemUiOverlay.top]); // Show only the status bar
+    // Note: Do NOT modify system UI (status/navigation bars) here so the
+    // app's system navigation remains consistent across tabs. Previous
+    // behavior hid the navigation bar on Home which made other screens show
+    // different system UI. Keep orientation and system UI decisions at the
+    // app/shell level instead.
 
     // Mengecek status siaran langsung setiap 30 detik
   }
@@ -87,12 +75,19 @@ class _HomePlayerState extends State<HomePlayer>
   }
 
   Future<void> playAudio() async {
+    if (!mounted) return;
     if (!_isAudioPlaying) {
-      await player.setUrl(url, preload: true);
-      await player.play();
-      setState(() {
-        _isAudioPlaying = true;
-      });
+      try {
+        await player.setUrl(url, preload: true);
+        await player.play();
+        if (!mounted) return;
+        setState(() {
+          _isAudioPlaying = true;
+        });
+      } catch (e) {
+        // ignore errors if widget disposed or player closed
+        debugPrint('playAudio error: $e');
+      }
     }
   }
 
@@ -100,9 +95,11 @@ class _HomePlayerState extends State<HomePlayer>
     if (_isAudioPlaying) {
       // Periksa apakah audio sedang diputar
       player.stop();
-      setState(() {
-        _isAudioPlaying = false; // Atur status pemutaran audio menjadi false
-      });
+      if (mounted) {
+        setState(() {
+          _isAudioPlaying = false; // Atur status pemutaran audio menjadi false
+        });
+      }
     }
   }
 
@@ -143,11 +140,14 @@ class AudioPlayerWidget extends StatefulWidget {
 
 class _AudioPlayerWidgetState extends State<AudioPlayerWidget> {
   bool _isPlaying = false;
+  // subscription to player state stream so we can cancel on dispose
+  StreamSubscription? _playerStateSub;
 
   @override
   void dispose() {
-    widget.player.dispose();
-
+    // Do not dispose widget.player here; the parent owns it.
+    // Cancel any subscriptions if they exist (handled below).
+    _playerStateSub?.cancel();
     super.dispose();
   }
 
@@ -155,15 +155,17 @@ class _AudioPlayerWidgetState extends State<AudioPlayerWidget> {
   void initState() {
     super.initState();
 
-    widget.player.playerStateStream.listen((playerState) {
+    // Listen to player state and update only while mounted. Keep subscription
+    // so it can be cancelled in dispose.
+    _playerStateSub = widget.player.playerStateStream.listen((playerState) {
+      if (!mounted) return;
       if (playerState.processingState == ProcessingState.completed ||
           playerState.processingState == ProcessingState.idle) {
         setState(() {
           _isPlaying = false;
         });
       } else if (playerState.processingState == ProcessingState.ready ||
-          playerState.processingState == ProcessingState.buffering ||
-          playerState.processingState == ProcessingState.ready) {
+          playerState.processingState == ProcessingState.buffering) {
         setState(() {
           _isPlaying = true;
         });
@@ -191,7 +193,7 @@ class _AudioPlayerWidgetState extends State<AudioPlayerWidget> {
     return Container(
       margin: EdgeInsets.symmetric(
         horizontal: 15,
-      ),  
+      ),
       child: GestureDetector(
         onTap: () {
           if (_isPlaying) {

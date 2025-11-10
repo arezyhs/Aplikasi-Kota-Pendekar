@@ -65,28 +65,35 @@ class AnnouncementCard extends StatelessWidget {
                     height: 40,
                   ),
                   SizedBox(width: 8),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Text(
-                        announcementText,
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: fontSizeL,
-                          color: Colors.white,
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Text(
+                          announcementText,
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: fontSizeL,
+                            color: Colors.white,
+                          ),
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
                         ),
-                      ),
-                      Text(
-                        '(Pengaduan Gawat Darurat Kota Madiun 112)',
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          fontWeight: FontWeight.w500,
-                          fontSize: fontSize,
-                          color: Colors.white,
+                        Text(
+                          '(Pengaduan Gawat Darurat Kota Madiun 112)',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            fontWeight: FontWeight.w500,
+                            fontSize: fontSize,
+                            color: Colors.white,
+                          ),
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                   SizedBox(width: 8),
                   Icon(

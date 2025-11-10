@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:pendekar/homepage/views/components/body_v2.dart';
-import 'package:pendekar/homepage/menu/berita.dart';
-import 'package:pendekar/homepage/views/components/Screen_aplikasi _lainya.dart';
+import 'package:pendekar/screens/home/home_screen.dart';
+import 'package:pendekar/screens/berita/berita_screen.dart';
+import 'package:pendekar/screens/layanan/layanan_screen.dart';
 
 class HomePage extends StatefulWidget {
   static String routeName = "/home";
@@ -14,41 +14,82 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   int _selectedIndex = 0;
+  // maintain navigation history of tapped indices to support back navigation
+  final List<int> _navigationHistory = [0];
 
   static const List<Widget> _pages = <Widget>[
-    BodyV2(),
+    HomeScreen(),
     LayananPage(),
     BeritaPage(),
   ];
 
   void _onItemTapped(int index) {
+    if (_selectedIndex == index) return;
     setState(() {
       _selectedIndex = index;
+      // push to history
+      _navigationHistory.add(index);
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: _pages[_selectedIndex],
-      bottomNavigationBar: BottomNavigationBar(
-        items: const <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: 'Home',
+    String appBarTitle;
+    switch (_selectedIndex) {
+      case 1:
+        appBarTitle = 'Aplikasi Kota Madiun';
+        break;
+      case 2:
+        appBarTitle = 'Berita Terkini';
+        break;
+      default:
+        appBarTitle = 'Aplikasi Kota Pendekar';
+    }
+
+    return WillPopScope(
+      onWillPop: () async {
+        // If there is navigation history, go back through it instead of exiting
+        if (_navigationHistory.length > 1) {
+          // remove current
+          _navigationHistory.removeLast();
+          final prev = _navigationHistory.last;
+          setState(() => _selectedIndex = prev);
+          return false; // don't pop the app
+        }
+        return true; // allow app exit
+      },
+      child: Scaffold(
+        appBar: AppBar(
+          backgroundColor: Colors.white,
+          elevation: 0,
+          centerTitle: false,
+          iconTheme: const IconThemeData(color: Colors.black87),
+          title: Text(
+            appBarTitle,
+            style: const TextStyle(
+                color: Colors.black87, fontWeight: FontWeight.w700),
           ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.apps),
-            label: 'Layanan',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.article),
-            label: 'Berita',
-          ),
-        ],
-        currentIndex: _selectedIndex,
-        selectedItemColor: Colors.blue,
-        onTap: _onItemTapped,
+        ),
+        body: _pages[_selectedIndex],
+        bottomNavigationBar: BottomNavigationBar(
+          items: const <BottomNavigationBarItem>[
+            BottomNavigationBarItem(
+              icon: Icon(Icons.home),
+              label: 'Home',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.apps),
+              label: 'Layanan',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.article),
+              label: 'Berita',
+            ),
+          ],
+          currentIndex: _selectedIndex,
+          selectedItemColor: Colors.blue,
+          onTap: _onItemTapped,
+        ),
       ),
     );
   }

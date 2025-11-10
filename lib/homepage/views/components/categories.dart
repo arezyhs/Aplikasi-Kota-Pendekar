@@ -24,13 +24,12 @@ import 'package:pendekar/homepage/menu/layananpengaduan.dart';
 import 'package:pendekar/homepage/menu/layananpublik.dart';
 import 'package:pendekar/homepage/menu/layananinformasi.dart';
 import 'package:pendekar/homepage/menu/lainnya.dart';
-import 'package:pendekar/homepage/views/components/Screen_aplikasi%20_lainya.dart';
+import 'package:pendekar/screens/layanan/layanan_screen.dart';
 import 'package:pendekar/homepage/size_config.dart';
 import 'package:pendekar/homepage/views/components/dialogWarning.dart';
+import 'package:pendekar/homepage/views/components/circle_category.dart';
 import 'package:siri_wave/siri_wave.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'circle_category.dart';
-import 'category_card.dart';
 
 class Categories extends StatefulWidget {
   @override
@@ -82,11 +81,6 @@ class _CategoriesState extends State<Categories> with TickerProviderStateMixin {
         "icon": "assets/images/imgicon/peceltumpang.png",
         "text": "INFORMASI",
         "page": LayananInformasi(),
-      },
-      {
-        "icon": "assets/images/imgicon/menu.png",
-        "text": "Semua layanan",
-        "page": Semuaaplikasi(),
       },
     ];
 

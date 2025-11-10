@@ -75,7 +75,7 @@ class _BodyState extends State<Body> {
               SizedBox(
                 height: size.height * 0.02,
               ),
-              const whatsapp(),
+              whatsapp(),
               SizedBox(
                 height: size.height * 0.02,
               ),

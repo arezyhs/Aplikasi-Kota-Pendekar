@@ -17,7 +17,8 @@ class _HomeCraouselState extends State<HomeCaraousel> {
           scrollPhysics: BouncingScrollPhysics(),
           pageSnapping: true,
           autoPlayInterval: const Duration(seconds: 5),
-          autoPlay: true,
+          // disable autoPlay to avoid timer callbacks after widget disposal
+          autoPlay: false,
           enlargeCenterPage: true,
           viewportFraction: 1,
           aspectRatio: 16 / 9,

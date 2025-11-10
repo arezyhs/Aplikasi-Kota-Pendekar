@@ -1,27 +1,28 @@
 import 'package:flutter/material.dart';
+import 'package:pendekar/homepage/size_config.dart';
 
 class CircleCategory extends StatelessWidget {
-  final String iconPath;
+  const CircleCategory({Key? key, required this.iconPath}) : super(key: key);
 
-  const CircleCategory({
-    Key? key,
-    required this.iconPath,
-  }) : super(key: key);
+  final String iconPath;
 
   @override
   Widget build(BuildContext context) {
+    final double size = getProportionateScreenWidth(60);
     return Container(
-      width: 60,
-      height: 60,
+      width: size,
+      height: size,
       decoration: BoxDecoration(
+        color: Colors.white,
         shape: BoxShape.circle,
-        color: Colors.grey[200],
+        boxShadow: [
+          BoxShadow(color: Colors.black12, blurRadius: 4, offset: Offset(0, 2)),
+        ],
       ),
+      padding: EdgeInsets.all(getProportionateScreenWidth(8)),
       child: Center(
         child: Image.asset(
           iconPath,
-          width: 40,
-          height: 40,
           fit: BoxFit.contain,
         ),
       ),

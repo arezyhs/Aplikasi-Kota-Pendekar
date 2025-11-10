@@ -17,20 +17,9 @@ class BodyV2 extends StatelessWidget {
       child: CustomScrollView(
         physics: const BouncingScrollPhysics(),
         slivers: [
-          SliverAppBar(
-            floating: true,
-            snap: true,
-            elevation: 0,
-            backgroundColor: Colors.white,
-            title: const Text(
-              'Aplikasi Kota Pendekar',
-              style:
-                  TextStyle(color: Colors.black87, fontWeight: FontWeight.w700),
-            ),
-            centerTitle: false,
-            actions: const [SizedBox(width: 8)],
-            iconTheme: const IconThemeData(color: Colors.black87),
-          ),
+          // The AppBar is provided by the main shell (`HomePage`) so this
+          // sliver is removed to avoid duplicate headers and keep a
+          // consistent top bar across Home/Layanan/Berita.
 
           SliverToBoxAdapter(
             child: Column(
