@@ -23,7 +23,6 @@ Ringkasan perubahan utama
 
 Detail perubahan — kronologi dan teknis
 -------------------------------------
-
 1) Penelusuran & pembersihan
   - Menelusuri project untuk menemukan lokasi layar Home, Layanan, dan Berita.
   - Menandai file duplikat/legacy. Beberapa file diarsipkan atau dihapus oleh pemilik repo.
@@ -88,16 +87,6 @@ Daftar file utama yang diubah
 - `lib/daftarAplikasi/` — beberapa halaman rujukan seperti `mbangunswarga.dart`, `manekin.dart`, `ppid.dart`
 - `.gitattributes`, `.gitignore` — konfigurasi repo
 
-Known issues & rekomendasi perbaikan
-----------------------------------
-
-1) Analyzer warnings & deprecated APIs — Prioritas sedang
-   - Temuan: `flutter analyze` menghasilkan banyak peringatan (±900 pesan) — deprecations, prefer_const, unused imports, nama file/kelas tidak konsisten.
-   - Rekomendasi: migrasi bertahap per-folder; prioritaskan API yang benar-benar deprecated (mis. InAppWebView changes, `launch` → `launchUrl`).
-
-2) Tests dan regresi
-   - Belum disertakan test otomatis khusus. Rekomendasi: tambahkan 1-2 widget test untuk grid kategori dan featured scroller.
-
 Cara menjalankan & verifikasi (Windows PowerShell)
 ------------------------------------------------
 Langkah singkat:
@@ -108,39 +97,6 @@ flutter pub get
 flutter analyze
 flutter run
 ```
-
-Checklist verifikasi minimal (lakukan pemeriksaan ini manual pada device/emulator):
-
-1. Home
-   - Banner tampil di bagian atas.
-   - Grid kategori menampilkan 2x4 item sesuai daftar layanan.
-   - Featured layanan tampil horizontal dan tidak overflow pada layar kecil.
-
-2. Layanan
-   - Grid tampak rapi, pencarian berfungsi, navigasi item membuka halaman yang benar.
-
-3. Berita
-   - Halaman dapat direfresh dengan `RefreshIndicator`.
-   - Tautan berita berusaha dibuka menggunakan API launcher yang aman.
-
-4. PPID
-   - Card PPID muncul dan dapat diklik (navigasi sesuai implementasi target).
-
-5. Radio
-   - Jika aktif, radio harus memutar tanpa menyebabkan crash; jika crash terjadi, kembalikan ke placeholder untuk verifikasi UI.
-
-Quality gates singkat
----------------------
-- Lint/Analyze: terdapat banyak warning/deprecation (STATUS: FAIL untuk zero-issue goal).
-- Tests: belum ada tests otomatis yang relevan (STATUS: MISSING).
-
-Next steps terstruktur (prioritas)
---------------------------------
-1. Migrasi API yang deprecated (`url_launcher`, `flutter_inappwebview`) dan perbaiki peringatan analyzer kritis (menengah).
-2. Melakukan pembersihan style (seperti menambahkan `const`, menghapus unused imports, perbaiki penamaan file/kelas) per-folder, PR kecil.
-4. Menambahkan widget test untuk Home grid & featured scroller.
-
-
 Penutup
 -------
 Dokumen ini disusun sebagai bahan laporan magang dan panduan teknis.
