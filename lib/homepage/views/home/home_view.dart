@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:pendekar/screens/home/home_screen.dart';
 import 'package:pendekar/screens/berita/berita_screen.dart';
 import 'package:pendekar/screens/layanan/layanan_screen.dart';
+import 'package:pendekar/homepage/views/components/switch_tab_notification.dart';
 
 class HomePage extends StatefulWidget {
   static String routeName = "/home";
@@ -58,37 +59,48 @@ class _HomePageState extends State<HomePage> {
         }
         return true; // allow app exit
       },
-      child: Scaffold(
-        appBar: AppBar(
-          backgroundColor: Colors.white,
-          elevation: 0,
-          centerTitle: false,
-          iconTheme: const IconThemeData(color: Colors.black87),
-          title: Text(
-            appBarTitle,
-            style: const TextStyle(
-                color: Colors.black87, fontWeight: FontWeight.w700),
+      child: NotificationListener<SwitchTabNotification>(
+        onNotification: (notification) {
+          if (notification.index != _selectedIndex) {
+            setState(() {
+              _selectedIndex = notification.index;
+              _navigationHistory.add(notification.index);
+            });
+          }
+          return true;
+        },
+        child: Scaffold(
+          appBar: AppBar(
+            backgroundColor: Colors.white,
+            elevation: 0,
+            centerTitle: false,
+            iconTheme: const IconThemeData(color: Colors.black87),
+            title: Text(
+              appBarTitle,
+              style: const TextStyle(
+                  color: Colors.black87, fontWeight: FontWeight.w700),
+            ),
           ),
-        ),
-        body: _pages[_selectedIndex],
-        bottomNavigationBar: BottomNavigationBar(
-          items: const <BottomNavigationBarItem>[
-            BottomNavigationBarItem(
-              icon: Icon(Icons.home),
-              label: 'Home',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.apps),
-              label: 'Layanan',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.article),
-              label: 'Berita',
-            ),
-          ],
-          currentIndex: _selectedIndex,
-          selectedItemColor: Colors.blue,
-          onTap: _onItemTapped,
+          body: _pages[_selectedIndex],
+          bottomNavigationBar: BottomNavigationBar(
+            items: const <BottomNavigationBarItem>[
+              BottomNavigationBarItem(
+                icon: Icon(Icons.home),
+                label: 'Home',
+              ),
+              BottomNavigationBarItem(
+                icon: Icon(Icons.apps),
+                label: 'Layanan',
+              ),
+              BottomNavigationBarItem(
+                icon: Icon(Icons.article),
+                label: 'Berita',
+              ),
+            ],
+            currentIndex: _selectedIndex,
+            selectedItemColor: Colors.blue,
+            onTap: _onItemTapped,
+          ),
         ),
       ),
     );

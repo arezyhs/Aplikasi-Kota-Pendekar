@@ -19,6 +19,8 @@ import 'package:pendekar/homepage/views/components/section_header.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:url_launcher/url_launcher.dart';
+import 'package:pendekar/homepage/views/components/switch_tab_notification.dart';
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:pendekar/daftarAplikasi/aplikasi%20warga/ppid.dart';
 
 // Small news preview widget (fetches top 3 news from configured RSS json feeds)
@@ -32,6 +34,7 @@ class NewsPreview extends StatefulWidget {
 class _NewsPreviewState extends State<NewsPreview> {
   List<Map<String, dynamic>> news = [];
   bool loading = true;
+  int _active = 0;
 
   final List<String> _rss = [
     'https://rss.app/feeds/v1.1/rHyalNohjMNACgTx.json',
@@ -79,7 +82,7 @@ class _NewsPreviewState extends State<NewsPreview> {
       }
     });
     setState(() {
-      news = fetched.take(3).toList();
+      news = fetched.take(5).toList(); // show up to 5 slides
       loading = false;
     });
   }
@@ -93,52 +96,111 @@ class _NewsPreviewState extends State<NewsPreview> {
     if (news.isEmpty) return const SizedBox();
 
     return Column(
-      children: news.map((item) {
-        return ListTile(
-          contentPadding:
-              const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
-          leading: item['image'] != null
-              ? ClipRRect(
-                  borderRadius: BorderRadius.circular(8),
-                  child: Image.network(item['image'],
-                      width: 80,
-                      height: 64,
-                      fit: BoxFit.cover,
-                      errorBuilder: (_, __, ___) => Container(
-                          width: 80, height: 64, color: Colors.grey[200])),
-                )
-              : Container(
-                  width: 80,
-                  height: 64,
-                  color: Colors.grey[200],
-                  child: const Icon(Icons.article, color: Colors.grey)),
-          title: Text(item['title'] ?? '',
-              style: const TextStyle(fontWeight: FontWeight.w600)),
-          subtitle: Text(item['summary'] ?? '',
-              maxLines: 2, overflow: TextOverflow.ellipsis),
-          trailing: IconButton(
-            icon: const Icon(Icons.open_in_new),
-            onPressed: () async {
-              final url = item['url'];
-              if (url != null && Uri.tryParse(url)?.isAbsolute == true) {
-                final uri = Uri.parse(url);
-                if (await canLaunchUrl(uri)) {
-                  await launchUrl(uri, mode: LaunchMode.externalApplication);
+      children: [
+        CarouselSlider.builder(
+          itemCount: news.length,
+          itemBuilder: (context, index, realIndex) {
+            final item = news[index];
+            final imageUrl = item['image'] as String?;
+            return GestureDetector(
+              onTap: () async {
+                final url = item['url'];
+                if (url != null && Uri.tryParse(url)?.isAbsolute == true) {
+                  final uri = Uri.parse(url);
+                  if (await canLaunchUrl(uri)) {
+                    await launchUrl(uri, mode: LaunchMode.externalApplication);
+                  }
                 }
-              }
-            },
-          ),
-          onTap: () async {
-            final url = item['url'];
-            if (url != null && Uri.tryParse(url)?.isAbsolute == true) {
-              final uri = Uri.parse(url);
-              if (await canLaunchUrl(uri)) {
-                await launchUrl(uri, mode: LaunchMode.externalApplication);
-              }
-            }
+              },
+              child: Card(
+                elevation: 2,
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12)),
+                clipBehavior: Clip.hardEdge,
+                child: SizedBox(
+                  height: 140,
+                  child: Row(
+                    children: [
+                      // image
+                      if (imageUrl != null)
+                        Flexible(
+                          flex: 4,
+                          child: Image.network(
+                            imageUrl,
+                            fit: BoxFit.fitWidth,
+                            width: double.infinity,
+                            height: double.infinity,
+                            errorBuilder: (_, __, ___) =>
+                                Container(color: Colors.grey[200]),
+                          ),
+                        )
+                      else
+                        Flexible(
+                          flex: 4,
+                          child: Container(
+                            color: Colors.grey[100],
+                            child: const Icon(Icons.article,
+                                size: 48, color: Colors.grey),
+                          ),
+                        ),
+                      // text
+                      Expanded(
+                        flex: 6,
+                        child: Padding(
+                          padding: const EdgeInsets.all(12.0),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text(item['title'] ?? '',
+                                  maxLines: 2,
+                                  overflow: TextOverflow.ellipsis,
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .titleMedium
+                                      ?.copyWith(fontWeight: FontWeight.w700)),
+                              const SizedBox(height: 6),
+                              Text(item['summary'] ?? '',
+                                  maxLines: 3,
+                                  overflow: TextOverflow.ellipsis,
+                                  style:
+                                      Theme.of(context).textTheme.bodyMedium),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            );
           },
-        );
-      }).toList(),
+          options: CarouselOptions(
+            height: 150,
+            viewportFraction: 0.95,
+            enlargeCenterPage: false,
+            autoPlay: true,
+            autoPlayInterval: const Duration(seconds: 5),
+            onPageChanged: (index, reason) => setState(() => _active = index),
+          ),
+        ),
+        const SizedBox(height: 8),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: List.generate(
+            news.length,
+            (i) => Container(
+              margin: const EdgeInsets.symmetric(horizontal: 4.0),
+              width: _active == i ? 10 : 8,
+              height: _active == i ? 10 : 8,
+              decoration: BoxDecoration(
+                color: _active == i ? Colors.blueAccent : Colors.grey[300],
+                shape: BoxShape.circle,
+              ),
+            ),
+          ),
+        ),
+      ],
     );
   }
 }
@@ -150,7 +212,9 @@ class HomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return SafeArea(
       child: CustomScrollView(
-        physics: const BouncingScrollPhysics(),
+        // Use clamping physics to avoid large bounce/overscroll on Home.
+        // This makes scroll behaviour consistent with non-bouncy pages.
+        physics: const ClampingScrollPhysics(),
         slivers: [
           // Banner with a compact WhatsApp CTA overlaid
           SliverToBoxAdapter(
@@ -220,19 +284,13 @@ class HomeScreen extends StatelessWidget {
           // PPID banner + Radio
           SliverToBoxAdapter(
             child: Column(
-              children: const [
-                SectionHeader(title: 'Informasi Publik'),
-                SizedBox(height: 12),
-                // embedded PPID banner
-                _InformasiPublik(),
-                SizedBox(height: 12),
+              children: [
+                const SectionHeader(title: 'Informasi Publik'),
+                const SizedBox(height: 12),
+                // carousel containing PPID banner(s) and radio slide
+                const _InformasiPublik(),
+                const SizedBox(height: 12),
               ],
-            ),
-          ),
-          SliverToBoxAdapter(
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16.0),
-              child: HomePlayer(),
             ),
           ),
 
@@ -240,11 +298,17 @@ class HomeScreen extends StatelessWidget {
           SliverToBoxAdapter(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: const [
-                SectionHeader(title: 'Berita Terkini'),
+              children: [
+                SectionHeader(
+                  title: 'Berita Terkini',
+                  onSeeAll: () {
+                    // Request parent shell to switch to Berita tab (index 2)
+                    const SwitchTabNotification(2).dispatch(context);
+                  },
+                ),
                 // HomeDescription kept for intro text
-                HomeDescription(),
-                SizedBox(height: 8),
+                const HomeDescription(),
+                const SizedBox(height: 8),
               ],
             ),
           ),
@@ -261,7 +325,7 @@ class HomeScreen extends StatelessWidget {
               child: HomeCaraousel(),
             ),
           ),
-          const SliverToBoxAdapter(child: SizedBox(height: 24)),
+          const SliverToBoxAdapter(child: SizedBox(height: 8)),
         ],
       ),
     );
@@ -418,9 +482,9 @@ class _LayananUtamaState extends State<_LayananUtama> {
                   child: SizedBox(
                     width: cardWidth,
                     child: Card(
-                      elevation: 3,
+                      elevation: 2,
                       shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(12)),
+                          borderRadius: BorderRadius.circular(16)),
                       child: Padding(
                         padding: const EdgeInsets.all(12),
                         child: Column(
@@ -452,8 +516,12 @@ class _LayananUtamaState extends State<_LayananUtama> {
                             Text(
                               item['text'] as String,
                               textAlign: TextAlign.center,
-                              style: const TextStyle(
-                                  fontWeight: FontWeight.w700, fontSize: 14),
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .bodyMedium
+                                  ?.copyWith(
+                                      fontWeight: FontWeight.w700,
+                                      fontSize: 14),
                               maxLines: 2,
                               overflow: TextOverflow.ellipsis,
                             ),
@@ -475,49 +543,97 @@ class _LayananUtamaState extends State<_LayananUtama> {
 }
 
 // ----- Embedded Informasi Publik banner -----
-class _InformasiPublik extends StatelessWidget {
+class _InformasiPublik extends StatefulWidget {
   const _InformasiPublik({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    final Size size = MediaQuery.of(context).size;
-    final banners = [
-      'assets/images/ppidbanner.png',
-      // add more images later if needed
-    ];
+  State<_InformasiPublik> createState() => _InformasiPublikState();
+}
 
-    return SizedBox(
-      height: size.height * 0.14,
-      child: ListView.separated(
-        scrollDirection: Axis.horizontal,
-        padding: const EdgeInsets.symmetric(horizontal: 16.0),
-        itemCount: banners.length,
-        separatorBuilder: (_, __) => const SizedBox(width: 12),
-        itemBuilder: (context, index) {
-          final img = banners[index];
-          return SizedBox(
-            width: size.width - 64,
-            child: GestureDetector(
-              onTap: () {
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => webppid()));
-              },
-              child: Card(
-                elevation: 2,
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(16)),
-                clipBehavior: Clip.hardEdge,
-                child: Container(
-                  decoration: BoxDecoration(
-                    image: DecorationImage(
-                        image: AssetImage(img), fit: BoxFit.cover),
-                  ),
+class _InformasiPublikState extends State<_InformasiPublik> {
+  final PageController _controller = PageController(viewportFraction: 0.94);
+  int _page = 0;
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    // size not needed for this widget
+    // slides: banners + radio
+    final banners = ['assets/images/ppidbanner.png'];
+    final List<Widget> slides = [
+      for (final img in banners)
+        GestureDetector(
+          onTap: () => Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => webppid()),
+          ),
+          child: Card(
+            elevation: 2,
+            shape:
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+            clipBehavior: Clip.hardEdge,
+            child: SizedBox(
+              height: 160,
+              width: double.infinity,
+              child: Center(
+                child: Image.asset(
+                  img,
+                  fit: BoxFit.fitWidth,
+                  width: double.infinity,
                 ),
               ),
             ),
-          );
-        },
+          ),
+        ),
+      // Radio slide: re-use HomePlayer so audio controls work inline
+      Card(
+        elevation: 2,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+        clipBehavior: Clip.hardEdge,
+        child: SizedBox(
+          height: 160,
+          width: double.infinity,
+          child: HomePlayer(),
+        ),
       ),
+    ];
+
+    return Column(
+      children: [
+        SizedBox(
+          height: 160,
+          child: PageView.builder(
+            controller: _controller,
+            itemCount: slides.length,
+            onPageChanged: (i) => setState(() => _page = i),
+            itemBuilder: (context, index) => Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 8.0),
+              child: slides[index],
+            ),
+          ),
+        ),
+        const SizedBox(height: 8),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: List.generate(
+            slides.length,
+            (i) => Container(
+              margin: const EdgeInsets.symmetric(horizontal: 4.0),
+              width: _page == i ? 10 : 8,
+              height: _page == i ? 10 : 8,
+              decoration: BoxDecoration(
+                color: _page == i ? Colors.blueAccent : Colors.grey[300],
+                shape: BoxShape.circle,
+              ),
+            ),
+          ),
+        ),
+      ],
     );
   }
 }

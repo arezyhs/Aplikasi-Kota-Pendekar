@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class WebMcm extends StatefulWidget {
   const WebMcm({Key? key}) : super(key: key);
@@ -28,44 +29,49 @@ class _WebMcmState extends State<WebMcm> {
   }
 
   Future<void> requestPermissions() async {
-    // Meminta izin di sini
-    Map<Permission, PermissionStatus> statuses = await [
+    // Request necessary permissions (best-effort)
+    await [
       Permission.camera,
       Permission.storage,
       Permission.photos,
       Permission.mediaLibrary,
       Permission.accessMediaLocation,
     ].request();
-
-    // Cek apakah izin diberikan atau tidak
-    if (statuses[Permission.camera]?.isGranted == false) {
-      print('Permission to access camera is denied');
-    }
-    if (statuses[Permission.storage]?.isGranted == false) {
-      print('Permission to access storage is denied');
-    }
-    if (statuses[Permission.photos]?.isGranted == false) {
-      print('Permission to access photos is denied');
-    }
-    if (statuses[Permission.mediaLibrary]?.isGranted == false) {
-      print('Permission to access media library is denied');
-    }
-    if (statuses[Permission.accessMediaLocation]?.isGranted == false) {
-      print('Permission to access media location is denied');
-    }
   }
 
   @override
   Widget build(BuildContext context) {
-    final screenWidth = MediaQuery.of(context).size.width;
-    final screenHeight = MediaQuery.of(context).size.height;
-    double fontSize = screenWidth * 0.034;
     return Scaffold(
       backgroundColor: Colors.white,
+      appBar: AppBar(
+        backgroundColor: Colors.white,
+        elevation: 0,
+        iconTheme: const IconThemeData(color: Colors.black87),
+        title: const Text('Mbangun Swarga',
+            style:
+                TextStyle(color: Colors.black87, fontWeight: FontWeight.w700)),
+        actions: [
+          IconButton(
+            tooltip: 'Muat Ulang',
+            icon: const Icon(Icons.refresh, color: Colors.black54),
+            onPressed: () => _webViewController?.reload(),
+          ),
+          IconButton(
+            tooltip: 'Buka di Browser',
+            icon: const Icon(Icons.open_in_new, color: Colors.black54),
+            onPressed: () async {
+              final uri = Uri.parse(url);
+              if (await canLaunchUrl(uri)) {
+                await launchUrl(uri, mode: LaunchMode.externalApplication);
+              }
+            },
+          ),
+        ],
+      ),
       body: SafeArea(
         child: Column(
           children: [
-            SizedBox(height: screenHeight * 0.01),
+            const SizedBox(height: 8),
             Expanded(
               child: Stack(
                 children: [
@@ -96,11 +102,11 @@ class _WebMcmState extends State<WebMcm> {
                     androidOnPermissionRequest:
                         (InAppWebViewController controller, String origin,
                             List<String> resources) async {
-                      var response = await showDialog(
+                      await showDialog(
                         context: context,
                         builder: (BuildContext context) => AlertDialog(
-                          title: Text("Permintaan Izin"),
-                          content: Text(
+                          title: const Text("Permintaan Izin"),
+                          content: const Text(
                               "Ijinkan aplikasi mengakses foto dan media?"),
                           actions: <Widget>[
                             TextButton(
@@ -108,14 +114,14 @@ class _WebMcmState extends State<WebMcm> {
                                 Navigator.of(context)
                                     .pop(PermissionRequestResponseAction.GRANT);
                               },
-                              child: Text("Izinkan Akses"),
+                              child: const Text("Izinkan Akses"),
                             ),
                             TextButton(
                               onPressed: () {
                                 Navigator.of(context)
                                     .pop(PermissionRequestResponseAction.DENY);
                               },
-                              child: Text("Tolak Akses"),
+                              child: const Text("Tolak Akses"),
                             ),
                           ],
                         ),
@@ -125,8 +131,6 @@ class _WebMcmState extends State<WebMcm> {
                           resources: resources,
                           action: PermissionRequestResponseAction.GRANT);
                     },
-                    // Event lainnya di sini
-
                     onLoadStop: (controller, url) async {
                       setState(() {
                         isLoading = false;
@@ -139,112 +143,15 @@ class _WebMcmState extends State<WebMcm> {
                     },
                   ),
                   if (isLoading)
-                    Center(
+                    const Center(
                       child: CircularProgressIndicator(
-                        color: const Color.fromARGB(255, 6, 97, 94),
+                        color: Color.fromARGB(255, 6, 97, 94),
                       ),
                     ),
                 ],
               ),
             ),
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                Tooltip(
-                  message: 'Kembali Ke Menu',
-                  child: ElevatedButton(
-                    onPressed: () {
-                      Navigator.of(context).pop();
-                    },
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: const Color.fromARGB(255, 6, 97, 94),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(5),
-                      ),
-                      elevation: 2,
-                    ),
-                    child: Column(
-                      children: [
-                        Icon(Icons.home, color: Colors.white),
-                        Text(
-                          'Kembali Ke Home',
-                          style: TextStyle(
-                            fontSize: fontSize,
-                            color: Colors.white,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-                SizedBox(width: screenWidth * 0.01),
-                Tooltip(
-                  message: 'Muat Ulang',
-                  child: ElevatedButton(
-                    onPressed: () {
-                      if (_webViewController != null) {
-                        _webViewController?.reload();
-                      }
-                    },
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: const Color.fromARGB(255, 6, 97, 94),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(5),
-                      ),
-                      elevation: 2,
-                    ),
-                    child: Column(
-                      children: [
-                        Icon(Icons.refresh, color: Colors.white),
-                        Text(
-                          'Muat Ulang',
-                          style: TextStyle(
-                            fontSize: fontSize,
-                            color: Colors.white,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-                SizedBox(width: screenWidth * 0.01),
-                Tooltip(
-                  message: 'Sebelumnya',
-                  child: ElevatedButton(
-                    onPressed: () async {
-                      if (_webViewController != null) {
-                        bool canGoBack = await _webViewController!.canGoBack();
-                        if (canGoBack) {
-                          _webViewController?.goBack();
-                        } else {
-                          Navigator.of(context).pop();
-                        }
-                      }
-                    },
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: const Color.fromARGB(255, 6, 97, 94),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(5),
-                      ),
-                      elevation: 2,
-                    ),
-                    child: Column(
-                      children: [
-                        Icon(Icons.arrow_back, color: Colors.white),
-                        Text(
-                          'Sebelumnya',
-                          style: TextStyle(
-                            fontSize: fontSize,
-                            color: Colors.white,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ],
-            ),
+            const SizedBox(height: 8),
           ],
         ),
       ),

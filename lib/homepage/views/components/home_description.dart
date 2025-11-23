@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:pendekar/homepage/size_config.dart';
+// size_config not needed here; use fixed padding for consistent layout
 
 class HomeDescription extends StatelessWidget {
   const HomeDescription({
@@ -14,10 +14,7 @@ class HomeDescription extends StatelessWidget {
           height: 10,
         ),
         Container(
-          padding: EdgeInsets.symmetric(
-            horizontal: getProportionateScreenWidth(20),
-            // vertical: getProportionateScreenHeight(5),
-          ),
+          padding: const EdgeInsets.symmetric(horizontal: 16.0),
           width: double.infinity,
           child: Text(
             "Ringkasan berita terbaru dari portal kota.",

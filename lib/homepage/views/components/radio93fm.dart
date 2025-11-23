@@ -51,9 +51,10 @@ class _HomePlayerState extends State<HomePlayer>
   @override
   void initState() {
     super.initState();
+    // Preload stream so player is ready, but do NOT auto-play.
     preloadAudio();
-    playAudio();
-
+    // Note: audio should be user-initiated on Home to avoid unexpected playback
+    // and lifecycle issues. The user taps play to start.
     initAudioSession();
 
     // Note: Do NOT modify system UI (status/navigation bars) here so the
@@ -105,7 +106,6 @@ class _HomePlayerState extends State<HomePlayer>
 
   @override
   Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
     return AudioPlayerWidget(
       player: player,
       audioSamples: audioSamples,
@@ -189,11 +189,9 @@ class _AudioPlayerWidgetState extends State<AudioPlayerWidget> {
 
   @override
   Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
+    // Parent padding is provided by HomeScreen; avoid extra horizontal margin
     return Container(
-      margin: EdgeInsets.symmetric(
-        horizontal: 15,
-      ),
+      margin: EdgeInsets.zero,
       child: GestureDetector(
         onTap: () {
           if (_isPlaying) {
@@ -208,71 +206,70 @@ class _AudioPlayerWidgetState extends State<AudioPlayerWidget> {
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(20),
           ),
-          child: Container(
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(20),
-              image: DecorationImage(
-                image: AssetImage(
-                    'assets/images/bannerlppl.png'), // Ganti dengan path gambar pattern Anda
-                fit: BoxFit.fill,
+          child: SizedBox(
+            height: 120,
+            child: Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(20),
+                image: const DecorationImage(
+                  image: AssetImage('assets/images/bannerlppl.png'),
+                  fit: BoxFit.fitWidth,
+                ),
               ),
-            ),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              crossAxisAlignment: CrossAxisAlignment.end,
-              children: [
-                Padding(
-                  padding: EdgeInsets.zero,
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    crossAxisAlignment: CrossAxisAlignment.end,
-                    children: [
-                      Container(
-                        height: size.height * 0.1,
-                        child: MaterialButton(
-                          onPressed: () {
-                            if (_isPlaying) {
-                              widget.player
-                                  .stop(); // Stop audio if it's playing
-                            } else {
-                              widget.player
-                                  .play(); // Start audio if it's not playing
-                            }
-                          },
-                          highlightColor:
-                              Colors.transparent, // Menghilangkan highlight
-                          splashColor: Colors.transparent,
-                          child: Container(
-                            child: AnimatedSwitcher(
-                              duration: Duration(milliseconds: 300),
-                              transitionBuilder:
-                                  (Widget child, Animation<double> animation) {
-                                return ScaleTransition(
-                                  scale: animation,
-                                  child: child,
-                                );
-                              },
-                              child: _isPlaying
-                                  ? Image.asset(
-                                      'assets/images/pause.png', // Path ke ikon custom
-                                      key: ValueKey("pause"),
-                                      width: 50,
-                                      height: 50,
-                                      fit: BoxFit.cover)
-                                  : Image.asset(
-                                      'assets/images/play.png', // Path ke ikon custom
-                                      key: ValueKey("play"),
-                                      width: 50,
-                                      height: 50,
-                                      fit: BoxFit.cover),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+                  Padding(
+                    padding: EdgeInsets.zero,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      children: [
+                        Container(
+                          height: 96,
+                          child: MaterialButton(
+                            onPressed: () {
+                              if (_isPlaying) {
+                                widget.player
+                                    .stop(); // Stop audio if it's playing
+                              } else {
+                                widget.player
+                                    .play(); // Start audio if it's not playing
+                              }
+                            },
+                            highlightColor: Colors.transparent,
+                            splashColor: Colors.transparent,
+                            child: Container(
+                              child: AnimatedSwitcher(
+                                duration: const Duration(milliseconds: 300),
+                                transitionBuilder: (Widget child,
+                                    Animation<double> animation) {
+                                  return ScaleTransition(
+                                    scale: animation,
+                                    child: child,
+                                  );
+                                },
+                                child: _isPlaying
+                                    ? Image.asset('assets/images/pause.png',
+                                        key: const ValueKey("pause"),
+                                        width: 50,
+                                        height: 50,
+                                        fit: BoxFit.cover)
+                                    : Image.asset('assets/images/play.png',
+                                        key: const ValueKey("play"),
+                                        width: 50,
+                                        height: 50,
+                                        fit: BoxFit.cover),
+                              ),
                             ),
                           ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
         ),
