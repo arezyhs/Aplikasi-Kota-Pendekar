@@ -153,7 +153,7 @@ class _SemuaaplikasiState extends State<Semuaaplikasi> {
           padding: const EdgeInsets.only(top: 12.0, left: 4.0),
         ),
         Text(
-          "LAYANAN ASN",
+          "Layanan ASN",
           textAlign: TextAlign.left,
           style: TextStyle(
             color: Color.fromARGB(255, 11, 11, 11),
@@ -180,33 +180,33 @@ class _SemuaaplikasiState extends State<Semuaaplikasi> {
       {
         "icon": "assets/images/imgicon/buktidukungspbe.png",
         "text": "BUKTI DUKUNG SPBE",
-        "page": webspbe(),
+        "page": WebSpbe(),
       },
       {
         "icon": "assets/images/imgicon/jdih.png",
         "text": "J.D.I.H",
-        "page": webjdih(),
+        "page": WebJdih(),
       },
       {
         "icon": "assets/images/imgicon/emonev.png",
         "text": "EMONEV",
-        "page": webemonev(),
+        "page": WebEmonev(),
       },
       {
         "icon": "assets/images/imgicon/manekin.png",
         "text": "MANEKIN",
-        "page": webmanekin(),
+        "page": WebManekin(),
       },
       {
         "icon": "assets/images/imgicon/carehub.png",
         "text": "CAREHUB",
-        "page": webcarehub(),
+        "page": WebCarehub(),
       },
 
       {
         "icon": "assets/images/imgicon/dinsos.png",
         "text": "DINSOS APP",
-        "page": webdinsosapp(),
+        "page": WebDinsosapp(),
       },
       {
         "icon": "assets/images/imgicon/proumkm.png",
@@ -217,49 +217,51 @@ class _SemuaaplikasiState extends State<Semuaaplikasi> {
       {
         "icon": "assets/images/imgicon/lppd.png",
         "text": "LPPD",
-        "page": weblppd(),
+        "page": WebLppd(),
       },
       {
         "icon": "assets/images/imgicon/retribusi.png",
         "text": "RETRIBUSI",
-        "page": webretribusi(),
+        "page": WebRetribusi(),
       },
       {
         "icon": "assets/images/imgicon/ruangrapat.png",
         "text": "RUANG RAPAT",
-        "page": webruangrapat(),
+        "page": WebRuangrapat(),
       },
       {
         "icon": "assets/images/imgicon/simonev.png",
         "text": "SIMONEV",
-        "page": websimonev(),
+        "page": WebSimonev(),
       },
       {
         "icon": "assets/images/imgicon/siopa.png",
         "text": "SIOPA",
-        "page": websiopa(),
+        "page": WebSiopa(),
       },
       {
         "icon": "assets/images/imgicon/silandep.png",
         "text": "SILANDEP",
-        "page": websilandep(),
+        "page": WebSilandep(),
       },
       {
         "icon": "assets/images/imgicon/sitebas.png",
         "text": "SITEBAS",
-        "page": websitebas(),
+        "page": WebSitebas(),
       },
     ];
 
     Future<void> launchPlayStore(String appId) async {
       String playStoreUrl =
           'https://play.google.com/store/apps/details?id=$appId';
-      await launch(playStoreUrl);
+      final Uri playStoreUri = Uri.parse(playStoreUrl);
+      await launchUrl(playStoreUri, mode: LaunchMode.externalApplication);
     }
 
     void openApp(String appId, String uriScheme) async {
-      if (await canLaunch(uriScheme)) {
-        await launch(uriScheme);
+      final Uri uri = Uri.parse(uriScheme);
+      if (await canLaunchUrl(uri)) {
+        await launchUrl(uri, mode: LaunchMode.externalApplication);
       } else {
         await launchPlayStore(appId);
       }
@@ -349,19 +351,21 @@ class _SemuaaplikasiState extends State<Semuaaplikasi> {
       {
         "icon": "assets/images/imgicon/esayur.png",
         "text": "ESAYUR",
-        "page": webesayur(),
+        "page": WebEsayur(),
       },
     ];
 
     Future<void> launchPlayStore(String appId) async {
       String playStoreUrl =
           'https://play.google.com/store/apps/details?id=$appId';
-      await launch(playStoreUrl);
+      final Uri playStoreUri = Uri.parse(playStoreUrl);
+      await launchUrl(playStoreUri, mode: LaunchMode.externalApplication);
     }
 
     void openApp(String appId, String uriScheme) async {
-      if (await canLaunch(uriScheme)) {
-        await launch(uriScheme);
+      final Uri uri = Uri.parse(uriScheme);
+      if (await canLaunchUrl(uri)) {
+        await launchUrl(uri, mode: LaunchMode.externalApplication);
       } else {
         await launchPlayStore(appId);
       }
@@ -438,29 +442,31 @@ class _SemuaaplikasiState extends State<Semuaaplikasi> {
       {
         "icon": "assets/images/imgicon/wbs.png",
         "text": "WBS KOTA MADIUN",
-        "page": webwbs(),
+        "page": WebWbs(),
       },
       {
         "icon": "assets/images/imgicon/awaksigap.png",
         "text": "AWAK SIGAP",
-        "page": webawaksigap(),
+        "page": WebAwaksigap(),
       },
       {
         "icon": "assets/images/imgicon/ppid.png",
         "text": "PPID",
-        "page": webppid(),
+        "page": WebPpid(),
       },
     ];
 
     Future<void> launchPlayStore(String appId) async {
       String playStoreUrl =
           'https://play.google.com/store/apps/details?id=$appId';
-      await launch(playStoreUrl);
+      final Uri playStoreUri = Uri.parse(playStoreUrl);
+      await launchUrl(playStoreUri, mode: LaunchMode.externalApplication);
     }
 
     void openApp(String appId, String uriScheme) async {
-      if (await canLaunch(uriScheme)) {
-        await launch(uriScheme);
+      final Uri uri = Uri.parse(uriScheme);
+      if (await canLaunchUrl(uri)) {
+        await launchUrl(uri, mode: LaunchMode.externalApplication);
       } else {
         await launchPlayStore(appId);
       }
@@ -537,24 +543,26 @@ class _SemuaaplikasiState extends State<Semuaaplikasi> {
       {
         "icon": "assets/images/imgicon/rumahsakit.png",
         "text": "ANTRIAN RUMAH SAKIT",
-        "page": webantrianrs()
+        "page": WebAntrianRs()
       },
       {
         "icon": "assets/images/imgicon/puskesmas.png",
         "text": "ANTRIAN PUSKESMAS",
-        "page": webantrianpuskes()
+        "page": WebAntrianPuskes()
       },
     ];
 
     Future<void> launchPlayStore(String appId) async {
       String playStoreUrl =
           'https://play.google.com/store/apps/details?id=$appId';
-      await launch(playStoreUrl);
+      final Uri playStoreUri = Uri.parse(playStoreUrl);
+      await launchUrl(playStoreUri, mode: LaunchMode.externalApplication);
     }
 
     void openApp(String appId, String uriScheme) async {
-      if (await canLaunch(uriScheme)) {
-        await launch(uriScheme);
+      final Uri uri = Uri.parse(uriScheme);
+      if (await canLaunchUrl(uri)) {
+        await launchUrl(uri, mode: LaunchMode.externalApplication);
       } else {
         await launchPlayStore(appId);
       }
@@ -631,29 +639,31 @@ class _SemuaaplikasiState extends State<Semuaaplikasi> {
       {
         "icon": "assets/images/imgicon/analisaberita.png",
         "text": "ANALISA BERITA",
-        "page": webanalisaberita(),
+        "page": WebAnalisaberita(),
       },
       {
         "icon": "assets/images/imgicon/madiuntoday.png",
         "text": "MADIUNTODAY",
-        "page": webmadiuntoday(),
+        "page": WebMadiuntoday(),
       },
       {
         "icon": "assets/images/imgicon/sicakep.png",
         "text": "AGENDA KOTA MADIUN",
-        "page": websicakep(),
+        "page": WebSicakep(),
       },
     ];
 
     Future<void> launchPlayStore(String appId) async {
       String playStoreUrl =
           'https://play.google.com/store/apps/details?id=$appId';
-      await launch(playStoreUrl);
+      final Uri playStoreUri = Uri.parse(playStoreUrl);
+      await launchUrl(playStoreUri, mode: LaunchMode.externalApplication);
     }
 
     void openApp(String appId, String uriScheme) async {
-      if (await canLaunch(uriScheme)) {
-        await launch(uriScheme);
+      final Uri uri = Uri.parse(uriScheme);
+      if (await canLaunchUrl(uri)) {
+        await launchUrl(uri, mode: LaunchMode.externalApplication);
       } else {
         await launchPlayStore(appId);
       }
@@ -733,7 +743,7 @@ class _berandaCard extends StatelessWidget {
               borderRadius: BorderRadius.circular(14),
               boxShadow: [
                 BoxShadow(
-                  color: Colors.black.withOpacity(0.06),
+                  color: Colors.black.withAlpha(15),
                   blurRadius: 8,
                   offset: Offset(0, 4),
                 ),

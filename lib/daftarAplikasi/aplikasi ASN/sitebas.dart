@@ -2,16 +2,18 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
+import 'package:pendekar/constants/navigation.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:url_launcher/url_launcher.dart';
 
-class websitebas extends StatefulWidget {
-  const websitebas({Key? key}) : super(key: key);
+class WebSitebas extends StatefulWidget {
+  const WebSitebas({Key? key}) : super(key: key);
 
   @override
-  _websitebasState createState() => _websitebasState();
+  _WebSitebasState createState() => _WebSitebasState();
 }
 
-class _websitebasState extends State<websitebas> {
+class _WebSitebasState extends State<WebSitebas> {
   bool isLoading = true;
   InAppWebViewController? _webViewController;
   final String url = 'https://sitebas.madiunkota.go.id/';
@@ -22,13 +24,7 @@ class _websitebasState extends State<websitebas> {
     requestPermissions();
   }
 
-  @override
-  void dispose() {
-    super.dispose();
-  }
-
   Future<void> requestPermissions() async {
-    // Meminta izin di sini
     Map<Permission, PermissionStatus> statuses = await [
       Permission.camera,
       Permission.storage,
@@ -37,31 +33,42 @@ class _websitebasState extends State<websitebas> {
       Permission.accessMediaLocation,
     ].request();
 
-    // Cek apakah izin diberikan atau tidak
     if (statuses[Permission.camera]?.isGranted == false) {
-      print('Permission to access camera is denied');
-    }
-    if (statuses[Permission.storage]?.isGranted == false) {
-      print('Permission to access storage is denied');
-    }
-    if (statuses[Permission.photos]?.isGranted == false) {
-      print('Permission to access photos is denied');
-    }
-    if (statuses[Permission.mediaLibrary]?.isGranted == false) {
-      print('Permission to access media library is denied');
-    }
-    if (statuses[Permission.accessMediaLocation]?.isGranted == false) {
-      print('Permission to access media location is denied');
+      debugPrint('Permission to access camera is denied');
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    final screenWidth = MediaQuery.of(context).size.width;
     final screenHeight = MediaQuery.of(context).size.height;
-    double fontSize = screenWidth * 0.034;
+
     return Scaffold(
       backgroundColor: Colors.white,
+      appBar: AppBar(
+        backgroundColor: Colors.white,
+        elevation: 0,
+        iconTheme: const IconThemeData(color: Colors.black87),
+        title: const Text('Sitebas',
+            style:
+                TextStyle(color: Colors.black87, fontWeight: FontWeight.w700)),
+        actions: [
+          IconButton(
+            tooltip: 'Muat Ulang',
+            icon: const Icon(Icons.refresh, color: Colors.black54),
+            onPressed: () => _webViewController?.reload(),
+          ),
+          IconButton(
+            tooltip: 'Buka di Browser',
+            icon: const Icon(Icons.open_in_new, color: Colors.black54),
+            onPressed: () async {
+              final uri = Uri.parse(url);
+              if (await canLaunchUrl(uri)) {
+                await launchUrl(uri, mode: LaunchMode.externalApplication);
+              }
+            },
+          ),
+        ],
+      ),
       body: SafeArea(
         child: Column(
           children: [
@@ -71,203 +78,68 @@ class _websitebasState extends State<websitebas> {
                 children: [
                   InAppWebView(
                     initialUrlRequest: URLRequest(url: WebUri(url)),
-                    initialOptions: InAppWebViewGroupOptions(
-                      crossPlatform: InAppWebViewOptions(
-                        clearCache: false,
-                        cacheEnabled: true,
-                        transparentBackground: true,
-                        supportZoom: true,
-                        useOnDownloadStart: true,
-                        mediaPlaybackRequiresUserGesture: false,
-                        allowFileAccessFromFileURLs: true,
-                        allowUniversalAccessFromFileURLs: true,
-                        javaScriptCanOpenWindowsAutomatically: true,
-                        javaScriptEnabled: true,
-                      ),
-                      android: AndroidInAppWebViewOptions(
-                        useHybridComposition: true,
-                        allowContentAccess: true,
-                        allowFileAccess: true,
-                      ),
+                    initialSettings: InAppWebViewSettings(
+                      clearCache: false,
+                      cacheEnabled: true,
+                      transparentBackground: true,
+                      supportZoom: true,
+                      useOnDownloadStart: true,
+                      mediaPlaybackRequiresUserGesture: false,
+                      allowFileAccessFromFileURLs: true,
+                      allowUniversalAccessFromFileURLs: true,
+                      javaScriptCanOpenWindowsAutomatically: true,
+                      javaScriptEnabled: true,
                     ),
                     onWebViewCreated: (controller) {
                       _webViewController = controller;
                     },
-                    androidOnPermissionRequest:
-                        (InAppWebViewController controller, String origin,
-                            List<String> resources) async {
-                      var response = await showDialog(
-                        context: context,
-                        builder: (BuildContext context) => AlertDialog(
-                          title: Text("Permintaan Izin"),
-                          content: Text(
+                    onPermissionRequest: (InAppWebViewController controller,
+                        PermissionRequest request) async {
+                      final ctx = navigatorKey.currentContext;
+                      final granted = await showDialog<bool>(
+                        context: ctx ?? context,
+                        builder: (BuildContext dialogContext) => AlertDialog(
+                          title: const Text("Permintaan Izin"),
+                          content: const Text(
                               "Ijinkan aplikasi mengakses foto dan media?"),
                           actions: <Widget>[
                             TextButton(
                               onPressed: () {
-                                Navigator.of(context)
-                                    .pop(PermissionRequestResponseAction.GRANT);
+                                Navigator.of(dialogContext).pop(true);
                               },
-                              child: Text("Izinkan Akses"),
+                              child: const Text("Izinkan Akses"),
                             ),
                             TextButton(
                               onPressed: () {
-                                Navigator.of(context)
-                                    .pop(PermissionRequestResponseAction.DENY);
+                                Navigator.of(dialogContext).pop(false);
                               },
-                              child: Text("Tolak Akses"),
+                              child: const Text("Tolak Akses"),
                             ),
                           ],
                         ),
                       );
 
-                      return PermissionRequestResponse(
-                          resources: resources,
-                          action: PermissionRequestResponseAction.GRANT);
+                      final allow = granted ?? false;
+                      return PermissionResponse(
+                        resources: request.resources,
+                        action: allow
+                            ? PermissionResponseAction.GRANT
+                            : PermissionResponseAction.DENY,
+                      );
                     },
-                    // Event lainnya di sini
-                    onLoadStop: (controller, url) async {
-                      setState(() {
-                        isLoading = false;
-                      });
-                      // Menggunakan JavaScript untuk menyembunyikan elemen yang tidak diinginkan
-                      //           controller.evaluateJavascript(source: '''
-                      //             var element = document.getElementsByClassName('navbar')[0];
-                      //   if (element != null) {
-                      //     element.style.display = 'none';
-                      //   }
-                      //    var sideMenu = document.getElementsByClassName('toolbar')[0];
-                      //   if (sideMenu != null) {
-                      //     sideMenu.style.display = 'none';
-                      //   }
-                      //   var header = document.getElementsByClassName('account-masthead')[0];
-                      //   if (header != null) {
-                      //     header.style.display = 'none';
-                      //   }
-                      //   var footer = document.getElementsByClassName('footer pt-5')[0];
-                      //   if (footer != null) {
-                      //     footer.style.display = 'none';
-                      //   }
-                      //   var second = document.getElementsByClassName('secondary col-md-3')[0];
-                      //   if (second != null) {
-                      //     second.style.display = 'none';
-                      //   }
-
-                      // ''');
+                    onLoadStart: (controller, uri) {
+                      setState(() => isLoading = true);
                     },
-                    onLoadStart: (controller, url) {
-                      setState(() {
-                        isLoading = true;
-                      });
+                    onLoadStop: (controller, uri) async {
+                      setState(() => isLoading = false);
                     },
                   ),
                   if (isLoading)
-                    Center(
-                      child: CircularProgressIndicator(
-                        color: const Color.fromARGB(255, 6, 97, 94),
-                      ),
-                    ),
+                    const Center(child: CircularProgressIndicator()),
                 ],
               ),
             ),
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                Tooltip(
-                  message: 'Kembali Ke Menu',
-                  child: ElevatedButton(
-                    onPressed: () {
-                      Navigator.of(context).pop();
-                    },
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: const Color.fromARGB(255, 6, 97, 94),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(5),
-                      ),
-                      elevation: 2,
-                    ),
-                    child: Column(
-                      children: [
-                        Icon(Icons.home, color: Colors.white),
-                        Text(
-                          'Kembali Ke Menu',
-                          style: TextStyle(
-                            fontSize: fontSize,
-                            color: Colors.white,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-                SizedBox(width: screenWidth * 0.01),
-                Tooltip(
-                  message: 'Muat Ulang',
-                  child: ElevatedButton(
-                    onPressed: () {
-                      if (_webViewController != null) {
-                        _webViewController?.reload();
-                      }
-                    },
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: const Color.fromARGB(255, 6, 97, 94),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(5),
-                      ),
-                      elevation: 2,
-                    ),
-                    child: Column(
-                      children: [
-                        Icon(Icons.refresh, color: Colors.white),
-                        Text(
-                          'Muat Ulang',
-                          style: TextStyle(
-                            fontSize: fontSize,
-                            color: Colors.white,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-                SizedBox(width: screenWidth * 0.01),
-                Tooltip(
-                  message: 'Sebelumnya',
-                  child: ElevatedButton(
-                    onPressed: () async {
-                      if (_webViewController != null) {
-                        bool canGoBack = await _webViewController!.canGoBack();
-                        if (canGoBack) {
-                          _webViewController?.goBack();
-                        } else {
-                          Navigator.of(context).pop();
-                        }
-                      }
-                    },
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: const Color.fromARGB(255, 6, 97, 94),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(5),
-                      ),
-                      elevation: 2,
-                    ),
-                    child: Column(
-                      children: [
-                        Icon(Icons.arrow_back, color: Colors.white),
-                        Text(
-                          'Sebelumnya',
-                          style: TextStyle(
-                            fontSize: fontSize,
-                            color: Colors.white,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ],
-            ),
+            const SizedBox(height: 8),
           ],
         ),
       ),

@@ -19,7 +19,7 @@ class ppidBanner extends StatelessWidget {
         onTap: () {
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => webppid()),
+            MaterialPageRoute(builder: (context) => WebPpid()),
           );
         },
         child: Card(

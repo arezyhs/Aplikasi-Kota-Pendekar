@@ -4,14 +4,14 @@ import 'package:flutter/material.dart';
 import 'package:pendekar/constants/constant.dart';
 import 'package:pendekar/daftarAplikasi/aplikasi%20ASN/jdih.dart';
 import 'package:pendekar/daftarAplikasi/aplikasi%20ASN/sicakep.dart';
-import 'package:pendekar/daftarAplikasi/aplikasi%20warga/edu.dart';
+// import 'package:pendekar/daftarAplikasi/aplikasi%20warga/edu.dart';
 import 'package:pendekar/daftarAplikasi/aplikasi%20warga/madiuntoday.dart';
 import 'package:pendekar/daftarAplikasi/aplikasi%20warga/opendata.dart';
 import 'package:pendekar/homepage/size_config.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class LayananInformasi extends StatefulWidget {
-  LayananInformasi({super.key});
+  const LayananInformasi({super.key});
 
   @override
   State<LayananInformasi> createState() => _LayananInformasiState();
@@ -49,7 +49,7 @@ class _LayananInformasiState extends State<LayananInformasi> {
         child: ListView(
           children: <Widget>[
             _tittlelayananInformasi(),
-            SizedBox(height: 20.0),
+            const SizedBox(height: 20.0),
             TextField(
               decoration: InputDecoration(
                 labelText: 'Cari Aplikasi',
@@ -61,7 +61,7 @@ class _LayananInformasiState extends State<LayananInformasi> {
                 });
               },
             ),
-            SizedBox(height: 20.0),
+            const SizedBox(height: 20.0),
             _applayananInformasi(context),
           ],
         ),
@@ -105,7 +105,7 @@ class _LayananInformasiState extends State<LayananInformasi> {
       {
         "icon": "assets/images/imgicon/sicakep.png",
         "text": "AGENDA KOTA MADIUN",
-        "page": websicakep(),
+        "page": WebSicakep(),
       },
 
       // {
@@ -116,7 +116,7 @@ class _LayananInformasiState extends State<LayananInformasi> {
       {
         "icon": "assets/images/imgicon/madiuntoday.png",
         "text": "MADIUNTODAY",
-        "page": webmadiuntoday(),
+        "page": WebMadiuntoday(),
       },
       {
         "icon": "assets/images/imgicon/opendata.png",
@@ -126,19 +126,21 @@ class _LayananInformasiState extends State<LayananInformasi> {
       {
         "icon": "assets/images/imgicon/jdih.png",
         "text": "JDIH",
-        "page": webjdih(),
+        "page": WebJdih(),
       },
     ];
 
     Future<void> launchPlayStore(String appId) async {
       String playStoreUrl =
           'https://play.google.com/store/apps/details?id=$appId';
-      await launch(playStoreUrl);
+      final Uri playStoreUri = Uri.parse(playStoreUrl);
+      await launchUrl(playStoreUri, mode: LaunchMode.externalApplication);
     }
 
     void openApp(String appId, String uriScheme) async {
-      if (await canLaunch(uriScheme)) {
-        await launch(uriScheme);
+      final Uri uri = Uri.parse(uriScheme);
+      if (await canLaunchUrl(uri)) {
+        await launchUrl(uri, mode: LaunchMode.externalApplication);
       } else {
         await launchPlayStore(appId);
       }
@@ -212,13 +214,13 @@ class _berandaCard extends StatelessWidget {
                 borderRadius: BorderRadius.circular(20), // Sudut melengkung
               ),
               elevation: 5, // Bayangan untuk efek 3D
-              shadowColor: Colors.black.withOpacity(1), // Warna bayangan
+              shadowColor: Colors.black, // Warna bayangan
               child: Container(
                 padding: EdgeInsets.all(getProportionateScreenWidth(5)),
                 height: screenHeight * 0.08,
                 width: screenWidth * 0.20,
                 decoration: BoxDecoration(
-                  color: hThirdColor.withOpacity(0.5),
+                  color: hThirdColor.withAlpha(128),
                   borderRadius: BorderRadius.circular(20),
                 ),
                 child: Center(
@@ -230,7 +232,7 @@ class _berandaCard extends StatelessWidget {
                 ),
               ),
             ),
-            SizedBox(height: 5),
+            const SizedBox(height: 5),
             Expanded(
               child: Text(
                 text,

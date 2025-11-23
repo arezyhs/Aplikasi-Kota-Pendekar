@@ -10,16 +10,14 @@ class HomeDescription extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        SizedBox(
-          height: 10,
-        ),
+        const SizedBox(height: 10),
         Container(
           padding: const EdgeInsets.symmetric(horizontal: 16.0),
           width: double.infinity,
           child: Text(
             "Ringkasan berita terbaru dari portal kota.",
             style: TextStyle(
-                color: Colors.black.withOpacity(0.8),
+                color: Colors.black.withAlpha(204),
                 fontSize: 14,
                 fontWeight: FontWeight.w600),
           ),

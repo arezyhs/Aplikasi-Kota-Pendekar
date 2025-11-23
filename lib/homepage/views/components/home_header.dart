@@ -16,7 +16,7 @@ class HomeHeader extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          SearchField(),
+          const SearchField(),
           IconBtnWithCounter(
             svgSrc: "assets/icons/Bell.svg",
             numOfItems: 3,

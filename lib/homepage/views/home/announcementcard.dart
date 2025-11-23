@@ -13,13 +13,14 @@ class AnnouncementCard extends StatelessWidget {
     required this.onPressed,
   }) : super(key: key);
 
-  void openWhatsApp() async {
-    final phoneNumber =
+  Future<void> openWhatsApp() async {
+    const phoneNumber =
         '08113577800'; // Ganti dengan nomor telepon WhatsApp yang diinginkan
     final whatsappUrl = 'https://wa.me/$phoneNumber';
+    final Uri whatsappUri = Uri.parse(whatsappUrl);
 
-    if (await canLaunch(whatsappUrl)) {
-      await launch(whatsappUrl);
+    if (await canLaunchUrl(whatsappUri)) {
+      await launchUrl(whatsappUri, mode: LaunchMode.externalApplication);
     } else {
       throw 'Tidak dapat membuka WhatsApp';
     }
@@ -32,7 +33,7 @@ class AnnouncementCard extends StatelessWidget {
     double fontSizeL = screenWidth * 0.05;
     double fontSize = screenWidth * 0.03;
     return Container(
-      margin: EdgeInsets.symmetric(
+      margin: const EdgeInsets.symmetric(
         horizontal: 5,
       ),
       child: GestureDetector(
@@ -55,7 +56,7 @@ class AnnouncementCard extends StatelessWidget {
               ),
             ),
             child: Padding(
-              padding: EdgeInsets.symmetric(horizontal: 22, vertical: 10),
+              padding: const EdgeInsets.symmetric(horizontal: 22, vertical: 10),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
@@ -64,7 +65,7 @@ class AnnouncementCard extends StatelessWidget {
                     width: 40,
                     height: 40,
                   ),
-                  SizedBox(width: 8),
+                  const SizedBox(width: 8),
                   Expanded(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.center,
@@ -95,8 +96,8 @@ class AnnouncementCard extends StatelessWidget {
                       ],
                     ),
                   ),
-                  SizedBox(width: 8),
-                  Icon(
+                  const SizedBox(width: 8),
+                  const Icon(
                     Icons.arrow_forward_outlined,
                     color: Colors.white,
                   ),

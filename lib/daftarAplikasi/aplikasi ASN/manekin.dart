@@ -1,18 +1,19 @@
-// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
+// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, use_build_context_synchronously
 
 import 'package:flutter/material.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:pendekar/constants/navigation.dart';
 
-class webmanekin extends StatefulWidget {
-  const webmanekin({Key? key}) : super(key: key);
+class WebManekin extends StatefulWidget {
+  const WebManekin({Key? key}) : super(key: key);
 
   @override
-  _webmanekinState createState() => _webmanekinState();
+  _WebManekinState createState() => _WebManekinState();
 }
 
-class _webmanekinState extends State<webmanekin> {
+class _WebManekinState extends State<WebManekin> {
   bool isLoading = true;
   InAppWebViewController? _webViewController;
   final String url = 'https://manekin.madiunkota.go.id/';
@@ -40,19 +41,19 @@ class _webmanekinState extends State<webmanekin> {
 
     // Cek apakah izin diberikan atau tidak
     if (statuses[Permission.camera]?.isGranted == false) {
-      print('Permission to access camera is denied');
+      debugPrint('Permission to access camera is denied');
     }
     if (statuses[Permission.storage]?.isGranted == false) {
-      print('Permission to access storage is denied');
+      debugPrint('Permission to access storage is denied');
     }
     if (statuses[Permission.photos]?.isGranted == false) {
-      print('Permission to access photos is denied');
+      debugPrint('Permission to access photos is denied');
     }
     if (statuses[Permission.mediaLibrary]?.isGranted == false) {
-      print('Permission to access media library is denied');
+      debugPrint('Permission to access media library is denied');
     }
     if (statuses[Permission.accessMediaLocation]?.isGranted == false) {
-      print('Permission to access media location is denied');
+      debugPrint('Permission to access media location is denied');
     }
   }
 
@@ -95,49 +96,42 @@ class _webmanekinState extends State<webmanekin> {
                 children: [
                   InAppWebView(
                     initialUrlRequest: URLRequest(url: WebUri(url)),
-                    initialOptions: InAppWebViewGroupOptions(
-                      crossPlatform: InAppWebViewOptions(
-                        clearCache: false,
-                        cacheEnabled: true,
-                        transparentBackground: true,
-                        supportZoom: true,
-                        useOnDownloadStart: true,
-                        mediaPlaybackRequiresUserGesture: false,
-                        allowFileAccessFromFileURLs: true,
-                        allowUniversalAccessFromFileURLs: true,
-                        javaScriptCanOpenWindowsAutomatically: true,
-                        javaScriptEnabled: true,
-                      ),
-                      android: AndroidInAppWebViewOptions(
-                        useHybridComposition: true,
-                        allowContentAccess: true,
-                        allowFileAccess: true,
-                      ),
+                    initialSettings: InAppWebViewSettings(
+                      clearCache: false,
+                      cacheEnabled: true,
+                      supportZoom: true,
+                      useOnDownloadStart: true,
+                      mediaPlaybackRequiresUserGesture: false,
+                      allowFileAccessFromFileURLs: true,
+                      allowUniversalAccessFromFileURLs: true,
+                      javaScriptCanOpenWindowsAutomatically: true,
+                      javaScriptEnabled: true,
+                      // android-specific settings removed to use default platform behavior
+                      // If needed, add Android-specific settings here matching the
+                      // installed flutter_inappwebview version API.
                     ),
                     onWebViewCreated: (controller) {
                       _webViewController = controller;
                     },
-                    androidOnPermissionRequest:
-                        (InAppWebViewController controller, String origin,
-                            List<String> resources) async {
-                      await showDialog(
-                        context: context,
-                        builder: (BuildContext context) => AlertDialog(
+                    onPermissionRequest: (InAppWebViewController controller,
+                        PermissionRequest request) async {
+                      final ctx = navigatorKey.currentContext;
+                      final granted = await showDialog<bool>(
+                        context: ctx ?? context,
+                        builder: (BuildContext dialogContext) => AlertDialog(
                           title: Text("Permintaan Izin"),
                           content: Text(
                               "Ijinkan aplikasi mengakses foto dan media?"),
                           actions: <Widget>[
                             TextButton(
                               onPressed: () {
-                                Navigator.of(context)
-                                    .pop(PermissionRequestResponseAction.GRANT);
+                                Navigator.of(dialogContext).pop(true);
                               },
                               child: Text("Izinkan Akses"),
                             ),
                             TextButton(
                               onPressed: () {
-                                Navigator.of(context)
-                                    .pop(PermissionRequestResponseAction.DENY);
+                                Navigator.of(dialogContext).pop(false);
                               },
                               child: Text("Tolak Akses"),
                             ),
@@ -145,9 +139,19 @@ class _webmanekinState extends State<webmanekin> {
                         ),
                       );
 
-                      return PermissionRequestResponse(
-                          resources: resources,
-                          action: PermissionRequestResponseAction.GRANT);
+                      if (!mounted) {
+                        return PermissionResponse(
+                          resources: request.resources,
+                          action: PermissionResponseAction.DENY,
+                        );
+                      }
+
+                      return PermissionResponse(
+                        resources: request.resources,
+                        action: granted == true
+                            ? PermissionResponseAction.GRANT
+                            : PermissionResponseAction.DENY,
+                      );
                     },
                     // Event lainnya di sini
                     onLoadStop: (controller, url) async {

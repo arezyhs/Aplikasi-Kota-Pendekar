@@ -20,7 +20,7 @@ class HomeDescription2 extends StatelessWidget {
       child: Text.rich(TextSpan(
           text: "Selamat datang di Aplikasi Pendekar Kota Madiun \n",
           style: TextStyle(
-              color: Colors.black.withOpacity(0.8),
+              color: Colors.black.withAlpha(204),
               fontSize: 18,
               fontWeight: FontWeight.bold),
           children: [

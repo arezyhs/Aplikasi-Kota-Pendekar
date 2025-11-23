@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:pendekar/homepage/views/components/home_banner.dart';
 // Embedded Home-only widgets: Layanan Utama and Informasi Publik
-import 'package:pendekar/homepage/views/components/circle_category.dart';
+// circle_category not used after layout update
 import 'package:pendekar/homepage/views/components/dialogWarning.dart';
 import 'package:pendekar/homepage/menu/layananinformasi.dart';
 import 'package:pendekar/homepage/menu/layanankesehatan.dart';
@@ -20,7 +20,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:url_launcher/url_launcher.dart';
 import 'package:pendekar/homepage/views/components/switch_tab_notification.dart';
-import 'package:carousel_slider/carousel_slider.dart';
+// carousel_slider removed; news preview now a 3-item list
 import 'package:pendekar/daftarAplikasi/aplikasi%20warga/ppid.dart';
 
 // Small news preview widget (fetches top 3 news from configured RSS json feeds)
@@ -34,7 +34,7 @@ class NewsPreview extends StatefulWidget {
 class _NewsPreviewState extends State<NewsPreview> {
   List<Map<String, dynamic>> news = [];
   bool loading = true;
-  int _active = 0;
+  // _active no longer used (was for carousel indicators)
 
   final List<String> _rss = [
     'https://rss.app/feeds/v1.1/rHyalNohjMNACgTx.json',
@@ -89,118 +89,97 @@ class _NewsPreviewState extends State<NewsPreview> {
 
   @override
   Widget build(BuildContext context) {
-    if (loading)
+    if (loading) {
       return const Center(
           child: SizedBox(
               height: 48, width: 48, child: CircularProgressIndicator()));
+    }
+
     if (news.isEmpty) return const SizedBox();
 
-    return Column(
-      children: [
-        CarouselSlider.builder(
-          itemCount: news.length,
-          itemBuilder: (context, index, realIndex) {
-            final item = news[index];
-            final imageUrl = item['image'] as String?;
-            return GestureDetector(
-              onTap: () async {
-                final url = item['url'];
-                if (url != null && Uri.tryParse(url)?.isAbsolute == true) {
-                  final uri = Uri.parse(url);
-                  if (await canLaunchUrl(uri)) {
-                    await launchUrl(uri, mode: LaunchMode.externalApplication);
-                  }
-                }
-              },
-              child: Card(
-                elevation: 2,
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12)),
-                clipBehavior: Clip.hardEdge,
-                child: SizedBox(
-                  height: 140,
-                  child: Row(
-                    children: [
-                      // image
-                      if (imageUrl != null)
-                        Flexible(
-                          flex: 4,
-                          child: Image.network(
-                            imageUrl,
-                            fit: BoxFit.fitWidth,
-                            width: double.infinity,
-                            height: double.infinity,
-                            errorBuilder: (_, __, ___) =>
-                                Container(color: Colors.grey[200]),
-                          ),
-                        )
-                      else
-                        Flexible(
-                          flex: 4,
-                          child: Container(
-                            color: Colors.grey[100],
-                            child: const Icon(Icons.article,
-                                size: 48, color: Colors.grey),
-                          ),
-                        ),
-                      // text
-                      Expanded(
-                        flex: 6,
-                        child: Padding(
-                          padding: const EdgeInsets.all(12.0),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Text(item['title'] ?? '',
-                                  maxLines: 2,
-                                  overflow: TextOverflow.ellipsis,
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .titleMedium
-                                      ?.copyWith(fontWeight: FontWeight.w700)),
-                              const SizedBox(height: 6),
-                              Text(item['summary'] ?? '',
-                                  maxLines: 3,
-                                  overflow: TextOverflow.ellipsis,
-                                  style:
-                                      Theme.of(context).textTheme.bodyMedium),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
+    // show a simple list of up to 3 latest news items (styled like BeritaPage)
+    final displayCount = news.length < 3 ? news.length : 3;
+    return Align(
+      alignment: Alignment.topCenter,
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          for (var i = 0; i < displayCount; i++) ...[
+            _buildNewsTile(context, news[i]),
+            if (i < displayCount - 1) const Divider(height: 1),
+          ],
+        ],
+      ),
+    );
+  }
+
+  Widget _buildNewsTile(BuildContext context, Map<String, dynamic> item) {
+    final imageUrl = item['image'] as String?;
+    final title = item['title'] ?? '';
+    final summary = item['summary'] ?? '';
+    final url = item['url'];
+
+    return ListTile(
+      contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+      leading: imageUrl != null
+          ? ClipRRect(
+              borderRadius: BorderRadius.circular(8),
+              child: Image.network(
+                imageUrl,
+                width: 80,
+                height: 80,
+                fit: BoxFit.cover,
+                errorBuilder: (_, __, ___) => Container(
+                  width: 80,
+                  height: 80,
+                  color: Colors.grey[200],
+                  child: const Icon(Icons.broken_image),
                 ),
               ),
-            );
-          },
-          options: CarouselOptions(
-            height: 150,
-            viewportFraction: 0.95,
-            enlargeCenterPage: false,
-            autoPlay: true,
-            autoPlayInterval: const Duration(seconds: 5),
-            onPageChanged: (index, reason) => setState(() => _active = index),
-          ),
-        ),
-        const SizedBox(height: 8),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: List.generate(
-            news.length,
-            (i) => Container(
-              margin: const EdgeInsets.symmetric(horizontal: 4.0),
-              width: _active == i ? 10 : 8,
-              height: _active == i ? 10 : 8,
+            )
+          : Container(
+              width: 80,
+              height: 80,
               decoration: BoxDecoration(
-                color: _active == i ? Colors.blueAccent : Colors.grey[300],
-                shape: BoxShape.circle,
+                color: Colors.grey[100],
+                borderRadius: BorderRadius.circular(8),
               ),
+              child: const Icon(Icons.article, size: 36, color: Colors.grey),
             ),
-          ),
-        ),
-      ],
+      title: Text(title, style: const TextStyle(fontWeight: FontWeight.bold)),
+      subtitle: Text(summary, maxLines: 2, overflow: TextOverflow.ellipsis),
+      trailing: IconButton(
+        icon: const Icon(Icons.open_in_new),
+        onPressed: () async {
+          final messenger = ScaffoldMessenger.of(context);
+          if (url != null && Uri.tryParse(url)?.isAbsolute == true) {
+            final uri = Uri.parse(url);
+            if (await canLaunchUrl(uri)) {
+              await launchUrl(uri, mode: LaunchMode.externalApplication);
+            } else {
+              messenger.showSnackBar(
+                  const SnackBar(content: Text('Could not launch the URL.')));
+            }
+          } else {
+            messenger
+                .showSnackBar(const SnackBar(content: Text('Invalid URL.')));
+          }
+        },
+      ),
+      onTap: () async {
+        final messenger = ScaffoldMessenger.of(context);
+        if (url != null && Uri.tryParse(url)?.isAbsolute == true) {
+          final uri = Uri.parse(url);
+          if (await canLaunchUrl(uri)) {
+            await launchUrl(uri, mode: LaunchMode.externalApplication);
+          } else {
+            messenger.showSnackBar(
+                const SnackBar(content: Text('Could not launch the URL.')));
+          }
+        } else {
+          messenger.showSnackBar(const SnackBar(content: Text('Invalid URL.')));
+        }
+      },
     );
   }
 }
@@ -316,7 +295,7 @@ class HomeScreen extends StatelessWidget {
           SliverToBoxAdapter(
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16.0),
-              child: const NewsPreview(),
+              child: NewsPreview(),
             ),
           ),
           SliverToBoxAdapter(
@@ -353,7 +332,7 @@ class _LayananUtamaState extends State<_LayananUtama> {
       {
         "icon": "assets/images/imgicon/manekin.png",
         "text": "MANEKIN",
-        "page": webmanekin()
+        "page": WebManekin()
       },
     ];
 
@@ -416,7 +395,8 @@ class _LayananUtamaState extends State<_LayananUtama> {
               categories.length,
               (index) {
                 final item = categories[index];
-                return GestureDetector(
+                final screenWidth = MediaQuery.of(context).size.width;
+                return InkWell(
                   onTap: () {
                     final page = item['page'];
                     if (page is DialogWarning) {
@@ -426,10 +406,34 @@ class _LayananUtamaState extends State<_LayananUtama> {
                           context, MaterialPageRoute(builder: (_) => page));
                     }
                   },
+                  borderRadius: BorderRadius.circular(16),
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      CircleCategory(iconPath: item['icon'] as String),
+                      Container(
+                        width: screenWidth * 0.18,
+                        height: screenWidth * 0.14,
+                        padding: const EdgeInsets.all(8),
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(14),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.black.withAlpha(15),
+                              blurRadius: 8,
+                              offset: const Offset(0, 4),
+                            ),
+                          ],
+                        ),
+                        child: Center(
+                          child: Image.asset(
+                            item['icon'] as String,
+                            width: screenWidth * 0.12,
+                            height: screenWidth * 0.12,
+                            fit: BoxFit.contain,
+                          ),
+                        ),
+                      ),
                       const SizedBox(height: 6),
                       Flexible(
                         child: Text(
@@ -497,7 +501,7 @@ class _LayananUtamaState extends State<_LayananUtama> {
                               decoration: BoxDecoration(
                                 color: Colors.white,
                                 shape: BoxShape.circle,
-                                boxShadow: [
+                                boxShadow: const [
                                   BoxShadow(
                                       color: Colors.black12,
                                       blurRadius: 4,
@@ -570,7 +574,7 @@ class _InformasiPublikState extends State<_InformasiPublik> {
         GestureDetector(
           onTap: () => Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => webppid()),
+            MaterialPageRoute(builder: (context) => WebPpid()),
           ),
           child: Card(
             elevation: 2,

@@ -79,7 +79,7 @@ class _HomeBannerState extends State<HomeBanner> {
                 color: (Theme.of(context).brightness == Brightness.dark
                         ? Colors.white
                         : Colors.black)
-                    .withOpacity(_current == entry.key ? 0.9 : 0.4),
+                    .withAlpha(_current == entry.key ? 230 : 102),
               ),
             );
           }).toList(),

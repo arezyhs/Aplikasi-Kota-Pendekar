@@ -4,15 +4,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:pendekar/constants/navigation.dart';
 
-class webawaksigap extends StatefulWidget {
-  const webawaksigap({Key? key}) : super(key: key);
+class WebAwaksigap extends StatefulWidget {
+  const WebAwaksigap({Key? key}) : super(key: key);
 
   @override
-  _webawaksigapState createState() => _webawaksigapState();
+  _WebAwaksigapState createState() => _WebAwaksigapState();
 }
 
-class _webawaksigapState extends State<webawaksigap> {
+class _WebAwaksigapState extends State<WebAwaksigap> {
   bool isLoading = true;
   InAppWebViewController? _webViewController;
   final String url = 'https://awaksigap.madiunkota.go.id/';
@@ -40,29 +41,52 @@ class _webawaksigapState extends State<webawaksigap> {
 
     // Cek apakah izin diberikan atau tidak
     if (statuses[Permission.camera]?.isGranted == false) {
-      print('Permission to access camera is denied');
+      debugPrint('Permission to access camera is denied');
     }
     if (statuses[Permission.storage]?.isGranted == false) {
-      print('Permission to access storage is denied');
+      debugPrint('Permission to access storage is denied');
     }
     if (statuses[Permission.photos]?.isGranted == false) {
-      print('Permission to access photos is denied');
+      debugPrint('Permission to access photos is denied');
     }
     if (statuses[Permission.mediaLibrary]?.isGranted == false) {
-      print('Permission to access media library is denied');
+      debugPrint('Permission to access media library is denied');
     }
     if (statuses[Permission.accessMediaLocation]?.isGranted == false) {
-      print('Permission to access media location is denied');
+      debugPrint('Permission to access media location is denied');
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    final screenWidth = MediaQuery.of(context).size.width;
     final screenHeight = MediaQuery.of(context).size.height;
-    double fontSize = screenWidth * 0.034;
     return Scaffold(
       backgroundColor: Colors.white,
+      appBar: AppBar(
+        backgroundColor: Colors.white,
+        elevation: 0,
+        iconTheme: const IconThemeData(color: Colors.black87),
+        title: const Text('Awaksigap',
+            style:
+                TextStyle(color: Colors.black87, fontWeight: FontWeight.w700)),
+        actions: [
+          IconButton(
+            tooltip: 'Muat Ulang',
+            icon: const Icon(Icons.refresh, color: Colors.black54),
+            onPressed: () => _webViewController?.reload(),
+          ),
+          IconButton(
+            tooltip: 'Buka di Browser',
+            icon: const Icon(Icons.open_in_new, color: Colors.black54),
+            onPressed: () async {
+              final uri = Uri.parse(url);
+              if (await canLaunchUrl(uri)) {
+                await launchUrl(uri, mode: LaunchMode.externalApplication);
+              }
+            },
+          ),
+        ],
+      ),
       body: SafeArea(
         child: Column(
           children: [
@@ -72,24 +96,17 @@ class _webawaksigapState extends State<webawaksigap> {
                 children: [
                   InAppWebView(
                     initialUrlRequest: URLRequest(url: WebUri(url)),
-                    initialOptions: InAppWebViewGroupOptions(
-                      crossPlatform: InAppWebViewOptions(
-                        clearCache: false,
-                        cacheEnabled: true,
-                        transparentBackground: true,
-                        supportZoom: true,
-                        useOnDownloadStart: true,
-                        mediaPlaybackRequiresUserGesture: false,
-                        allowFileAccessFromFileURLs: true,
-                        allowUniversalAccessFromFileURLs: true,
-                        javaScriptCanOpenWindowsAutomatically: true,
-                        javaScriptEnabled: true,
-                      ),
-                      android: AndroidInAppWebViewOptions(
-                        useHybridComposition: true,
-                        allowContentAccess: true,
-                        allowFileAccess: true,
-                      ),
+                    initialSettings: InAppWebViewSettings(
+                      clearCache: false,
+                      cacheEnabled: true,
+                      transparentBackground: true,
+                      supportZoom: true,
+                      useOnDownloadStart: true,
+                      mediaPlaybackRequiresUserGesture: false,
+                      allowFileAccessFromFileURLs: true,
+                      allowUniversalAccessFromFileURLs: true,
+                      javaScriptCanOpenWindowsAutomatically: true,
+                      javaScriptEnabled: true,
                     ),
                     onWebViewCreated: (controller) {
                       _webViewController = controller;
@@ -108,10 +125,10 @@ class _webawaksigapState extends State<webawaksigap> {
                               await launchUrl(uri,
                                   mode: LaunchMode.externalApplication);
                             } else {
-                              print("Tidak dapat membuka URL: $uri");
+                              debugPrint("Tidak dapat membuka URL: $uri");
                             }
                           } catch (e) {
-                            print("Gagal membuka URL: $e");
+                            debugPrint("Gagal membuka URL: $e");
                           }
                           return NavigationActionPolicy.CANCEL;
                         }
@@ -119,7 +136,7 @@ class _webawaksigapState extends State<webawaksigap> {
                       return NavigationActionPolicy.ALLOW;
                     },
 
-                    androidOnGeolocationPermissionsShowPrompt:
+                    onGeolocationPermissionsShowPrompt:
                         (controller, origin) async {
                       return GeolocationPermissionShowPromptResponse(
                         origin: origin,
@@ -128,37 +145,44 @@ class _webawaksigapState extends State<webawaksigap> {
                       );
                     },
 
-                    androidOnPermissionRequest:
-                        (InAppWebViewController controller, String origin,
-                            List<String> resources) async {
-                      var response = await showDialog(
-                        context: context,
-                        builder: (BuildContext context) => AlertDialog(
-                          title: Text("Permintaan Izin"),
-                          content: Text(
-                              "Ijinkan aplikasi mengakses foto dan media?"),
-                          actions: <Widget>[
-                            TextButton(
-                              onPressed: () {
-                                Navigator.of(context)
-                                    .pop(PermissionRequestResponseAction.GRANT);
-                              },
-                              child: Text("Izinkan Akses"),
-                            ),
-                            TextButton(
-                              onPressed: () {
-                                Navigator.of(context)
-                                    .pop(PermissionRequestResponseAction.DENY);
-                              },
-                              child: Text("Tolak Akses"),
-                            ),
-                          ],
-                        ),
-                      );
+                    onPermissionRequest: (InAppWebViewController controller,
+                        PermissionRequest request) async {
+                      final ctx = navigatorKey.currentContext;
+                      bool allow = false;
 
-                      return PermissionRequestResponse(
-                          resources: resources,
-                          action: PermissionRequestResponseAction.GRANT);
+                      if (ctx != null) {
+                        final granted = await showDialog<bool>(
+                          context: ctx,
+                          builder: (BuildContext dialogContext) => AlertDialog(
+                            title: Text("Permintaan Izin"),
+                            content: Text(
+                                "Ijinkan aplikasi mengakses foto dan media?"),
+                            actions: <Widget>[
+                              TextButton(
+                                onPressed: () {
+                                  Navigator.of(dialogContext).pop(true);
+                                },
+                                child: Text("Izinkan Akses"),
+                              ),
+                              TextButton(
+                                onPressed: () {
+                                  Navigator.of(dialogContext).pop(false);
+                                },
+                                child: Text("Tolak Akses"),
+                              ),
+                            ],
+                          ),
+                        );
+
+                        allow = granted ?? false;
+                      }
+
+                      return PermissionResponse(
+                        resources: request.resources,
+                        action: allow
+                            ? PermissionResponseAction.GRANT
+                            : PermissionResponseAction.DENY,
+                      );
                     },
                     // Event lainnya di sini
                     onLoadStop: (controller, url) async {
@@ -205,104 +229,7 @@ class _webawaksigapState extends State<webawaksigap> {
                 ],
               ),
             ),
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                Tooltip(
-                  message: 'Kembali Ke Menu',
-                  child: ElevatedButton(
-                    onPressed: () {
-                      Navigator.of(context).pop();
-                    },
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: const Color.fromARGB(255, 6, 97, 94),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(5),
-                      ),
-                      elevation: 2,
-                    ),
-                    child: Column(
-                      children: [
-                        Icon(Icons.home, color: Colors.white),
-                        Text(
-                          'Kembali Ke Menu',
-                          style: TextStyle(
-                            fontSize: fontSize,
-                            color: Colors.white,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-                SizedBox(width: screenWidth * 0.01),
-                Tooltip(
-                  message: 'Muat Ulang',
-                  child: ElevatedButton(
-                    onPressed: () {
-                      if (_webViewController != null) {
-                        _webViewController?.reload();
-                      }
-                    },
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: const Color.fromARGB(255, 6, 97, 94),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(5),
-                      ),
-                      elevation: 2,
-                    ),
-                    child: Column(
-                      children: [
-                        Icon(Icons.refresh, color: Colors.white),
-                        Text(
-                          'Muat Ulang',
-                          style: TextStyle(
-                            fontSize: fontSize,
-                            color: Colors.white,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-                SizedBox(width: screenWidth * 0.01),
-                Tooltip(
-                  message: 'Sebelumnya',
-                  child: ElevatedButton(
-                    onPressed: () async {
-                      if (_webViewController != null) {
-                        bool canGoBack = await _webViewController!.canGoBack();
-                        if (canGoBack) {
-                          _webViewController?.goBack();
-                        } else {
-                          Navigator.of(context).pop();
-                        }
-                      }
-                    },
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: const Color.fromARGB(255, 6, 97, 94),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(5),
-                      ),
-                      elevation: 2,
-                    ),
-                    child: Column(
-                      children: [
-                        Icon(Icons.arrow_back, color: Colors.white),
-                        Text(
-                          'Sebelumnya',
-                          style: TextStyle(
-                            fontSize: fontSize,
-                            color: Colors.white,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ],
-            ),
+            const SizedBox(height: 8),
           ],
         ),
       ),

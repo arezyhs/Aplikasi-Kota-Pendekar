@@ -23,62 +23,56 @@
 //   }
 
 //   @override
-//   void dispose() {
-//     super.dispose();
-//   }
-
-//   Future<void> requestPermissions() async {
-//     // Meminta izin di sini
-//     Map<Permission, PermissionStatus> statuses = await [
-//       Permission.camera,
-//       Permission.storage,
-//       Permission.photos,
-//       Permission.mediaLibrary,
-//       Permission.accessMediaLocation,
-//     ].request();
-
-//     // Cek apakah izin diberikan atau tidak
-//     if (statuses[Permission.camera]?.isGranted == false) {
-//       print('Permission to access camera is denied');
-//     }
-//     if (statuses[Permission.storage]?.isGranted == false) {
-//       print('Permission to access storage is denied');
-//     }
-//     if (statuses[Permission.photos]?.isGranted == false) {
-//       print('Permission to access photos is denied');
-//     }
-//     if (statuses[Permission.mediaLibrary]?.isGranted == false) {
-//       print('Permission to access media library is denied');
-//     }
-//     if (statuses[Permission.accessMediaLocation]?.isGranted == false) {
-//       print('Permission to access media location is denied');
-//     }
-//   }
-
-//   @override
-//   Widget build(BuildContext context) {
-//     final screenWidth = MediaQuery.of(context).size.width;
-//     final screenHeight = MediaQuery.of(context).size.height;
-//     double fontSize = screenWidth * 0.034;
-//     return Scaffold(
-//       backgroundColor: Colors.white,
-//       body: SafeArea(
-//         child: Column(
-//           children: [
-//             SizedBox(height: screenHeight * 0.01),
-//             Expanded(
-//               child: Stack(
-//                 children: [
-//                   InAppWebView(
-//                     initialUrlRequest: URLRequest(url: Uri.parse(url)),
-//                     initialOptions: InAppWebViewGroupOptions(
-//                       crossPlatform: InAppWebViewOptions(
-//                         clearCache: false,
-//                         cacheEnabled: true,
-//                         transparentBackground: true,
-//                         supportZoom: true,
-//                         useOnDownloadStart: true,
-//                         mediaPlaybackRequiresUserGesture: false,
+									// InAppWebView(
+									// 	initialUrlRequest: URLRequest(url: WebUri(url)),
+									// 	initialSettings: InAppWebViewSettings(
+									// 		clearCache: false,
+									// 		cacheEnabled: true,
+									// 		transparentBackground: true,
+									// 		supportZoom: true,
+									// 		useOnDownloadStart: true,
+									// 		mediaPlaybackRequiresUserGesture: false,
+									// 		allowFileAccessFromFileURLs: true,
+									// 		allowUniversalAccessFromFileURLs: true,
+									// 		javaScriptCanOpenWindowsAutomatically: true,
+									// 		javaScriptEnabled: true,
+									// 	),
+									// 	onWebViewCreated: (controller) {
+									// 		_webViewController = controller;
+									// 	},
+									// 	onPermissionRequest: (InAppWebViewController controller,
+									// 			PermissionRequest request) async {
+									// 		final granted = await showDialog<bool>(
+									// 			context: context,
+									// 			builder: (BuildContext context) => AlertDialog(
+									// 				title: Text("Permintaan Izin"),
+									// 				content: Text(
+									// 					"Ijinkan aplikasi mengakses foto dan media?"),
+									// 				actions: <Widget>[
+									// 					TextButton(
+									// 						onPressed: () {
+									// 						Navigator.of(context).pop(true);
+									// 					},
+									// 						child: Text("Izinkan Akses"),
+									// 					),
+									// 					TextButton(
+									// 						onPressed: () {
+									// 						Navigator.of(context).pop(false);
+									// 					},
+									// 						child: Text("Tolak Akses"),
+									// 					),
+									// 				],
+									// 			),
+									// 		);
+									// 
+									// 		final allow = granted ?? false;
+									// 		return PermissionResponse(
+									// 			resources: request.resources,
+									// 			action: allow
+									// 				? PermissionResponseAction.GRANT
+									// 				: PermissionResponseAction.DENY,
+									// 		);
+									// 	},
 //                         allowFileAccessFromFileURLs: true,
 //                         allowUniversalAccessFromFileURLs: true,
 //                         javaScriptCanOpenWindowsAutomatically: true,

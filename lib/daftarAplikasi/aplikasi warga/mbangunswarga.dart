@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_const_constructors
+// ignore_for_file: prefer_const_constructors, use_build_context_synchronously
 
 import 'package:flutter/material.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
@@ -77,32 +77,24 @@ class _WebMcmState extends State<WebMcm> {
                 children: [
                   InAppWebView(
                     initialUrlRequest: URLRequest(url: WebUri(url)),
-                    initialOptions: InAppWebViewGroupOptions(
-                      crossPlatform: InAppWebViewOptions(
-                        clearCache: false,
-                        cacheEnabled: true,
-                        transparentBackground: true,
-                        supportZoom: true,
-                        useOnDownloadStart: true,
-                        mediaPlaybackRequiresUserGesture: false,
-                        allowFileAccessFromFileURLs: true,
-                        allowUniversalAccessFromFileURLs: true,
-                        javaScriptCanOpenWindowsAutomatically: true,
-                        javaScriptEnabled: true,
-                      ),
-                      android: AndroidInAppWebViewOptions(
-                        useHybridComposition: true,
-                        allowContentAccess: true,
-                        allowFileAccess: true,
-                      ),
+                    initialSettings: InAppWebViewSettings(
+                      clearCache: false,
+                      cacheEnabled: true,
+                      transparentBackground: true,
+                      supportZoom: true,
+                      useOnDownloadStart: true,
+                      mediaPlaybackRequiresUserGesture: false,
+                      allowFileAccessFromFileURLs: true,
+                      allowUniversalAccessFromFileURLs: true,
+                      javaScriptCanOpenWindowsAutomatically: true,
+                      javaScriptEnabled: true,
                     ),
                     onWebViewCreated: (controller) {
                       _webViewController = controller;
                     },
-                    androidOnPermissionRequest:
-                        (InAppWebViewController controller, String origin,
-                            List<String> resources) async {
-                      await showDialog(
+                    onPermissionRequest: (InAppWebViewController controller,
+                        PermissionRequest request) async {
+                      final granted = await showDialog<bool>(
                         context: context,
                         builder: (BuildContext context) => AlertDialog(
                           title: const Text("Permintaan Izin"),
@@ -111,15 +103,13 @@ class _WebMcmState extends State<WebMcm> {
                           actions: <Widget>[
                             TextButton(
                               onPressed: () {
-                                Navigator.of(context)
-                                    .pop(PermissionRequestResponseAction.GRANT);
+                                Navigator.of(context).pop(true);
                               },
                               child: const Text("Izinkan Akses"),
                             ),
                             TextButton(
                               onPressed: () {
-                                Navigator.of(context)
-                                    .pop(PermissionRequestResponseAction.DENY);
+                                Navigator.of(context).pop(false);
                               },
                               child: const Text("Tolak Akses"),
                             ),
@@ -127,9 +117,18 @@ class _WebMcmState extends State<WebMcm> {
                         ),
                       );
 
-                      return PermissionRequestResponse(
-                          resources: resources,
-                          action: PermissionRequestResponseAction.GRANT);
+                      if (!mounted) {
+                        return PermissionResponse(
+                          resources: request.resources,
+                          action: PermissionResponseAction.DENY,
+                        );
+                      }
+
+                      return PermissionResponse(
+                          resources: request.resources,
+                          action: granted == true
+                              ? PermissionResponseAction.GRANT
+                              : PermissionResponseAction.DENY);
                     },
                     onLoadStop: (controller, url) async {
                       setState(() {

@@ -32,6 +32,8 @@ import 'package:siri_wave/siri_wave.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class Categories extends StatefulWidget {
+  const Categories({Key? key}) : super(key: key);
+
   @override
   _CategoriesState createState() => _CategoriesState();
 }
@@ -43,7 +45,7 @@ class _CategoriesState extends State<Categories> with TickerProviderStateMixin {
   initState() {
     super.initState();
     controller = BottomSheet.createAnimationController(this);
-    controller.duration = Duration(milliseconds: 500);
+    controller.duration = const Duration(milliseconds: 500);
   }
 
   @override
@@ -64,7 +66,7 @@ class _CategoriesState extends State<Categories> with TickerProviderStateMixin {
       {
         "icon": "assets/images/imgicon/manekin.png",
         "text": "MANEKIN",
-        "page": webmanekin(),
+        "page": WebManekin(),
       },
       {
         "icon": "assets/images/imgicon/pecel.png",
@@ -87,12 +89,14 @@ class _CategoriesState extends State<Categories> with TickerProviderStateMixin {
     Future<void> launchPlayStore(String appId) async {
       final String playStoreUrl =
           'https://play.google.com/store/apps/details?id=$appId';
-      await launch(playStoreUrl);
+      final Uri playStoreUri = Uri.parse(playStoreUrl);
+      await launchUrl(playStoreUri, mode: LaunchMode.externalApplication);
     }
 
     void openApp(String appId, String uriScheme) async {
-      if (await canLaunch(uriScheme)) {
-        await launch(uriScheme);
+      final Uri uri = Uri.parse(uriScheme);
+      if (await canLaunchUrl(uri)) {
+        await launchUrl(uri, mode: LaunchMode.externalApplication);
       } else {
         await launchPlayStore(appId);
       }

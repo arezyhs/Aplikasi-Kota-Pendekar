@@ -2,7 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:pendekar/constants/constant.dart';
-import 'package:pendekar/daftarAplikasi/aplikasi%20ASN/sipdok.dart';
+// import 'package:pendekar/daftarAplikasi/aplikasi%20ASN/sipdok.dart';
 import 'package:pendekar/daftarAplikasi/aplikasi%20warga/antrianPuskes.dart';
 import 'package:pendekar/daftarAplikasi/aplikasi%20warga/antrianRS.dart';
 import 'package:pendekar/homepage/size_config.dart';
@@ -47,7 +47,7 @@ class _LayananKesehatanState extends State<LayananKesehatan> {
         child: ListView(
           children: <Widget>[
             _tittlelayanankesehatan(),
-            SizedBox(height: 20.0),
+            const SizedBox(height: 20.0),
             TextField(
               decoration: InputDecoration(
                 labelText: 'Cari Aplikasi',
@@ -59,7 +59,7 @@ class _LayananKesehatanState extends State<LayananKesehatan> {
                 });
               },
             ),
-            SizedBox(height: 20.0),
+            const SizedBox(height: 20.0),
             _applayanankesehatan(context),
           ],
         ),
@@ -67,7 +67,6 @@ class _LayananKesehatanState extends State<LayananKesehatan> {
     );
   }
 
- 
   Widget _tittlelayanankesehatan() {
     final screenWidth = MediaQuery.of(context).size.width;
     double fontSize = screenWidth * 0.05;
@@ -107,24 +106,26 @@ class _LayananKesehatanState extends State<LayananKesehatan> {
       {
         "icon": "assets/images/imgicon/rumahsakit.png",
         "text": "ANTRIAN RUMAH SAKIT",
-        "page": webantrianrs()
+        "page": WebAntrianRs()
       },
       {
         "icon": "assets/images/imgicon/puskesmas.png",
         "text": "ANTRIAN PUSKESMAS",
-        "page": webantrianpuskes()
+        "page": WebAntrianPuskes()
       },
     ];
 
     Future<void> launchPlayStore(String appId) async {
       String playStoreUrl =
           'https://play.google.com/store/apps/details?id=$appId';
-      await launch(playStoreUrl);
+      final Uri playStoreUri = Uri.parse(playStoreUrl);
+      await launchUrl(playStoreUri, mode: LaunchMode.externalApplication);
     }
 
     void openApp(String appId, String uriScheme) async {
-      if (await canLaunch(uriScheme)) {
-        await launch(uriScheme);
+      final Uri uri = Uri.parse(uriScheme);
+      if (await canLaunchUrl(uri)) {
+        await launchUrl(uri, mode: LaunchMode.externalApplication);
       } else {
         await launchPlayStore(appId);
       }
@@ -168,6 +169,7 @@ class _LayananKesehatanState extends State<LayananKesehatan> {
     );
   }
 }
+
 class _berandaCard extends StatelessWidget {
   const _berandaCard({
     Key? key,
@@ -197,13 +199,13 @@ class _berandaCard extends StatelessWidget {
                 borderRadius: BorderRadius.circular(20), // Sudut melengkung
               ),
               elevation: 5, // Bayangan untuk efek 3D
-              shadowColor: Colors.black.withOpacity(1), // Warna bayangan
+              shadowColor: Colors.black, // Warna bayangan
               child: Container(
                 padding: EdgeInsets.all(getProportionateScreenWidth(5)),
                 height: screenHeight * 0.08,
                 width: screenWidth * 0.20,
                 decoration: BoxDecoration(
-                  color: hThirdColor.withOpacity(0.5),
+                  color: hThirdColor.withAlpha(128),
                   borderRadius: BorderRadius.circular(20),
                 ),
                 child: Center(
@@ -215,7 +217,7 @@ class _berandaCard extends StatelessWidget {
                 ),
               ),
             ),
-            SizedBox(height: 5),
+            const SizedBox(height: 5),
             Expanded(
               child: Text(
                 text,

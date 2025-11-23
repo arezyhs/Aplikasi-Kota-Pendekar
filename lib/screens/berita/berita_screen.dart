@@ -39,7 +39,7 @@ class _BeritaPageState extends State<BeritaPage> {
           fetchedNews.addAll(newsItems);
         }
       } catch (e) {
-        print('Error fetching news from $url: $e');
+        debugPrint('Error fetching news from $url: $e');
       }
     }
 
@@ -130,6 +130,7 @@ class _BeritaPageState extends State<BeritaPage> {
                   trailing: IconButton(
                     icon: const Icon(Icons.open_in_new),
                     onPressed: () async {
+                      final messenger = ScaffoldMessenger.of(context);
                       final url = news['newsUrl'];
                       if (url != null &&
                           Uri.tryParse(url)?.isAbsolute == true) {
@@ -138,19 +139,20 @@ class _BeritaPageState extends State<BeritaPage> {
                           await launchUrl(uri,
                               mode: LaunchMode.externalApplication);
                         } else {
-                          ScaffoldMessenger.of(context).showSnackBar(
+                          messenger.showSnackBar(
                             const SnackBar(
                                 content: Text('Could not launch the URL.')),
                           );
                         }
                       } else {
-                        ScaffoldMessenger.of(context).showSnackBar(
+                        messenger.showSnackBar(
                           const SnackBar(content: Text('Invalid URL.')),
                         );
                       }
                     },
                   ),
                   onTap: () async {
+                    final messenger = ScaffoldMessenger.of(context);
                     final url = news['newsUrl'];
                     if (url != null && Uri.tryParse(url)?.isAbsolute == true) {
                       final uri = Uri.parse(url);
@@ -158,13 +160,13 @@ class _BeritaPageState extends State<BeritaPage> {
                         await launchUrl(uri,
                             mode: LaunchMode.externalApplication);
                       } else {
-                        ScaffoldMessenger.of(context).showSnackBar(
+                        messenger.showSnackBar(
                           const SnackBar(
                               content: Text('Could not launch the URL.')),
                         );
                       }
                     } else {
-                      ScaffoldMessenger.of(context).showSnackBar(
+                      messenger.showSnackBar(
                         const SnackBar(content: Text('Invalid URL.')),
                       );
                     }

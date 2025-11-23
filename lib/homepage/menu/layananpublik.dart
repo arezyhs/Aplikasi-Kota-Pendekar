@@ -41,11 +41,11 @@ class _LayananPublikState extends State<LayananPublik> {
             ],
           ),
         ),
-        padding: EdgeInsets.all(20.0),
+        padding: const EdgeInsets.all(20.0),
         child: ListView(
           children: <Widget>[
             _tittlelayananpengduan(),
-            SizedBox(height: 20.0),
+            const SizedBox(height: 20.0),
             TextField(
               decoration: InputDecoration(
                 labelText: 'Cari Aplikasi',
@@ -57,7 +57,7 @@ class _LayananPublikState extends State<LayananPublik> {
                 });
               },
             ),
-            SizedBox(height: 20.0),
+            const SizedBox(height: 20.0),
             _applayananpublik(context),
           ],
         ),
@@ -66,33 +66,6 @@ class _LayananPublikState extends State<LayananPublik> {
   }
 
   Widget _tittlelayananpengduan() {
-    final screenWidth = MediaQuery.of(context).size.width;
-    double fontSize = screenWidth * 0.05;
-    return Row(
-      children: <Widget>[
-        IconButton(
-          icon: Icon(Icons.api),
-          onPressed: () {
-            // Aksi ketika tombol "arrow_back" diklik
-          },
-        ),
-        Padding(
-          padding: EdgeInsets.only(top: 12.0, left: 4.0),
-        ),
-        Text(
-          "Layanan Publik",
-          textAlign: TextAlign.left,
-          style: TextStyle(
-            color: Color.fromARGB(255, 11, 11, 11),
-            fontSize: fontSize,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-      ],
-    );
-  }
-
-  Widget _tittlelayananpublik() {
     final screenWidth = MediaQuery.of(context).size.width;
     double fontSize = screenWidth * 0.05;
     return Row(
@@ -139,7 +112,7 @@ class _LayananPublikState extends State<LayananPublik> {
       {
         "icon": "assets/images/imgicon/esayur.png",
         "text": "ESAYUR",
-        "page": webesayur(),
+        "page": WebEsayur(),
       },
       // {
       //   "icon": "assets/images/imgicon/sicaker.png",
@@ -151,12 +124,14 @@ class _LayananPublikState extends State<LayananPublik> {
     Future<void> launchPlayStore(String appId) async {
       String playStoreUrl =
           'https://play.google.com/store/apps/details?id=$appId';
-      await launch(playStoreUrl);
+      final Uri playStoreUri = Uri.parse(playStoreUrl);
+      await launchUrl(playStoreUri, mode: LaunchMode.externalApplication);
     }
 
     void openApp(String appId, String uriScheme) async {
-      if (await canLaunch(uriScheme)) {
-        await launch(uriScheme);
+      final Uri uri = Uri.parse(uriScheme);
+      if (await canLaunchUrl(uri)) {
+        await launchUrl(uri, mode: LaunchMode.externalApplication);
       } else {
         await launchPlayStore(appId);
       }
@@ -230,13 +205,13 @@ class _berandaCard extends StatelessWidget {
                 borderRadius: BorderRadius.circular(20), // Sudut melengkung
               ),
               elevation: 5, // Bayangan untuk efek 3D
-              shadowColor: Colors.black.withOpacity(1), // Warna bayangan
+              shadowColor: Colors.black, // Warna bayangan
               child: Container(
                 padding: EdgeInsets.all(getProportionateScreenWidth(5)),
                 height: screenHeight * 0.08,
                 width: screenWidth * 0.20,
                 decoration: BoxDecoration(
-                  color: hThirdColor.withOpacity(0.5),
+                  color: hThirdColor.withAlpha(128),
                   borderRadius: BorderRadius.circular(20),
                 ),
                 child: Center(
@@ -248,7 +223,7 @@ class _berandaCard extends StatelessWidget {
                 ),
               ),
             ),
-            SizedBox(height: 5),
+            const SizedBox(height: 5),
             Expanded(
               child: Text(
                 text,

@@ -170,62 +170,54 @@
 //                       ),
 //                     ),
 //                 ],
-//               ),
-//             ),
-//             Row(
-//               crossAxisAlignment: CrossAxisAlignment.center,
-//               mainAxisAlignment: MainAxisAlignment.spaceAround,
-//               children: [
-//                 Tooltip(
-//                   message: 'Kembali Ke Menu',
-//                   child: ElevatedButton(
-//                     onPressed: () {
-//                       Navigator.of(context).pop();
-//                     },
-//                     style: ElevatedButton.styleFrom(
-//                       backgroundColor: const Color.fromARGB(255, 6, 97, 94),
-//                       shape: RoundedRectangleBorder(
-//                         borderRadius: BorderRadius.circular(5),
-//                       ),
-//                       elevation: 2,
-//                     ),
-//                     child: Column(
-//                       children: [
-//                         Icon(Icons.home, color: Colors.white),
-//                         Text(
-//                           'Kembali Ke Menu',
-//                           style: TextStyle(
-//                             fontSize: fontSize,
-//                             color: Colors.white,
-//                           ),
-//                         ),
-//                       ],
-//                     ),
-//                   ),
-//                 ),
-//                 SizedBox(width: screenWidth * 0.01),
-//                 Tooltip(
-//                   message: 'Muat Ulang',
-//                   child: ElevatedButton(
-//                     onPressed: () {
-//                       if (_webViewController != null) {
-//                         _webViewController?.reload();
-//                       }
-//                     },
-//                     style: ElevatedButton.styleFrom(
-//                       backgroundColor: const Color.fromARGB(255, 6, 97, 94),
-//                       shape: RoundedRectangleBorder(
-//                         borderRadius: BorderRadius.circular(5),
-//                       ),
-//                       elevation: 2,
-//                     ),
-//                     child: Column(
-//                       children: [
-//                         Icon(Icons.refresh, color: Colors.white),
-//                         Text(
-//                           'Muat Ulang',
-//                           style: TextStyle(
-//                             fontSize: fontSize,
+									// InAppWebView(
+									// 	initialUrlRequest: URLRequest(url: WebUri(url)),
+									// 	initialSettings: InAppWebViewSettings(
+									// 		clearCache: false,
+									// 		cacheEnabled: true,
+									// 		transparentBackground: true,
+									// 		supportZoom: true,
+									// 		useOnDownloadStart: true,
+									// 		mediaPlaybackRequiresUserGesture: false,
+									// 		allowFileAccessFromFileURLs: true,
+									// 		allowUniversalAccessFromFileURLs: true,
+									// 		javaScriptCanOpenWindowsAutomatically: true,
+									// 		javaScriptEnabled: true,
+									// 	),
+									// 	onWebViewCreated: (controller) {
+									// 		_webViewController = controller;
+									// 	},
+									// 	onPermissionRequest: (InAppWebViewController controller,
+									// 			PermissionRequest request) async {
+									// 		final granted = await showDialog<bool>(
+									// 			context: context,
+									// 			builder: (BuildContext context) => AlertDialog(
+									// 				title: Text("Permintaan Izin"),
+									// 				content: Text(
+									// 					"Ijinkan aplikasi mengakses foto dan media?"),
+									// 				actions: <Widget>[
+									// 					TextButton(
+									// 						onPressed: () {
+									// 							Navigator.of(context).pop(true);
+									// 						},
+									// 						child: Text("Izinkan Akses"),
+									// 					),
+									// 					TextButton(
+									// 						onPressed: () {
+									// 							Navigator.of(context).pop(false);
+									// 						},
+									// 						child: Text("Tolak Akses"),
+									// 					),
+									// 				],
+									// 			),
+									// 			);
+									// 
+									// 		return PermissionResponse(
+									// 			resources: request.resources,
+									// 			action: granted == true
+									// 				? PermissionResponseAction.GRANT
+									// 				: PermissionResponseAction.DENY);
+									// 	},
 //                             color: Colors.white,
 //                           ),
 //                         ),

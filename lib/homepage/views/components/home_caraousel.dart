@@ -11,22 +11,23 @@ class HomeCaraousel extends StatefulWidget {
 class _HomeCraouselState extends State<HomeCaraousel> {
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: CarouselSlider(
-        options: CarouselOptions(
-          scrollPhysics: BouncingScrollPhysics(),
-          pageSnapping: true,
-          autoPlayInterval: const Duration(seconds: 5),
-          // disable autoPlay to avoid timer callbacks after widget disposal
-          autoPlay: false,
-          enlargeCenterPage: true,
-          viewportFraction: 1,
-          aspectRatio: 16 / 9,
-          autoPlayCurve: Curves.elasticOut,
-          autoPlayAnimationDuration: const Duration(seconds: 1),
-        ),
-        items: [], // Removed news items
+    final items = <Widget>[];
+    if (items.isEmpty) return const SizedBox.shrink();
+
+    return CarouselSlider(
+      options: CarouselOptions(
+        scrollPhysics: const BouncingScrollPhysics(),
+        pageSnapping: true,
+        autoPlayInterval: const Duration(seconds: 5),
+        // disable autoPlay to avoid timer callbacks after widget disposal
+        autoPlay: false,
+        enlargeCenterPage: true,
+        viewportFraction: 1,
+        aspectRatio: 16 / 9,
+        autoPlayCurve: Curves.elasticOut,
+        autoPlayAnimationDuration: const Duration(seconds: 1),
       ),
+      items: items,
     );
   }
 }

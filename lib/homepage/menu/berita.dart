@@ -48,7 +48,7 @@ class _LayananBeritaState extends State<LayananBerita> {
         child: ListView(
           children: <Widget>[
             _tittleLayananBerita(),
-            SizedBox(height: 20.0),
+            const SizedBox(height: 20.0),
             TextField(
               decoration: InputDecoration(
                 labelText: 'Cari Aplikasi',
@@ -60,7 +60,7 @@ class _LayananBeritaState extends State<LayananBerita> {
                 });
               },
             ),
-            SizedBox(height: 20.0),
+            const SizedBox(height: 20.0),
             _appLayananBerita(context),
           ],
         ),
@@ -100,29 +100,31 @@ class _LayananBeritaState extends State<LayananBerita> {
       {
         "icon": "assets/images/imgicon/ewaris.png",
         "text": "Madiuntoday",
-        "page": webmadiuntoday(),
+        "page": WebMadiuntoday(),
       },
       {
         "icon": "assets/images/imgicon/peceltumpang.png",
         "text": "Analisa Berita",
-        "page": webanalisaberita(),
+        "page": WebAnalisaberita(),
       },
       {
         "icon": "assets/images/imgicon/sipdok.png",
         "text": "SMARTCITY",
-        "page": websmartcity(),
+        "page": WebSmartcity(),
       },
     ];
 
     Future<void> launchPlayStore(String appId) async {
       String playStoreUrl =
           'https://play.google.com/store/apps/details?id=$appId';
-      await launch(playStoreUrl);
+      final Uri playStoreUri = Uri.parse(playStoreUrl);
+      await launchUrl(playStoreUri, mode: LaunchMode.externalApplication);
     }
 
     void openApp(String appId, String uriScheme) async {
-      if (await canLaunch(uriScheme)) {
-        await launch(uriScheme);
+      final Uri uri = Uri.parse(uriScheme);
+      if (await canLaunchUrl(uri)) {
+        await launchUrl(uri, mode: LaunchMode.externalApplication);
       } else {
         await launchPlayStore(appId);
       }
@@ -197,13 +199,13 @@ class _berandaCard extends StatelessWidget {
                 borderRadius: BorderRadius.circular(20), // Sudut melengkung
               ),
               elevation: 5, // Bayangan untuk efek 3D
-              shadowColor: Colors.black.withOpacity(1), // Warna bayangan
+              shadowColor: Colors.black, // Warna bayangan
               child: Container(
                 padding: EdgeInsets.all(getProportionateScreenWidth(10)),
                 height: screenHeight * 0.08,
                 width: screenWidth * 0.22,
                 decoration: BoxDecoration(
-                  color: hThirdColor.withOpacity(0.5),
+                  color: hThirdColor.withAlpha(128),
                   borderRadius: BorderRadius.circular(20),
                 ),
                 child: Center(
@@ -215,7 +217,7 @@ class _berandaCard extends StatelessWidget {
                 ),
               ),
             ),
-            SizedBox(height: 5),
+            const SizedBox(height: 5),
             Expanded(
               child: Text(
                 text,

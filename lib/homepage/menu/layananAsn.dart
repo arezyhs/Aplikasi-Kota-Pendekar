@@ -6,23 +6,23 @@ import 'package:pendekar/daftarAplikasi/aplikasi%20ASN/carehub.dart';
 import 'package:pendekar/daftarAplikasi/aplikasi%20ASN/digiform.dart';
 import 'package:pendekar/daftarAplikasi/aplikasi%20ASN/dinsosapp.dart';
 import 'package:pendekar/daftarAplikasi/aplikasi%20ASN/emonev.dart';
-import 'package:pendekar/daftarAplikasi/aplikasi%20ASN/esakip.dart';
-import 'package:pendekar/daftarAplikasi/aplikasi%20ASN/esurat.dart';
-import 'package:pendekar/daftarAplikasi/aplikasi%20ASN/exec.dart';
+// import 'package:pendekar/daftarAplikasi/aplikasi%20ASN/esakip.dart';
+// import 'package:pendekar/daftarAplikasi/aplikasi%20ASN/esurat.dart';
+// import 'package:pendekar/daftarAplikasi/aplikasi%20ASN/exec.dart';
 import 'package:pendekar/daftarAplikasi/aplikasi%20ASN/jdih.dart';
 import 'package:pendekar/daftarAplikasi/aplikasi%20ASN/lppd.dart';
 import 'package:pendekar/daftarAplikasi/aplikasi%20ASN/manekin.dart';
-import 'package:pendekar/daftarAplikasi/aplikasi%20ASN/manpro.dart';
-import 'package:pendekar/daftarAplikasi/aplikasi%20ASN/puskesos.dart';
+// import 'package:pendekar/daftarAplikasi/aplikasi%20ASN/manpro.dart';
+// import 'package:pendekar/daftarAplikasi/aplikasi%20ASN/puskesos.dart';
 import 'package:pendekar/daftarAplikasi/aplikasi%20ASN/retribusi.dart';
 import 'package:pendekar/daftarAplikasi/aplikasi%20ASN/ruangrapat.dart';
 import 'package:pendekar/daftarAplikasi/aplikasi%20ASN/silandep.dart';
 import 'package:pendekar/daftarAplikasi/aplikasi%20ASN/simandor.dart';
 import 'package:pendekar/daftarAplikasi/aplikasi%20ASN/simonev.dart';
-import 'package:pendekar/daftarAplikasi/aplikasi%20ASN/simpeg.dart';
+// import 'package:pendekar/daftarAplikasi/aplikasi%20ASN/simpeg.dart';
 import 'package:pendekar/daftarAplikasi/aplikasi%20ASN/siopa.dart';
 import 'package:pendekar/daftarAplikasi/aplikasi%20ASN/sitebas.dart';
-import 'package:pendekar/daftarAplikasi/aplikasi%20ASN/skp.dart';
+// import 'package:pendekar/daftarAplikasi/aplikasi%20ASN/skp.dart';
 import 'package:pendekar/daftarAplikasi/aplikasi%20warga/matawarga.dart';
 import 'package:pendekar/homepage/size_config.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -68,7 +68,7 @@ class _LayananAsnState extends State<LayananAsn> {
         child: ListView(
           children: <Widget>[
             _tittlelayananasn(),
-            SizedBox(height: 20.0),
+            const SizedBox(height: 20.0),
             TextField(
               decoration: InputDecoration(
                 labelText: 'Cari Aplikasi',
@@ -80,7 +80,7 @@ class _LayananAsnState extends State<LayananAsn> {
                 });
               },
             ),
-            SizedBox(height: 20.0),
+            const SizedBox(height: 20.0),
             _applayananasn(context),
           ],
         ),
@@ -132,23 +132,23 @@ class _LayananAsnState extends State<LayananAsn> {
       {
         "icon": "assets/images/imgicon/buktidukungspbe.png",
         "text": "BUKTI DUKUNG SPBE",
-        "page": webspbe(),
+        "page": WebSpbe(),
       },
       {
         "icon": "assets/images/imgicon/bakul.png",
         "text": "J.D.I.H",
-        "page": webjdih(),
+        "page": WebJdih(),
       },
       {
         "icon": "assets/images/imgicon/digiform.png",
         "text": "DIGIFORM DUKCAPIL",
-        "page": webdigiform(),
+        "page": WebDigiform(),
       },
 
       {
         "icon": "assets/images/imgicon/emonev.png",
         "text": "EMONEV",
-        "page": webemonev(),
+        "page": WebEmonev(),
       },
       // {
       //   "icon": "assets/images/imgicon/esurat.png",
@@ -158,7 +158,7 @@ class _LayananAsnState extends State<LayananAsn> {
       {
         "icon": "assets/images/imgicon/manekin.png",
         "text": "MANEKIN",
-        "page": webmanekin(),
+        "page": WebManekin(),
       },
       // {
       //   "icon": "assets/images/imgicon/manpro.png",
@@ -179,13 +179,13 @@ class _LayananAsnState extends State<LayananAsn> {
       {
         "icon": "assets/images/imgicon/carehub.png",
         "text": "CAREHUB",
-        "page": webcarehub(),
+        "page": WebCarehub(),
       },
 
       {
         "icon": "assets/images/imgicon/dinsos.png",
         "text": "DINSOS APP",
-        "page": webdinsosapp(),
+        "page": WebDinsosapp(),
       },
       {
         "icon": "assets/images/imgicon/proumkm.png",
@@ -209,13 +209,13 @@ class _LayananAsnState extends State<LayananAsn> {
       {
         "icon": "assets/images/imgicon/lppd.png",
         "text": "LPPD",
-        "page": weblppd(),
+        "page": WebLppd(),
       },
 
       {
         "icon": "assets/images/imgicon/matawarga.png",
         "text": "MATAWARGA",
-        "page": webmatawarga(),
+        "page": WebMatawarga(),
       },
 
       // {
@@ -226,53 +226,54 @@ class _LayananAsnState extends State<LayananAsn> {
       {
         "icon": "assets/images/imgicon/retribusi.png",
         "text": "RETRIBUSI",
-        "page": webretribusi(),
+        "page": WebRetribusi(),
       },
       {
         "icon": "assets/images/imgicon/ruangrapat.png",
         "text": "RUANG RAPAT",
-        "page": webruangrapat(),
+        "page": WebRuangrapat(),
       },
 
       {
         "icon": "assets/images/imgicon/simandor.png",
         "text": "SIMANDOR",
-        "page": websimandor(),
+        "page": WebSimandor(),
       },
       {
         "icon": "assets/images/imgicon/simonev.png",
         "text": "SIMONEV",
-        "page": websimonev(),
+        "page": WebSimonev(),
       },
       {
         "icon": "assets/images/imgicon/siopa.png",
         "text": "SIOPA",
-        "page": websiopa(),
+        "page": WebSiopa(),
       },
 
       {
         "icon": "assets/images/imgicon/silandep.png",
         "text": "SILANDEP",
-        "page": websilandep(),
+        "page": WebSilandep(),
       },
 
       {
         "icon": "assets/images/imgicon/sitebas.png",
         "text": "SITEBAS",
-        "page": websitebas(),
+        "page": WebSitebas(),
       },
-
     ];
 
     Future<void> launchPlayStore(String appId) async {
       String playStoreUrl =
           'https://play.google.com/store/apps/details?id=$appId';
-      await launch(playStoreUrl);
+      final Uri playStoreUri = Uri.parse(playStoreUrl);
+      await launchUrl(playStoreUri, mode: LaunchMode.externalApplication);
     }
 
     void openApp(String appId, String uriScheme) async {
-      if (await canLaunch(uriScheme)) {
-        await launch(uriScheme);
+      final Uri uri = Uri.parse(uriScheme);
+      if (await canLaunchUrl(uri)) {
+        await launchUrl(uri, mode: LaunchMode.externalApplication);
       } else {
         await launchPlayStore(appId);
       }
@@ -346,13 +347,13 @@ class _berandaCard extends StatelessWidget {
                 borderRadius: BorderRadius.circular(20), // Sudut melengkung
               ),
               elevation: 5, // Bayangan untuk efek 3D
-              shadowColor: Colors.black.withOpacity(1), // Warna bayangan
+              shadowColor: Colors.black, // Warna bayangan
               child: Container(
                 padding: EdgeInsets.all(getProportionateScreenWidth(5)),
                 height: screenHeight * 0.08,
                 width: screenWidth * 0.20,
                 decoration: BoxDecoration(
-                  color: hThirdColor.withOpacity(0.5),
+                  color: hThirdColor.withAlpha(128),
                   borderRadius: BorderRadius.circular(20),
                 ),
                 child: Center(
@@ -364,7 +365,7 @@ class _berandaCard extends StatelessWidget {
                 ),
               ),
             ),
-            SizedBox(height: 5),
+            const SizedBox(height: 5),
             Expanded(
               child: Text(
                 text,
