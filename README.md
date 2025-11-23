@@ -1,4 +1,4 @@
-**Aplikasi Kota Pendekar**
+# Aplikasi Kota Pendekar
 
 Ringkasan singkat aplikasi mobile Flutter Smart Governance "Aplikasi Pendekar Kota Madiun".
 
