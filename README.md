@@ -39,11 +39,10 @@ flutter analyze
 flutter clean
 ```
 
-**Perubahan penting & catatan developer**
-- News feed on Home (`NewsPreview`) sekarang menampilkan 3 item terbaru sebagai list (`ListTile`) — bukan lagi carousel. Ini mengurangi ruang kosong di bawah ketika melakukan scroll.
+**Perubahan penting**
+- News feed on Home (`NewsPreview`) menampilkan 3 berita terbaru sebagai list (`ListTile`)
 - Layanan utama (`_LayananUtama` in `home_screen.dart`) menampilkan tile bergaya card/InkWell, konsisten dengan `layanan_screen.dart`.
 - Beberapa pages/webviews telah dimodifikasi untuk menggunakan AppBar actions (reload + open in external browser) dan untuk menghindari penggunaan `BuildContext` setelah `await` dengan cara menangkap `ScaffoldMessenger.of(context)` lebih awal atau menggunakan global navigator key pattern.
-- Empty/unused carousels now return `SizedBox.shrink()` to avoid large empty slivers.
 
 **Lint & style**
 - Project masih memiliki sejumlah lints gaya (prefer_const_*, file_names) yang dapat diperbaiki bertahap. Saya merekomendasikan menjalankan `flutter analyze` lalu memperbaiki perubahan bergelombang (bulk small edits) untuk menghindari banyak edit-analyzing loops.
