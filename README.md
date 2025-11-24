@@ -6,6 +6,59 @@ Ringkasan singkat aplikasi mobile Flutter Smart Governance "Aplikasi Pendekar Ko
 
 **Tujuan**: Menyajikan layanan pemerintahan kota, daftar aplikasi, feed berita, dan fitur cepat (WhatsApp CTA, Radio). UI mobile-first untuk Android/iOS/web.
 
+## Struktur Repository
+
+```
+Aplikasi-Pendekar/
+├── analysis_options.yaml      # Konfigurasi Dart analyzer
+├── pubspec.yaml               # Dependencies dan metadata project
+├── pubspec.lock              # Lock file untuk reproducible builds
+├── README.md                 # Dokumentasi project
+├── assets/                   # Asset aplikasi
+│   ├── fonts/               # Font kustom (Muli)
+│   ├── icons/               # Icon aplikasi
+│   ├── images/              # Gambar dan ilustrasi
+│   │   ├── banner/          # Banner home screen
+│   │   ├── imgicon/         # Icon menu layanan
+│   │   └── jdih/            # Asset JDIH
+│   └── imgOpendata/         # Asset Open Data
+├── lib/                     # Source code Dart/Flutter
+│   ├── main.dart           # Entry point aplikasi
+│   ├── routes.dart         # Definisi routing
+│   ├── api/                # API services
+│   │   ├── apiedu.dart     # API Education
+│   │   ├── apimarketplace.dart  # API Marketplace
+│   │   └── apiproumkm.dart # API Pro UMKM
+│   ├── constants/          # Konstanta aplikasi
+│   │   ├── constant.dart   # Konstanta umum
+│   │   ├── navigation.dart # Navigation constants
+│   │   └── permission.dart # Permission constants
+│   ├── daftarAplikasi/     # Daftar aplikasi
+│   │   ├── aplikasi ASN/   # Aplikasi untuk ASN
+│   │   └── aplikasi warga/ # Aplikasi untuk warga
+│   ├── homepage/           # Komponen homepage
+│   │   ├── size_config.dart
+│   │   ├── menu/           # Menu components
+│   │   └── views/          # UI components
+│   ├── screens/            # Screen widgets
+│   │   ├── berita/         # Screen berita
+│   │   ├── home/           # Home screen
+│   │   └── layanan/        # Screen layanan
+│   └── utils/              # Utilities
+│       ├── feature_registry.dart
+│       ├── web_container_page.dart
+│       ├── helpers/        # Helper functions
+│       └── services/       # Services layer
+├── android/                # Android platform code
+├── ios/                   # iOS platform code
+├── web/                   # Web platform code
+├── windows/               # Windows platform code
+├── linux/                # Linux platform code
+├── macos/                # macOS platform code
+└── test/                  # Unit tests
+    └── widget_test.dart   # Widget testing
+```
+
 **Direktori penting**
 - **`lib/`**: kode sumber utama Flutter.
 - **`lib/screens/home/home_screen.dart`**: layar Home (berisi menu utama, berita ringkas, banner).
