@@ -37,8 +37,8 @@ android {
         multiDexEnabled = true
     }
 
-    if (!keystoreProperties.isEmpty) {
-        signingConfigs {
+    signingConfigs {
+        if (!keystoreProperties.isEmpty) {
             create("release") {
                 keyAlias = keystoreProperties["keyAlias"] as String?
                 keyPassword = keystoreProperties["keyPassword"] as String?
@@ -50,10 +50,11 @@ android {
 
     buildTypes {
         getByName("release") {
-            // Keep minify/shrink if needed; default off for template
+            // For testing - use debug signing to ensure APK is installable
+            signingConfig = signingConfigs.getByName("debug")
+            // Keep minify/shrink disabled for now
             // isMinifyEnabled = true
             // isShrinkResources = true
-            // signingConfig = signingConfigs.getByName("release")
             // proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), file("proguard-rules.pro"))
         }
     }
