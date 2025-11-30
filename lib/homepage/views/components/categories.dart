@@ -13,6 +13,7 @@ import 'package:just_audio/just_audio.dart';
 import 'package:marquee/marquee.dart';
 import 'package:pendekar/constants/constant.dart';
 import 'package:pendekar/daftarAplikasi/aplikasi%20ASN/manekin.dart';
+import 'package:pendekar/daftarAplikasi/aplikasi%20warga/mbangunswarga.dart';
 import 'package:pendekar/daftarAplikasi/aplikasi%20warga/awaksigap.dart';
 import 'package:pendekar/daftarAplikasi/aplikasi%20warga/madiuntoday.dart';
 import 'package:pendekar/daftarAplikasi/aplikasi%20warga/mbangunswarga.dart';
@@ -61,7 +62,7 @@ class _CategoriesState extends State<Categories> with TickerProviderStateMixin {
       {
         "icon": "assets/images/imgicon/mbangun.png",
         "text": "MBANGUN SWARGA",
-        "page": WebMcm(),
+        "page": WebMbangunswarga(),
       },
       {
         "icon": "assets/images/imgicon/manekin.png",

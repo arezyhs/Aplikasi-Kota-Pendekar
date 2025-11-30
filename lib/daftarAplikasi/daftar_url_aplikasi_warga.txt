@@ -1,0 +1,72 @@
+DAFTAR URL APLIKASI WARGA - KOTA PENDEKAR
+===========================================
+
+URL AKTIF:
+----------
+
+1. opendata.dart (7 URLs):
+   - https://opendata.madiunkota.go.id/
+   - https://opendata.madiunkota.go.id/dataset/list/1
+   - https://opendata.madiunkota.go.id/organization
+   - https://opendata.madiunkota.go.id/tag
+   - https://opendata.madiunkota.go.id/standar/data
+   - https://opendata.madiunkota.go.id/dokumen
+   - https://opendata.madiunkota.go.id/infografis
+
+2. antrianPuskes.dart:
+   - https://dinkes.madiunkota.go.id/web/
+
+3. antrianRS.dart:
+   - https://rsudkotamadiun.my.id/sogaten/
+
+4. awaksigap.dart:
+   - https://awaksigap.madiunkota.go.id/
+
+5. bakul.dart:
+   - https://bakul.madiunkota.go.id/
+
+6. Bookingprc.dart:
+   - https://bookingprc.madiunkota.go.id/
+
+7. esayur.dart:
+   - https://esayur.madiunkota.go.id/
+
+8. madiuntoday.dart:
+   - https://madiuntoday.id/
+
+9. matawarga.dart:
+   - https://matawarga.madiunkota.go.id/
+
+10. mbangunswarga.dart:
+    - https://mbangunswarga.madiunkota.go.id/login
+
+11. ppid.dart:
+    - https://ppid.madiunkota.go.id/
+
+12. sikepo.dart:
+    - https://sikepo.madiunkota.go.id/
+
+13. smartcity.dart:
+    - https://smartcity.madiunkota.go.id/
+
+
+URL YANG DI-COMMENT (TIDAK AKTIF):
+-----------------------------------
+
+1. edu.dart:
+   - https://edu.madiunkota.go.id/ (di-comment)
+
+2. peceltumpang.dart:
+   - https://peceltumpang.madiunkota.go.id/ (di-comment)
+
+3. sicaker.dart:
+   - https://sicaker.madiunkota.go.id/ (di-comment)
+
+
+FILE KOSONG (TIDAK ADA URL):
+-----------------------------
+- agendakota.dart
+- analisaberita.dart
+- navigations_control.dart
+- pasaremadiun.dart
+- wbs.dart

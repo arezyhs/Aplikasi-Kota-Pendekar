@@ -116,12 +116,12 @@ class _LayananInformasiState extends State<LayananInformasi> {
       {
         "icon": "assets/images/imgicon/madiuntoday.png",
         "text": "MADIUNTODAY",
-        "page": WebMadiuntoday(),
+        "page": WebMadiun(),
       },
       {
         "icon": "assets/images/imgicon/opendata.png",
         "text": "Open Data",
-        "page": OpenData(),
+        "page": WebOpendata(),
       },
       {
         "icon": "assets/images/imgicon/jdih.png",

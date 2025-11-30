@@ -1,0 +1,134 @@
+DAFTAR URL APLIKASI ASN - KOTA PENDEKAR
+=======================================
+
+URL AKTIF:
+----------
+
+1. absenrapat.dart:
+   - https://erapat.madiunkota.go.id/
+
+2. agendasurat.dart:
+   - https://undangan.madiunkota.go.id/
+
+3. analisaberita.dart:
+   - https://analisaberita.madiunkota.go.id/
+
+4. buktidukungspbe.dart:
+   - https://buktidukung.madiunkota.go.id/login
+
+5. carehub.dart:
+   - https://mobdin.madiunkota.go.id/login
+
+6. digiform.dart:
+   - https://digiform.madiunkota.go.id/login
+
+7. dinsosapp.dart:
+   - https://dinsosapp.madiunkota.go.id/
+
+8. emonev.dart:
+   - https://emonev.madiunkota.go.id/login
+
+9. esppd.dart:
+   - https://esppd.madiunkota.go.id/
+
+10. gedungdiklat.dart:
+    - https://gedungdiklat.madiunkota.go.id/login
+
+11. jdih.dart (6 URLs):
+    - https://jdih.madiunkota.go.id/
+    - https://jdih.madiunkota.go.id/profil
+    - https://jdih.madiunkota.go.id/berita
+    - https://jdih.madiunkota.go.id/produk/hukum
+    - https://jdih.madiunkota.go.id/propemperda
+    - https://jdih.madiunkota.go.id/bankumaskin
+
+12. lppd.dart:
+    - https://lppd.madiunkota.go.id/
+
+13. manekin.dart:
+    - https://manekin.madiunkota.go.id/
+
+14. ppkm.dart:
+    - https://ppkm.madiunkota.go.id/login
+
+15. proumkm.dart:
+    - https://proumkm.madiunkota.go.id/login
+
+16. retribusi.dart:
+    - https://retribusi.madiunkota.go.id/login
+
+17. ruangrapat.dart:
+    - https://ruangrapat.madiunkota.go.id/
+
+18. satudata.dart:
+    - https://satudata.madiunkota.go.id/
+
+19. sdm.dart:
+    - https://sdm.madiunkota.go.id/
+
+20. sicakep.dart:
+    - https://agenda.madiunkota.go.id/
+
+21. sikd.dart:
+    - https://sikd.madiunkota.go.id/
+
+22. silandep.dart:
+    - https://silandep.madiunkota.go.id/
+
+23. simandor.dart:
+    - https://simandor.madiunkota.go.id/
+
+24. simonev.dart:
+    - https://simonev.madiunkota.go.id/login
+
+25. siopa.dart:
+    - https://siopa.madiunkota.go.id/
+
+26. sitebas.dart:
+    - https://sitebas.madiunkota.go.id/
+
+27. wbs.dart:
+    - https://wbs.madiunkota.go.id/
+
+
+URL YANG DI-COMMENT (TIDAK AKTIF):
+-----------------------------------
+
+1. Beasiswamahasiswa.dart:
+   - https://beasiswa.madiunkota.go.id/ (di-comment)
+
+2. ekak.dart:
+   - https://ekak.madiunkota.go.id/ (di-comment)
+
+3. esakip.dart:
+   - https://esakip.madiunkota.go.id/login (di-comment)
+
+4. esurat.dart:
+   - https://esurat.madiunkota.go.id/ (di-comment)
+
+5. ewaris.dart:
+   - https://ewaris.madiunkota.go.id/ (di-comment)
+
+6. exec.dart:
+   - https://exec.madiunkota.go.id/login (di-comment)
+
+7. manpro.dart:
+   - https://manpro.madiunkota.go.id/login (di-comment)
+
+8. puskesos.dart:
+   - https://puskesos.madiunkota.go.id/login (di-comment)
+
+9. simpeg.dart:
+   - https://simpeg.madiunkota.go.id/ (di-comment)
+
+10. sipdok.dart:
+    - https://sipdok.madiunkota.go.id/ (di-comment)
+
+11. skp.dart:
+    - https://skp.madiunkota.go.id/login (di-comment)
+
+
+FILE KOSONG (TIDAK ADA URL):
+-----------------------------
+- webruangrapat.dart
+- websilandep.dart

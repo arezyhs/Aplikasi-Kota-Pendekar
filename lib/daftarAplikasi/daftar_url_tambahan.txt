@@ -1,0 +1,62 @@
+DAFTAR URL TAMBAHAN - APLIKASI KOTA PENDEKAR
+============================================
+
+URL RSS FEED (untuk berita):
+----------------------------
+1. https://rss.app/feeds/v1.1/rHyalNohjMNACgTx.json
+2. https://rss.app/feeds/v1.1/YEWvQYsh1VcyU0a6.json
+3. https://rss.app/feeds/v1.1/oBYCZ1GV2crnFf21.json
+
+Lokasi file:
+- lib/screens/home/home_screen.dart
+- lib/screens/berita/berita_screen.dart
+
+
+URL RADIO STREAMING:
+--------------------
+1. https://play-93fm.madiunkota.go.id/live
+
+Lokasi file:
+- lib/homepage/views/components/radio93fm.dart
+
+
+URL WHATSAPP:
+-------------
+1. https://wa.me/08113577800
+2. https://wa.me/$phoneNumber (template dinamis)
+
+Lokasi file:
+- lib/screens/home/home_screen.dart (nomor tetap)
+- lib/homepage/views/home/announcementcard.dart (template)
+
+
+URL GOOGLE PLAY STORE:
+-----------------------
+1. https://play.google.com/store/apps/details?id=$appId (template dinamis)
+
+Lokasi file (template untuk download aplikasi):
+- lib/screens/layanan/layanan_screen.dart
+- lib/homepage/views/components/categories.dart
+- lib/homepage/menu/layananpublik.dart
+- lib/homepage/menu/layanankesehatan.dart
+- lib/homepage/menu/layananinformasi.dart
+- lib/homepage/menu/layananpengaduan.dart
+- lib/homepage/menu/layananAsn.dart
+- lib/homepage/menu/berita.dart
+- lib/homepage/menu/lainnya.dart
+
+
+CATATAN FILE API:
+-----------------
+File API berikut ditemukan kosong (tidak ada URL):
+- lib/api/apiedu.dart
+- lib/api/apimarketplace.dart
+- lib/api/apiproumkm.dart
+
+
+RINGKASAN URL TAMBAHAN:
+-----------------------
+- 3 URL RSS Feed untuk berita
+- 1 URL Radio streaming (Radio 93FM)
+- 2 URL WhatsApp (1 tetap, 1 template)
+- 1 URL template Google Play Store

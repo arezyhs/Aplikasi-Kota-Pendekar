@@ -543,12 +543,12 @@ class _SemuaaplikasiState extends State<Semuaaplikasi> {
       {
         "icon": "assets/images/imgicon/rumahsakit.png",
         "text": "ANTRIAN RUMAH SAKIT",
-        "page": WebAntrianRs()
+        "page": WebAntrianRS(),
       },
       {
         "icon": "assets/images/imgicon/puskesmas.png",
         "text": "ANTRIAN PUSKESMAS",
-        "page": WebAntrianPuskes()
+        "page": WebAntrianPuskesmas(),
       },
     ];
 
@@ -644,7 +644,7 @@ class _SemuaaplikasiState extends State<Semuaaplikasi> {
       {
         "icon": "assets/images/imgicon/madiuntoday.png",
         "text": "MADIUNTODAY",
-        "page": WebMadiuntoday(),
+        "page": WebMadiun(),
       },
       {
         "icon": "assets/images/imgicon/sicakep.png",

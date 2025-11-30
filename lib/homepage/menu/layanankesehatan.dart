@@ -106,12 +106,12 @@ class _LayananKesehatanState extends State<LayananKesehatan> {
       {
         "icon": "assets/images/imgicon/rumahsakit.png",
         "text": "ANTRIAN RUMAH SAKIT",
-        "page": WebAntrianRs()
+        "page": WebAntrianRS(),
       },
       {
         "icon": "assets/images/imgicon/puskesmas.png",
         "text": "ANTRIAN PUSKESMAS",
-        "page": WebAntrianPuskes()
+        "page": WebAntrianPuskesmas(),
       },
     ];
 

@@ -100,7 +100,7 @@ class _LayananBeritaState extends State<LayananBerita> {
       {
         "icon": "assets/images/imgicon/ewaris.png",
         "text": "Madiuntoday",
-        "page": WebMadiuntoday(),
+        "page": WebMadiun(),
       },
       {
         "icon": "assets/images/imgicon/peceltumpang.png",

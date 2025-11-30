@@ -327,7 +327,7 @@ class _LayananUtamaState extends State<_LayananUtama> {
       {
         "icon": "assets/images/imgicon/mbangun.png",
         "text": "MBANGUN SWARGA",
-        "page": WebMcm()
+        "page": WebMbangunswarga()
       },
       {
         "icon": "assets/images/imgicon/manekin.png",

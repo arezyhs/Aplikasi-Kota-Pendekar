@@ -6,9 +6,13 @@ import 'package:flutter_downloader/flutter_downloader.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:pendekar/homepage/views/splash/splashscreen.dart';
 import 'package:pendekar/constants/navigation.dart';
+import 'package:pendekar/utils/services/local_storage_service.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
+  // Initialize services
+  await LocalStorageService.init();
 
   // Inisialisasi FlutterDownloader
   await FlutterDownloader.initialize(

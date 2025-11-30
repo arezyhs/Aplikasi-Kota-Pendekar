@@ -1,9 +1,7 @@
 // ignore_for_file: prefer_const_constructors, unused_local_variable
 
 import 'package:flutter/material.dart';
-import 'package:flutter_inappwebview/flutter_inappwebview.dart';
-import 'package:url_launcher/url_launcher.dart';
-// import 'package:pendekar/constants/navigation.dart';
+import 'package:pendekar/utils/web_container_page.dart';
 
 class WebJdih extends StatelessWidget {
   final List<Map<String, String>> cardData = const [
@@ -45,7 +43,6 @@ class WebJdih extends StatelessWidget {
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
     final screenHeight = MediaQuery.of(context).size.height;
-    double fontSize = screenWidth * 0.034;
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.transparent,
@@ -167,122 +164,10 @@ class WebJdih extends StatelessWidget {
   void _handleCardTap(BuildContext context, String url) {
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => WebViewPage(url: url)),
-    );
-  }
-}
-
-class WebViewPage extends StatefulWidget {
-  final String url;
-
-  const WebViewPage({Key? key, required this.url}) : super(key: key);
-
-  @override
-  _WebViewPageState createState() => _WebViewPageState();
-}
-
-class _WebViewPageState extends State<WebViewPage> {
-  InAppWebViewController? _webViewController;
-  bool isLoading = true;
-
-  @override
-  Widget build(BuildContext context) {
-    final screenHeight = MediaQuery.of(context).size.height;
-    return Scaffold(
-      backgroundColor: Colors.white,
-      appBar: AppBar(
-        backgroundColor: Colors.white,
-        elevation: 0,
-        iconTheme: const IconThemeData(color: Colors.black87),
-        title: const Text('JDIH',
-            style:
-                TextStyle(color: Colors.black87, fontWeight: FontWeight.w700)),
-        actions: [
-          IconButton(
-            tooltip: 'Muat Ulang',
-            icon: const Icon(Icons.refresh, color: Colors.black54),
-            onPressed: () => _webViewController?.reload(),
-          ),
-          IconButton(
-            tooltip: 'Buka di Browser',
-            icon: const Icon(Icons.open_in_new, color: Colors.black54),
-            onPressed: () async {
-              final uri = Uri.parse(widget.url);
-              if (await canLaunchUrl(uri)) {
-                await launchUrl(uri, mode: LaunchMode.externalApplication);
-              }
-            },
-          ),
-        ],
-      ),
-      body: SafeArea(
-        child: Column(
-          children: [
-            SizedBox(height: screenHeight * 0.01),
-            Expanded(
-              child: Stack(
-                children: [
-                  InAppWebView(
-                    initialUrlRequest: URLRequest(url: WebUri(widget.url)),
-                    initialSettings: InAppWebViewSettings(
-                      useShouldOverrideUrlLoading: true,
-                      javaScriptEnabled: true,
-                      clearCache: true,
-                      cacheEnabled: true,
-                      transparentBackground: true,
-                      supportZoom: false,
-                      allowFileAccessFromFileURLs: true,
-                      allowUniversalAccessFromFileURLs: true,
-                    ),
-                    onWebViewCreated: (controller) {
-                      _webViewController = controller;
-                    },
-                    onLoadStop: (controller, url) async {
-                      setState(() {
-                        isLoading = false;
-                      });
-                      // Menggunakan JavaScript untuk menyembunyikan elemen yang tidak diinginkan
-                      controller.evaluateJavascript(source: '''
-                        var element = document.getElementsByClassName('navbar')[0];
-              if (element != null) {
-                element.style.display = 'none';
-              }
-               var sideMenu = document.getElementsByClassName('toolbar')[0];
-              if (sideMenu != null) {
-                sideMenu.style.display = 'none';
-              }
-              var header = document.getElementsByClassName('account-masthead')[0];
-              if (header != null) {
-                header.style.display = 'none';
-              }
-              var footer = document.getElementsByClassName('footer pt-5')[0];
-              if (footer != null) {
-                footer.style.display = 'none';
-              }
-              var second = document.getElementsByClassName('secondary col-md-3')[0];
-              if (second != null) {
-                second.style.display = 'none';
-              }
-             
-            ''');
-                    },
-                    onLoadStart: (controller, url) {
-                      setState(() {
-                        isLoading = true;
-                      });
-                    },
-                  ),
-                  if (isLoading)
-                    Center(
-                      child: CircularProgressIndicator(
-                        color: const Color.fromARGB(255, 6, 97, 94),
-                      ),
-                    ),
-                ],
-              ),
-            ),
-            const SizedBox(height: 8),
-          ],
+      MaterialPageRoute(
+        builder: (context) => BaseWebViewPage(
+          url: url,
+          title: 'JDIH',
         ),
       ),
     );
