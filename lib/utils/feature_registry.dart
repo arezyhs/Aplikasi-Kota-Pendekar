@@ -66,7 +66,7 @@ class FeatureRegistry {
       color: Colors.red,
       isAsnApp: true,
     ),
-    // Add more ASN apps...
+    // Tambah lainnya tinggal copas sesuai strukturnya...
   ];
 
   /// Daftar aplikasi Warga
@@ -103,7 +103,7 @@ class FeatureRegistry {
       color: Colors.green,
       isAsnApp: false,
     ),
-    // Add more Warga apps...
+    // Tambah lainnya tinggal copas sesuai strukturnya tapi warga
   ];
 
   /// Ambil semua aplikasi ASN
