@@ -78,7 +78,9 @@ val copyApkToFlutterRoot by tasks.registering(Copy::class) {
 tasks.matching {
     it.name.equals("assembleDebug", ignoreCase = true) ||
     it.name.equals("packageDebug", ignoreCase = true) ||
-    it.name.equals("installDebug", ignoreCase = true)
+    it.name.equals("installDebug", ignoreCase = true) ||
+    it.name.equals("assembleRelease", ignoreCase = true) ||
+    it.name.equals("packageRelease", ignoreCase = true)
 }.configureEach {
     finalizedBy(copyApkToFlutterRoot)
 }
