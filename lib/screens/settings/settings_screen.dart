@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:pendekar/utils/services/local_storage_service.dart';
 import 'package:pendekar/utils/accessibility_provider.dart';
+import 'package:pendekar/screens/settings/privacy_policy_page.dart';
+import 'package:pendekar/screens/settings/terms_conditions_page.dart';
 
 class SettingsScreen extends StatefulWidget {
   const SettingsScreen({Key? key}) : super(key: key);
@@ -233,9 +235,11 @@ class _SettingsScreenState extends State<SettingsScreen> {
             title: const Text('Kebijakan Privasi'),
             trailing: const Icon(Icons.arrow_forward_ios, size: 16),
             onTap: () {
-              // Navigate to privacy policy
-              ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(content: Text('Kebijakan Privasi')),
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const PrivacyPolicyPage(),
+                ),
               );
             },
           ),
@@ -243,9 +247,11 @@ class _SettingsScreenState extends State<SettingsScreen> {
             title: const Text('Syarat & Ketentuan'),
             trailing: const Icon(Icons.arrow_forward_ios, size: 16),
             onTap: () {
-              // Navigate to terms
-              ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(content: Text('Syarat & Ketentuan')),
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const TermsConditionsPage(),
+                ),
               );
             },
           ),
