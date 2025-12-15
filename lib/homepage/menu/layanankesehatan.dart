@@ -3,8 +3,8 @@
 import 'package:flutter/material.dart';
 import 'package:pendekar/constants/constant.dart';
 // import 'package:pendekar/daftarAplikasi/aplikasi%20ASN/sipdok.dart';
-import 'package:pendekar/daftarAplikasi/aplikasi%20warga/antrianPuskes.dart';
-import 'package:pendekar/daftarAplikasi/aplikasi%20warga/antrianRS.dart';
+import 'package:pendekar/daftarAplikasi/aplikasi%20warga/antrian_puskesmas.dart';
+import 'package:pendekar/daftarAplikasi/aplikasi%20warga/antrian_rs.dart';
 import 'package:pendekar/homepage/size_config.dart';
 import 'package:url_launcher/url_launcher.dart';
 

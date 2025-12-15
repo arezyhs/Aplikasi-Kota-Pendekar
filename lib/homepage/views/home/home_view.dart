@@ -39,13 +39,13 @@ class _HomePageState extends State<HomePage> {
     String appBarTitle;
     switch (_selectedIndex) {
       case 1:
-        appBarTitle = 'Aplikasi Kota Madiun';
+        appBarTitle = 'Layanan Publik';
         break;
       case 2:
-        appBarTitle = 'Berita Terkini';
+        appBarTitle = 'Berita & Informasi';
         break;
       default:
-        appBarTitle = 'Aplikasi Kota Pendekar';
+        appBarTitle = 'Pendekar';
     }
 
     return WillPopScope(

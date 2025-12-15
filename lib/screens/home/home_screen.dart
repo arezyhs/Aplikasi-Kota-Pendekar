@@ -1,26 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:pendekar/homepage/views/components/home_banner.dart';
 // Embedded Home-only widgets: Layanan Utama and Informasi Publik
-// circle_category not used after layout update
-import 'package:pendekar/homepage/views/components/dialogWarning.dart';
+import 'package:pendekar/homepage/views/components/dialog_warning.dart';
 import 'package:pendekar/homepage/menu/layananinformasi.dart';
 import 'package:pendekar/homepage/menu/layanankesehatan.dart';
-import 'package:pendekar/homepage/menu/lainnya.dart';
 import 'package:pendekar/homepage/menu/layananpublik.dart';
 import 'package:pendekar/homepage/menu/layananpengaduan.dart';
-import 'package:pendekar/homepage/menu/layananAsn.dart';
+import 'package:pendekar/homepage/menu/layanan_asn.dart';
 // spotlight pages
 import 'package:pendekar/daftarAplikasi/aplikasi%20warga/mbangunswarga.dart';
 import 'package:pendekar/daftarAplikasi/aplikasi%20ASN/manekin.dart';
 import 'package:pendekar/homepage/views/components/radio93fm.dart';
-import 'package:pendekar/homepage/views/components/home_description.dart';
 import 'package:pendekar/homepage/views/components/home_caraousel.dart';
 import 'package:pendekar/homepage/views/components/section_header.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:url_launcher/url_launcher.dart';
 import 'package:pendekar/homepage/views/components/switch_tab_notification.dart';
-// carousel_slider removed; news preview now a 3-item list
 import 'package:pendekar/daftarAplikasi/aplikasi%20warga/ppid.dart';
 
 // Small news preview widget (fetches top 3 news from configured RSS json feeds)
@@ -120,7 +116,7 @@ class _NewsPreviewState extends State<NewsPreview> {
       }
     });
     setState(() {
-      news = fetched.take(5).toList(); // show up to 5 slides
+      news = fetched.take(3).toList(); // show only 3 news items
       loading = false;
     });
   }
@@ -135,19 +131,19 @@ class _NewsPreviewState extends State<NewsPreview> {
 
     if (news.isEmpty) return const SizedBox();
 
-    // show a simple list of up to 3 latest news items (styled like BeritaPage)
-    final displayCount = news.length < 3 ? news.length : 3;
-    return Align(
-      alignment: Alignment.topCenter,
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          for (var i = 0; i < displayCount; i++) ...[
-            _buildNewsTile(context, news[i]),
-            if (i < displayCount - 1) const Divider(height: 1),
-          ],
+    // show exactly 3 latest news items with larger images
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        for (var i = 0; i < news.length; i++) ...[
+          _buildNewsTile(context, news[i]),
+          if (i < news.length - 1)
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 4.0),
+              child: Divider(height: 1, thickness: 1),
+            ),
         ],
-      ),
+      ],
     );
   }
 
@@ -174,21 +170,21 @@ class _NewsPreviewState extends State<NewsPreview> {
         }
       },
       child: Padding(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Author & Tanggal di paling atas
+            // Author & Tanggal
             Row(
               children: [
-                const Icon(Icons.person, size: 14, color: Colors.grey),
-                const SizedBox(width: 4),
+                const Icon(Icons.account_circle, size: 16, color: Colors.grey),
+                const SizedBox(width: 6),
                 Expanded(
                   child: Text(
                     author,
                     style: TextStyle(
-                      fontSize: 12,
-                      color: Colors.grey[600],
+                      fontSize: 13,
+                      color: Colors.grey[700],
                       fontWeight: FontWeight.w500,
                     ),
                     maxLines: 1,
@@ -196,7 +192,7 @@ class _NewsPreviewState extends State<NewsPreview> {
                   ),
                 ),
                 const SizedBox(width: 8),
-                Icon(Icons.access_time, size: 12, color: Colors.grey[500]),
+                Icon(Icons.access_time, size: 13, color: Colors.grey[500]),
                 const SizedBox(width: 4),
                 Text(
                   _formatDate(pubDate),
@@ -207,27 +203,27 @@ class _NewsPreviewState extends State<NewsPreview> {
                 ),
               ],
             ),
-            const SizedBox(height: 12),
-            // Gambar + Judul
+            const SizedBox(height: 10),
+            // Gambar + Judul (larger image)
             Row(
-              crossAxisAlignment: CrossAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                // Gambar
+                // Gambar - Larger size
                 imageUrl != null
                     ? ClipRRect(
-                        borderRadius: BorderRadius.circular(8),
+                        borderRadius: BorderRadius.circular(12),
                         child: Image.network(
                           imageUrl,
-                          width: 100,
-                          height: 100,
+                          width: 140,
+                          height: 140,
                           fit: BoxFit.cover,
                           headers: const {
                             'User-Agent':
                                 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36',
                           },
                           errorBuilder: (_, __, ___) => Container(
-                            width: 100,
-                            height: 100,
+                            width: 140,
+                            height: 140,
                             decoration: BoxDecoration(
                               gradient: LinearGradient(
                                 begin: Alignment.topLeft,
@@ -237,18 +233,18 @@ class _NewsPreviewState extends State<NewsPreview> {
                                   Colors.blue[50]!,
                                 ],
                               ),
-                              borderRadius: BorderRadius.circular(8),
+                              borderRadius: BorderRadius.circular(12),
                             ),
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 Icon(Icons.article,
-                                    size: 36, color: Colors.blue[300]),
-                                const SizedBox(height: 4),
+                                    size: 48, color: Colors.blue[300]),
+                                const SizedBox(height: 6),
                                 Text(
                                   'Berita',
                                   style: TextStyle(
-                                    fontSize: 10,
+                                    fontSize: 12,
                                     color: Colors.blue[400],
                                     fontWeight: FontWeight.w500,
                                   ),
@@ -259,8 +255,8 @@ class _NewsPreviewState extends State<NewsPreview> {
                         ),
                       )
                     : Container(
-                        width: 100,
-                        height: 100,
+                        width: 140,
+                        height: 140,
                         decoration: BoxDecoration(
                           gradient: LinearGradient(
                             begin: Alignment.topLeft,
@@ -270,18 +266,18 @@ class _NewsPreviewState extends State<NewsPreview> {
                               Colors.blue[50]!,
                             ],
                           ),
-                          borderRadius: BorderRadius.circular(8),
+                          borderRadius: BorderRadius.circular(12),
                         ),
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Icon(Icons.article,
-                                size: 36, color: Colors.blue[300]),
-                            const SizedBox(height: 4),
+                                size: 48, color: Colors.blue[300]),
+                            const SizedBox(height: 6),
                             Text(
                               'Berita',
                               style: TextStyle(
-                                fontSize: 10,
+                                fontSize: 12,
                                 color: Colors.blue[400],
                                 fontWeight: FontWeight.w500,
                               ),
@@ -289,27 +285,35 @@ class _NewsPreviewState extends State<NewsPreview> {
                           ],
                         ),
                       ),
-                const SizedBox(width: 12),
+                const SizedBox(width: 14),
                 // Judul + Icon
                 Expanded(
-                  child: Row(
+                  child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Expanded(
-                        child: Text(
-                          title,
-                          style: const TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 14,
-                            height: 1.3,
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Expanded(
+                            child: Text(
+                              title,
+                              style: const TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 15,
+                                height: 1.4,
+                              ),
+                              maxLines: 5,
+                              overflow: TextOverflow.ellipsis,
+                            ),
                           ),
-                          maxLines: 4,
-                          overflow: TextOverflow.ellipsis,
-                        ),
+                          const SizedBox(width: 8),
+                          Padding(
+                            padding: const EdgeInsets.only(top: 2),
+                            child: Icon(Icons.open_in_new,
+                                size: 18, color: Colors.grey[600]),
+                          ),
+                        ],
                       ),
-                      const SizedBox(width: 8),
-                      const Icon(Icons.open_in_new,
-                          size: 18, color: Colors.grey),
                     ],
                   ),
                 ),
@@ -332,71 +336,137 @@ class HomeScreen extends StatelessWidget {
       // This makes scroll behaviour consistent with non-bouncy pages.
       physics: const ClampingScrollPhysics(),
       slivers: [
-        // Banner with a compact WhatsApp CTA overlaid
-        SliverToBoxAdapter(
-          child: Stack(
-            children: [
-              const HomeBanner(),
-              // Positioned CTA button moved to bottom-right so it doesn't cover banner content
-              Positioned(
-                right: 12,
-                bottom: 12,
-                child: GestureDetector(
-                  onTap: () async {
-                    final whatsappUrl = Uri.parse('https://wa.me/08113577800');
-                    if (await canLaunchUrl(whatsappUrl)) {
-                      await launchUrl(whatsappUrl,
-                          mode: LaunchMode.externalApplication);
-                    }
-                  },
-                  child: Container(
-                    padding:
-                        const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
-                    decoration: BoxDecoration(
-                      color: Colors.green[700],
-                      borderRadius: BorderRadius.circular(24),
-                      boxShadow: const [
-                        BoxShadow(
-                            color: Colors.black26,
-                            blurRadius: 6,
-                            offset: Offset(0, 2)),
-                      ],
-                    ),
-                    child: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Image.asset('assets/images/imgicon/awaksigap.png',
-                            width: 22, height: 22),
-                        const SizedBox(width: 6),
-                        const Text('AWAK SIGAP',
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.w700,
-                                fontSize: 12)),
-                      ],
-                    ),
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ),
+        // Banner (clean, no overlay)
+        const SliverToBoxAdapter(child: HomeBanner()),
 
         SliverToBoxAdapter(child: const SizedBox(height: 12)),
 
-        // Menu utama
+        // Emergency Bar: Awak Sigap
+        SliverToBoxAdapter(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16.0),
+            child: GestureDetector(
+              onTap: () async {
+                final whatsappUrl = Uri.parse('https://wa.me/08113577800');
+                if (await canLaunchUrl(whatsappUrl)) {
+                  await launchUrl(whatsappUrl,
+                      mode: LaunchMode.externalApplication);
+                }
+              },
+              child: Container(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 20, vertical: 14),
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    colors: [
+                      Color(0xFFFF6B35),
+                      Color(0xFFFF8C42),
+                    ],
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                  ),
+                  borderRadius: BorderRadius.circular(16),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Color(0xFFFF6B35).withOpacity(0.3),
+                      blurRadius: 12,
+                      offset: Offset(0, 4),
+                    ),
+                  ],
+                ),
+                child: Row(
+                  children: [
+                    Container(
+                      padding: EdgeInsets.all(10),
+                      decoration: BoxDecoration(
+                        color: Colors.white.withOpacity(0.2),
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      child: Image.asset(
+                        'assets/images/imgicon/awaksigap.png',
+                        width: 32,
+                        height: 32,
+                      ),
+                    ),
+                    const SizedBox(width: 16),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'AWAK SIGAP',
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold,
+                              letterSpacing: 0.5,
+                            ),
+                          ),
+                          const SizedBox(height: 2),
+                          Text(
+                            'Anda WA, Kami Siap Segera Tanggap!',
+                            style: TextStyle(
+                              color: Colors.white.withOpacity(0.95),
+                              fontSize: 11,
+                              fontStyle: FontStyle.italic,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    Icon(
+                      Icons.arrow_forward_ios,
+                      color: Colors.white,
+                      size: 18,
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+        ),
+
+        SliverToBoxAdapter(child: const SizedBox(height: 14)),
+
+        // Featured Programs & Layanan Utama Grid
         SliverToBoxAdapter(
           child: Column(
             children: [
               const SectionHeader(title: 'Layanan Utama'),
               const SizedBox(height: 8),
               _LayananUtama(),
-              const SizedBox(height: 12),
+              const SizedBox(height: 14),
             ],
           ),
         ),
 
-        // PPID banner + Radio
+        // Berita Terkini
+        SliverToBoxAdapter(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              SectionHeader(
+                title: 'Berita Terkini',
+                onSeeAll: () {
+                  // Request parent shell to switch to Berita tab (index 2)
+                  const SwitchTabNotification(2).dispatch(context);
+                },
+              ),
+              const SizedBox(height: 8),
+            ],
+          ),
+        ),
+        // News preview (3 items)
+        SliverToBoxAdapter(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 0),
+            child: NewsPreview(),
+          ),
+        ),
+
+        SliverToBoxAdapter(child: const SizedBox(height: 14)),
+
+        // PPID banner + Radio (Informasi Publik)
         SliverToBoxAdapter(
           child: Column(
             children: [
@@ -409,38 +479,14 @@ class HomeScreen extends StatelessWidget {
           ),
         ),
 
-        // Berita
-        SliverToBoxAdapter(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              SectionHeader(
-                title: 'Berita Terkini',
-                onSeeAll: () {
-                  // Request parent shell to switch to Berita tab (index 2)
-                  const SwitchTabNotification(2).dispatch(context);
-                },
-              ),
-              // HomeDescription kept for intro text
-              const HomeDescription(),
-              const SizedBox(height: 8),
-            ],
-          ),
-        ),
-        // Small news preview (top 3)
-        SliverToBoxAdapter(
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16.0),
-            child: NewsPreview(),
-          ),
-        ),
+        // Home Carousel
         SliverToBoxAdapter(
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16.0),
             child: HomeCaraousel(),
           ),
         ),
-        const SliverToBoxAdapter(child: SizedBox(height: 8)),
+        const SliverToBoxAdapter(child: SizedBox(height: 16)),
       ],
     );
   }
@@ -471,7 +517,7 @@ class _LayananUtamaState extends State<_LayananUtama> {
       },
     ];
 
-    // categories grid (exclude featured) - follow user's requested set
+    // categories grid (exclude featured) - top 6 most important services
     final combined = [
       {
         "icon": "assets/images/imgicon/puskesmas.png",
@@ -494,36 +540,31 @@ class _LayananUtamaState extends State<_LayananUtama> {
         "page": LayananInformasi()
       },
       {
-        "icon": "assets/images/imgicon/ekinerja.png",
-        "text": "Layanan ASN",
-        "page": LayananAsn()
-      },
-      {
         "icon": "assets/images/imgicon/cctv.png",
         "text": "CCTV",
         "appId": "id.olean.cctv_madiun",
         "uriScheme": "cctv://",
       },
       {
-        "icon": "assets/images/imgicon/menu.png",
-        "text": "Lainnya",
-        "page": Lainnya()
+        "icon": "assets/images/imgicon/ekinerja.png",
+        "text": "Layanan ASN",
+        "page": LayananAsn()
       },
     ];
 
-    // categories grid: show up to 8
-    final categories = combined.take(8).toList();
+    // Show only top 6 services
+    final categories = combined.take(6).toList();
 
     return Column(
       children: [
-        // categories grid 2x4
+        // categories grid 3x2
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16.0),
           child: GridView.count(
-            crossAxisCount: 4,
-            crossAxisSpacing: 12,
-            mainAxisSpacing: 12,
-            childAspectRatio: 0.85,
+            crossAxisCount: 3,
+            crossAxisSpacing: 8,
+            mainAxisSpacing: 4,
+            childAspectRatio: 1.0,
             shrinkWrap: true,
             physics: const NeverScrollableScrollPhysics(),
             children: List.generate(
@@ -564,8 +605,8 @@ class _LayananUtamaState extends State<_LayananUtama> {
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       Container(
-                        width: screenWidth * 0.18,
-                        height: screenWidth * 0.14,
+                        width: screenWidth * 0.20,
+                        height: screenWidth * 0.16,
                         padding: const EdgeInsets.all(8),
                         decoration: BoxDecoration(
                           color: Colors.white,
@@ -581,19 +622,19 @@ class _LayananUtamaState extends State<_LayananUtama> {
                         child: Center(
                           child: Image.asset(
                             item['icon'] as String,
-                            width: screenWidth * 0.12,
-                            height: screenWidth * 0.12,
+                            width: screenWidth * 0.14,
+                            height: screenWidth * 0.14,
                             fit: BoxFit.contain,
                           ),
                         ),
                       ),
-                      const SizedBox(height: 6),
+                      const SizedBox(height: 3),
                       Flexible(
                         child: Text(
                           item['text'] as String,
                           textAlign: TextAlign.center,
                           style: TextStyle(
-                            fontSize: MediaQuery.of(context).size.width * 0.028,
+                            fontSize: MediaQuery.of(context).size.width * 0.030,
                             fontWeight: FontWeight.w600,
                           ),
                           maxLines: 2,
@@ -608,24 +649,66 @@ class _LayananUtamaState extends State<_LayananUtama> {
           ),
         ),
 
-        const SizedBox(height: 12),
+        const SizedBox(height: 6),
 
-        // featured layanan (horizontal scroll)
+        // "Lihat Semua Layanan" button
         Padding(
-          // align featured with section paddings
+          padding: const EdgeInsets.symmetric(horizontal: 16.0),
+          child: OutlinedButton(
+            onPressed: () {
+              // Navigate to Layanan tab (index 1)
+              const SwitchTabNotification(1).dispatch(context);
+            },
+            style: OutlinedButton.styleFrom(
+              padding: const EdgeInsets.symmetric(vertical: 14),
+              side: BorderSide(color: Colors.blue[700]!, width: 1.5),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(12),
+              ),
+            ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Icon(Icons.grid_view, color: Colors.blue[700], size: 18),
+                const SizedBox(width: 8),
+                Text(
+                  'Lihat Semua Layanan',
+                  style: TextStyle(
+                    color: Colors.blue[700],
+                    fontWeight: FontWeight.w600,
+                    fontSize: 14,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+
+        const SizedBox(height: 10),
+
+        // Featured Programs: Mbangun Swarga & Manekin
+        Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16.0),
           child: SizedBox(
-            // give enough height for the card and its contents, avoid overflow on small screens
-            height: 150,
+            height: 180,
             child: ListView.separated(
               scrollDirection: Axis.horizontal,
               itemCount: featured.length,
-              padding: const EdgeInsets.symmetric(horizontal: 8.0),
-              separatorBuilder: (_, __) => const SizedBox(width: 12),
+              separatorBuilder: (_, __) => const SizedBox(width: 16),
               itemBuilder: (context, index) {
                 final item = featured[index];
                 final screenWidth = MediaQuery.of(context).size.width;
-                final cardWidth = (screenWidth * 0.45).clamp(140.0, 260.0);
+                final cardWidth = (screenWidth - 48) / 1.3; // Larger cards
+
+                // Gradient colors for each program
+                final gradients = [
+                  [
+                    Color(0xFF4A90E2),
+                    Color(0xFF357ABD)
+                  ], // Blue for Mbangun Swarga
+                  [Color(0xFF50C878), Color(0xFF3D9E5D)], // Green for Manekin
+                ];
+
                 return GestureDetector(
                   onTap: () {
                     final page = item['page'];
@@ -636,55 +719,126 @@ class _LayananUtamaState extends State<_LayananUtama> {
                           context, MaterialPageRoute(builder: (_) => page));
                     }
                   },
-                  child: SizedBox(
+                  child: Container(
                     width: cardWidth,
-                    child: Card(
-                      elevation: 2,
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(16)),
-                      child: Padding(
-                        padding: const EdgeInsets.all(12),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            // use a smaller circular icon here to keep the card compact
-                            Container(
-                              width: 56,
-                              height: 56,
-                              decoration: BoxDecoration(
-                                color: Colors.white,
-                                shape: BoxShape.circle,
-                                boxShadow: const [
-                                  BoxShadow(
-                                      color: Colors.black12,
-                                      blurRadius: 4,
-                                      offset: Offset(0, 2)),
-                                ],
-                              ),
-                              padding: const EdgeInsets.all(8),
-                              child: Center(
+                    decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                        colors: gradients[index],
+                        begin: Alignment.topLeft,
+                        end: Alignment.bottomRight,
+                      ),
+                      borderRadius: BorderRadius.circular(20),
+                      boxShadow: [
+                        BoxShadow(
+                          color: gradients[index][0].withOpacity(0.3),
+                          blurRadius: 12,
+                          offset: Offset(0, 6),
+                        ),
+                      ],
+                    ),
+                    child: Stack(
+                      children: [
+                        // Decorative circle background
+                        Positioned(
+                          right: -30,
+                          top: -30,
+                          child: Container(
+                            width: 120,
+                            height: 120,
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              color: Colors.white.withOpacity(0.1),
+                            ),
+                          ),
+                        ),
+                        Positioned(
+                          left: -20,
+                          bottom: -20,
+                          child: Container(
+                            width: 80,
+                            height: 80,
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              color: Colors.white.withOpacity(0.05),
+                            ),
+                          ),
+                        ),
+                        // Content
+                        Padding(
+                          padding: const EdgeInsets.all(20),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              // Icon
+                              Container(
+                                width: 64,
+                                height: 64,
+                                decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius: BorderRadius.circular(16),
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: Colors.black.withOpacity(0.1),
+                                      blurRadius: 8,
+                                      offset: Offset(0, 4),
+                                    ),
+                                  ],
+                                ),
+                                padding: const EdgeInsets.all(12),
                                 child: Image.asset(
                                   item['icon'] as String,
                                   fit: BoxFit.contain,
                                 ),
                               ),
-                            ),
-                            const SizedBox(height: 8),
-                            Text(
-                              item['text'] as String,
-                              textAlign: TextAlign.center,
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .bodyMedium
-                                  ?.copyWith(
-                                      fontWeight: FontWeight.w700,
-                                      fontSize: 14),
-                              maxLines: 2,
-                              overflow: TextOverflow.ellipsis,
-                            ),
-                          ],
+                              // Text
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    item['text'] as String,
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.bold,
+                                      letterSpacing: 0.5,
+                                    ),
+                                  ),
+                                  const SizedBox(height: 4),
+                                  Text(
+                                    index == 0
+                                        ? 'Aspirasi & Pengaduan Warga'
+                                        : 'Manajemen Kinerja ASN',
+                                    style: TextStyle(
+                                      color: Colors.white.withOpacity(0.9),
+                                      fontSize: 12,
+                                    ),
+                                  ),
+                                  const SizedBox(height: 8),
+                                  Row(
+                                    children: [
+                                      Text(
+                                        'Akses Sekarang',
+                                        style: TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 12,
+                                          fontWeight: FontWeight.w600,
+                                        ),
+                                      ),
+                                      const SizedBox(width: 4),
+                                      Icon(
+                                        Icons.arrow_forward,
+                                        color: Colors.white,
+                                        size: 14,
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
                         ),
-                      ),
+                      ],
                     ),
                   ),
                 );
