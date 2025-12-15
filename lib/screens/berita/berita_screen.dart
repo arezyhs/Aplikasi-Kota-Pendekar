@@ -143,10 +143,19 @@ class _BeritaPageState extends State<BeritaPage> {
       List<dynamic> items = data['items'];
 
       return items.map((item) {
-        final imageUrl =
-            item['attachments'] != null && item['attachments'].isNotEmpty
-                ? item['attachments'][0]['url']
-                : null;
+        // Coba ambil dari attachments dulu, kalau tidak ada ambil dari field image
+        var imageUrl = item['attachments'] != null && item['attachments'].isNotEmpty
+            ? item['attachments'][0]['url']
+            : item['image'];
+        
+        // Jika masih null, coba extract dari content_html
+        if (imageUrl == null && item['content_html'] != null) {
+          final htmlContent = item['content_html'] as String;
+          final imgTagMatch = RegExp(r'<img[^>]+src="([^">]+)"').firstMatch(htmlContent);
+          if (imgTagMatch != null) {
+            imageUrl = imgTagMatch.group(1);
+          }
+        }
 
         return {
           'imageUrl': imageUrl,
@@ -158,6 +167,24 @@ class _BeritaPageState extends State<BeritaPage> {
       }).toList();
     }
     return null;
+  }
+
+  Widget _buildNewsImage(String imageUrl) {
+    return ClipRRect(
+      borderRadius: BorderRadius.circular(8),
+      child: Image.network(
+        imageUrl,
+        width: 100,
+        height: 100,
+        fit: BoxFit.cover,
+        errorBuilder: (_, __, ___) => Container(
+          width: 100,
+          height: 100,
+          color: Colors.grey[200],
+          child: const Icon(Icons.broken_image),
+        ),
+      ),
+    );
   }
 
   @override
@@ -246,77 +273,7 @@ class _BeritaPageState extends State<BeritaPage> {
                                 children: [
                                   // Gambar
                                   imageUrl != null
-                                      ? ClipRRect(
-                                          borderRadius:
-                                              BorderRadius.circular(8),
-                                          child: CachedNetworkImage(
-                                            imageUrl: imageUrl,
-                                            width: 100,
-                                            height: 100,
-                                            fit: BoxFit.cover,
-                                            httpHeaders: const {
-                                              'User-Agent':
-                                                  'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
-                                              'Accept':
-                                                  'image/avif,image/webp,image/apng,image/svg+xml,image/*,*/*;q=0.8',
-                                            },
-                                            placeholder: (context, url) =>
-                                                Container(
-                                              width: 100,
-                                              height: 100,
-                                              color: Theme.of(context)
-                                                          .brightness ==
-                                                      Brightness.dark
-                                                  ? Colors.grey[800]
-                                                  : Colors.grey[100],
-                                              child: const Center(
-                                                child:
-                                                    CircularProgressIndicator(
-                                                  strokeWidth: 2,
-                                                ),
-                                              ),
-                                            ),
-                                            errorWidget: (context, url, error) {
-                                              // URL Instagram expired, gunakan placeholder
-                                              return Container(
-                                                width: 100,
-                                                height: 100,
-                                                decoration: BoxDecoration(
-                                                  gradient: LinearGradient(
-                                                    begin: Alignment.topLeft,
-                                                    end: Alignment.bottomRight,
-                                                    colors: [
-                                                      Colors.blue[100]!,
-                                                      Colors.blue[50]!,
-                                                    ],
-                                                  ),
-                                                  borderRadius:
-                                                      BorderRadius.circular(8),
-                                                ),
-                                                child: Column(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment.center,
-                                                  children: [
-                                                    Icon(Icons.article,
-                                                        size: 36,
-                                                        color:
-                                                            Colors.blue[300]),
-                                                    const SizedBox(height: 4),
-                                                    Text(
-                                                      'Berita',
-                                                      style: TextStyle(
-                                                        fontSize: 10,
-                                                        color: Colors.blue[400],
-                                                        fontWeight:
-                                                            FontWeight.w500,
-                                                      ),
-                                                    ),
-                                                  ],
-                                                ),
-                                              );
-                                            },
-                                          ),
-                                        )
+                                      ? _buildNewsImage(imageUrl)
                                       : Container(
                                           width: 100,
                                           height: 100,
