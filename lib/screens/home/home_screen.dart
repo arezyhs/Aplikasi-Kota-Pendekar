@@ -42,6 +42,43 @@ class _NewsPreviewState extends State<NewsPreview> {
     'https://rss.app/feeds/v1.1/oBYCZ1GV2crnFf21.json',
   ];
 
+  String _formatDate(String dateString) {
+    try {
+      final date = DateTime.parse(dateString);
+      final now = DateTime.now();
+      final diff = now.difference(date);
+
+      if (diff.inDays == 0) {
+        if (diff.inHours == 0) {
+          return '${diff.inMinutes} menit lalu';
+        }
+        return '${diff.inHours} jam lalu';
+      } else if (diff.inDays == 1) {
+        return 'Kemarin';
+      } else if (diff.inDays < 7) {
+        return '${diff.inDays} hari lalu';
+      } else {
+        final months = [
+          'Jan',
+          'Feb',
+          'Mar',
+          'Apr',
+          'Mei',
+          'Jun',
+          'Jul',
+          'Ags',
+          'Sep',
+          'Okt',
+          'Nov',
+          'Des'
+        ];
+        return '${date.day} ${months[date.month - 1]} ${date.year}';
+      }
+    } catch (e) {
+      return '';
+    }
+  }
+
   @override
   void initState() {
     super.initState();
@@ -67,6 +104,7 @@ class _NewsPreviewState extends State<NewsPreview> {
                     : null,
                 'pubDate': item['date_published'] ?? '',
                 'summary': item['content_text'] ?? '',
+                'author': item['author']?['name'] ?? data['title'] ?? 'Admin',
               });
             }
           }
@@ -116,56 +154,11 @@ class _NewsPreviewState extends State<NewsPreview> {
   Widget _buildNewsTile(BuildContext context, Map<String, dynamic> item) {
     final imageUrl = item['image'] as String?;
     final title = item['title'] ?? '';
-    final summary = item['summary'] ?? '';
+    final author = item['author'] ?? 'Admin';
+    final pubDate = item['pubDate'] ?? '';
     final url = item['url'];
 
-    return ListTile(
-      contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-      leading: imageUrl != null
-          ? ClipRRect(
-              borderRadius: BorderRadius.circular(8),
-              child: Image.network(
-                imageUrl,
-                width: 80,
-                height: 80,
-                fit: BoxFit.cover,
-                errorBuilder: (_, __, ___) => Container(
-                  width: 80,
-                  height: 80,
-                  color: Colors.grey[200],
-                  child: const Icon(Icons.broken_image),
-                ),
-              ),
-            )
-          : Container(
-              width: 80,
-              height: 80,
-              decoration: BoxDecoration(
-                color: Colors.grey[100],
-                borderRadius: BorderRadius.circular(8),
-              ),
-              child: const Icon(Icons.article, size: 36, color: Colors.grey),
-            ),
-      title: Text(title, style: const TextStyle(fontWeight: FontWeight.bold)),
-      subtitle: Text(summary, maxLines: 2, overflow: TextOverflow.ellipsis),
-      trailing: IconButton(
-        icon: const Icon(Icons.open_in_new),
-        onPressed: () async {
-          final messenger = ScaffoldMessenger.of(context);
-          if (url != null && Uri.tryParse(url)?.isAbsolute == true) {
-            final uri = Uri.parse(url);
-            if (await canLaunchUrl(uri)) {
-              await launchUrl(uri, mode: LaunchMode.externalApplication);
-            } else {
-              messenger.showSnackBar(
-                  const SnackBar(content: Text('Could not launch the URL.')));
-            }
-          } else {
-            messenger
-                .showSnackBar(const SnackBar(content: Text('Invalid URL.')));
-          }
-        },
-      ),
+    return InkWell(
       onTap: () async {
         final messenger = ScaffoldMessenger.of(context);
         if (url != null && Uri.tryParse(url)?.isAbsolute == true) {
@@ -180,6 +173,151 @@ class _NewsPreviewState extends State<NewsPreview> {
           messenger.showSnackBar(const SnackBar(content: Text('Invalid URL.')));
         }
       },
+      child: Padding(
+        padding: const EdgeInsets.all(16),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // Author & Tanggal di paling atas
+            Row(
+              children: [
+                const Icon(Icons.person, size: 14, color: Colors.grey),
+                const SizedBox(width: 4),
+                Expanded(
+                  child: Text(
+                    author,
+                    style: TextStyle(
+                      fontSize: 12,
+                      color: Colors.grey[600],
+                      fontWeight: FontWeight.w500,
+                    ),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ),
+                const SizedBox(width: 8),
+                Icon(Icons.access_time, size: 12, color: Colors.grey[500]),
+                const SizedBox(width: 4),
+                Text(
+                  _formatDate(pubDate),
+                  style: TextStyle(
+                    fontSize: 11,
+                    color: Colors.grey[500],
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 12),
+            // Gambar + Judul
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                // Gambar
+                imageUrl != null
+                    ? ClipRRect(
+                        borderRadius: BorderRadius.circular(8),
+                        child: Image.network(
+                          imageUrl,
+                          width: 100,
+                          height: 100,
+                          fit: BoxFit.cover,
+                          headers: const {
+                            'User-Agent':
+                                'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36',
+                          },
+                          errorBuilder: (_, __, ___) => Container(
+                            width: 100,
+                            height: 100,
+                            decoration: BoxDecoration(
+                              gradient: LinearGradient(
+                                begin: Alignment.topLeft,
+                                end: Alignment.bottomRight,
+                                colors: [
+                                  Colors.blue[100]!,
+                                  Colors.blue[50]!,
+                                ],
+                              ),
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Icon(Icons.article,
+                                    size: 36, color: Colors.blue[300]),
+                                const SizedBox(height: 4),
+                                Text(
+                                  'Berita',
+                                  style: TextStyle(
+                                    fontSize: 10,
+                                    color: Colors.blue[400],
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      )
+                    : Container(
+                        width: 100,
+                        height: 100,
+                        decoration: BoxDecoration(
+                          gradient: LinearGradient(
+                            begin: Alignment.topLeft,
+                            end: Alignment.bottomRight,
+                            colors: [
+                              Colors.blue[100]!,
+                              Colors.blue[50]!,
+                            ],
+                          ),
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Icon(Icons.article,
+                                size: 36, color: Colors.blue[300]),
+                            const SizedBox(height: 4),
+                            Text(
+                              'Berita',
+                              style: TextStyle(
+                                fontSize: 10,
+                                color: Colors.blue[400],
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                const SizedBox(width: 12),
+                // Judul + Icon
+                Expanded(
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Expanded(
+                        child: Text(
+                          title,
+                          style: const TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 14,
+                            height: 1.3,
+                          ),
+                          maxLines: 4,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ),
+                      const SizedBox(width: 8),
+                      const Icon(Icons.open_in_new,
+                          size: 18, color: Colors.grey),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ),
+      ),
     );
   }
 }
@@ -189,124 +327,121 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: CustomScrollView(
-        // Use clamping physics to avoid large bounce/overscroll on Home.
-        // This makes scroll behaviour consistent with non-bouncy pages.
-        physics: const ClampingScrollPhysics(),
-        slivers: [
-          // Banner with a compact WhatsApp CTA overlaid
-          SliverToBoxAdapter(
-            child: Stack(
-              children: [
-                const HomeBanner(),
-                // Positioned CTA button moved to bottom-right so it doesn't cover banner content
-                Positioned(
-                  right: 12,
-                  bottom: 12,
-                  child: GestureDetector(
-                    onTap: () async {
-                      final whatsappUrl =
-                          Uri.parse('https://wa.me/08113577800');
-                      if (await canLaunchUrl(whatsappUrl)) {
-                        await launchUrl(whatsappUrl,
-                            mode: LaunchMode.externalApplication);
-                      }
-                    },
-                    child: Container(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 10, vertical: 6),
-                      decoration: BoxDecoration(
-                        color: Colors.green[700],
-                        borderRadius: BorderRadius.circular(24),
-                        boxShadow: const [
-                          BoxShadow(
-                              color: Colors.black26,
-                              blurRadius: 6,
-                              offset: Offset(0, 2)),
-                        ],
-                      ),
-                      child: Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Image.asset('assets/images/imgicon/awaksigap.png',
-                              width: 22, height: 22),
-                          const SizedBox(width: 6),
-                          const Text('AWAK SIGAP',
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.w700,
-                                  fontSize: 12)),
-                        ],
-                      ),
+    return CustomScrollView(
+      // Use clamping physics to avoid large bounce/overscroll on Home.
+      // This makes scroll behaviour consistent with non-bouncy pages.
+      physics: const ClampingScrollPhysics(),
+      slivers: [
+        // Banner with a compact WhatsApp CTA overlaid
+        SliverToBoxAdapter(
+          child: Stack(
+            children: [
+              const HomeBanner(),
+              // Positioned CTA button moved to bottom-right so it doesn't cover banner content
+              Positioned(
+                right: 12,
+                bottom: 12,
+                child: GestureDetector(
+                  onTap: () async {
+                    final whatsappUrl = Uri.parse('https://wa.me/08113577800');
+                    if (await canLaunchUrl(whatsappUrl)) {
+                      await launchUrl(whatsappUrl,
+                          mode: LaunchMode.externalApplication);
+                    }
+                  },
+                  child: Container(
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+                    decoration: BoxDecoration(
+                      color: Colors.green[700],
+                      borderRadius: BorderRadius.circular(24),
+                      boxShadow: const [
+                        BoxShadow(
+                            color: Colors.black26,
+                            blurRadius: 6,
+                            offset: Offset(0, 2)),
+                      ],
+                    ),
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Image.asset('assets/images/imgicon/awaksigap.png',
+                            width: 22, height: 22),
+                        const SizedBox(width: 6),
+                        const Text('AWAK SIGAP',
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.w700,
+                                fontSize: 12)),
+                      ],
                     ),
                   ),
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
+        ),
 
-          SliverToBoxAdapter(child: const SizedBox(height: 12)),
+        SliverToBoxAdapter(child: const SizedBox(height: 12)),
 
-          // Menu utama
-          SliverToBoxAdapter(
-            child: Column(
-              children: [
-                const SectionHeader(title: 'Layanan Utama'),
-                const SizedBox(height: 8),
-                _LayananUtama(),
-                const SizedBox(height: 12),
-              ],
-            ),
+        // Menu utama
+        SliverToBoxAdapter(
+          child: Column(
+            children: [
+              const SectionHeader(title: 'Layanan Utama'),
+              const SizedBox(height: 8),
+              _LayananUtama(),
+              const SizedBox(height: 12),
+            ],
           ),
+        ),
 
-          // PPID banner + Radio
-          SliverToBoxAdapter(
-            child: Column(
-              children: [
-                const SectionHeader(title: 'Informasi Publik'),
-                const SizedBox(height: 12),
-                // carousel containing PPID banner(s) and radio slide
-                const _InformasiPublik(),
-                const SizedBox(height: 12),
-              ],
-            ),
+        // PPID banner + Radio
+        SliverToBoxAdapter(
+          child: Column(
+            children: [
+              const SectionHeader(title: 'Informasi Publik'),
+              const SizedBox(height: 12),
+              // carousel containing PPID banner(s) and radio slide
+              const _InformasiPublik(),
+              const SizedBox(height: 12),
+            ],
           ),
+        ),
 
-          // Berita
-          SliverToBoxAdapter(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                SectionHeader(
-                  title: 'Berita Terkini',
-                  onSeeAll: () {
-                    // Request parent shell to switch to Berita tab (index 2)
-                    const SwitchTabNotification(2).dispatch(context);
-                  },
-                ),
-                // HomeDescription kept for intro text
-                const HomeDescription(),
-                const SizedBox(height: 8),
-              ],
-            ),
+        // Berita
+        SliverToBoxAdapter(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              SectionHeader(
+                title: 'Berita Terkini',
+                onSeeAll: () {
+                  // Request parent shell to switch to Berita tab (index 2)
+                  const SwitchTabNotification(2).dispatch(context);
+                },
+              ),
+              // HomeDescription kept for intro text
+              const HomeDescription(),
+              const SizedBox(height: 8),
+            ],
           ),
-          // Small news preview (top 3)
-          SliverToBoxAdapter(
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16.0),
-              child: NewsPreview(),
-            ),
+        ),
+        // Small news preview (top 3)
+        SliverToBoxAdapter(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16.0),
+            child: NewsPreview(),
           ),
-          SliverToBoxAdapter(
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16.0),
-              child: HomeCaraousel(),
-            ),
+        ),
+        SliverToBoxAdapter(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16.0),
+            child: HomeCaraousel(),
           ),
-          const SliverToBoxAdapter(child: SizedBox(height: 8)),
-        ],
-      ),
+        ),
+        const SliverToBoxAdapter(child: SizedBox(height: 8)),
+      ],
     );
   }
 }
@@ -397,9 +532,27 @@ class _LayananUtamaState extends State<_LayananUtama> {
                 final item = categories[index];
                 final screenWidth = MediaQuery.of(context).size.width;
                 return InkWell(
-                  onTap: () {
+                  onTap: () async {
                     final page = item['page'];
-                    if (page is DialogWarning) {
+                    final appId = item['appId'] as String?;
+
+                    if (appId != null) {
+                      // Handle external app (CCTV)
+                      final playStoreUrl =
+                          'https://play.google.com/store/apps/details?id=$appId';
+                      final uri = Uri.parse(playStoreUrl);
+                      final messenger = ScaffoldMessenger.of(context);
+
+                      if (await canLaunchUrl(uri)) {
+                        await launchUrl(uri,
+                            mode: LaunchMode.externalApplication);
+                      } else {
+                        messenger.showSnackBar(
+                          const SnackBar(
+                              content: Text('Tidak dapat membuka Play Store')),
+                        );
+                      }
+                    } else if (page is DialogWarning) {
                       DialogWarning.show(context);
                     } else if (page is Widget) {
                       Navigator.push(

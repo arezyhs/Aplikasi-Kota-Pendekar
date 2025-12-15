@@ -104,11 +104,6 @@ class _SemuaaplikasiState extends State<Semuaaplikasi> {
           const SizedBox(height: 20.0),
 
           // Sections
-          _tittlelayananasn(),
-          const SizedBox(height: 12.0),
-          _applayananasn(context),
-          const SizedBox(height: 18.0),
-
           _tittlelayananpublik(),
           const SizedBox(height: 12.0),
           _applayananpublik(context),
@@ -127,6 +122,11 @@ class _SemuaaplikasiState extends State<Semuaaplikasi> {
           _tittlelayananinformasi(),
           const SizedBox(height: 12.0),
           _applayananinformasi(context),
+          const SizedBox(height: 18.0),
+
+          _tittlelayananasn(),
+          const SizedBox(height: 12.0),
+          _applayananasn(context),
           const SizedBox(height: 24.0),
         ],
       ),

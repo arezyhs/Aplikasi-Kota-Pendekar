@@ -3,6 +3,7 @@ import 'package:pendekar/screens/home/home_screen.dart';
 import 'package:pendekar/screens/berita/berita_screen.dart';
 import 'package:pendekar/screens/layanan/layanan_screen.dart';
 import 'package:pendekar/homepage/views/components/switch_tab_notification.dart';
+import 'package:pendekar/screens/settings/settings_screen.dart';
 
 class HomePage extends StatefulWidget {
   static String routeName = "/home";
@@ -80,6 +81,19 @@ class _HomePageState extends State<HomePage> {
               style: const TextStyle(
                   color: Colors.black87, fontWeight: FontWeight.w700),
             ),
+            actions: [
+              IconButton(
+                icon: const Icon(Icons.settings, color: Colors.black87),
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const SettingsScreen(),
+                    ),
+                  );
+                },
+              ),
+            ],
           ),
           body: _pages[_selectedIndex],
           bottomNavigationBar: BottomNavigationBar(
