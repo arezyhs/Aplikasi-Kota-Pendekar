@@ -138,8 +138,8 @@ class _NewsPreviewState extends State<NewsPreview> {
         for (var i = 0; i < news.length; i++) ...[
           _buildNewsTile(context, news[i]),
           if (i < news.length - 1)
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: 4.0),
+            const Padding(
+              padding: EdgeInsets.symmetric(vertical: 4.0),
               child: Divider(height: 1, thickness: 1),
             ),
         ],
@@ -339,7 +339,7 @@ class HomeScreen extends StatelessWidget {
         // Banner (clean, no overlay)
         const SliverToBoxAdapter(child: HomeBanner()),
 
-        SliverToBoxAdapter(child: const SizedBox(height: 12)),
+        const SliverToBoxAdapter(child: SizedBox(height: 12)),
 
         // Emergency Bar: Awak Sigap
         SliverToBoxAdapter(
@@ -357,7 +357,7 @@ class HomeScreen extends StatelessWidget {
                 padding:
                     const EdgeInsets.symmetric(horizontal: 20, vertical: 14),
                 decoration: BoxDecoration(
-                  gradient: LinearGradient(
+                  gradient: const LinearGradient(
                     colors: [
                       Color(0xFFFF6B35),
                       Color(0xFFFF8C42),
@@ -368,18 +368,18 @@ class HomeScreen extends StatelessWidget {
                   borderRadius: BorderRadius.circular(16),
                   boxShadow: [
                     BoxShadow(
-                      color: Color(0xFFFF6B35).withOpacity(0.3),
+                      color: const Color(0xFFFF6B35).withValues(alpha: 0.3),
                       blurRadius: 12,
-                      offset: Offset(0, 4),
+                      offset: const Offset(0, 4),
                     ),
                   ],
                 ),
                 child: Row(
                   children: [
                     Container(
-                      padding: EdgeInsets.all(10),
+                      padding: const EdgeInsets.all(10),
                       decoration: BoxDecoration(
-                        color: Colors.white.withOpacity(0.2),
+                        color: Colors.white.withValues(alpha: 0.2),
                         borderRadius: BorderRadius.circular(12),
                       ),
                       child: Image.asset(
@@ -393,7 +393,7 @@ class HomeScreen extends StatelessWidget {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(
+                          const Text(
                             'AWAK SIGAP',
                             style: TextStyle(
                               color: Colors.white,
@@ -406,7 +406,7 @@ class HomeScreen extends StatelessWidget {
                           Text(
                             'Anda WA, Kami Siap Segera Tanggap!',
                             style: TextStyle(
-                              color: Colors.white.withOpacity(0.95),
+                              color: Colors.white.withValues(alpha: 0.95),
                               fontSize: 11,
                               fontStyle: FontStyle.italic,
                             ),
@@ -414,7 +414,7 @@ class HomeScreen extends StatelessWidget {
                         ],
                       ),
                     ),
-                    Icon(
+                    const Icon(
                       Icons.arrow_forward_ios,
                       color: Colors.white,
                       size: 18,
@@ -426,16 +426,16 @@ class HomeScreen extends StatelessWidget {
           ),
         ),
 
-        SliverToBoxAdapter(child: const SizedBox(height: 14)),
+        const SliverToBoxAdapter(child: SizedBox(height: 14)),
 
         // Featured Programs & Layanan Utama Grid
-        SliverToBoxAdapter(
+        const SliverToBoxAdapter(
           child: Column(
             children: [
-              const SectionHeader(title: 'Layanan Utama'),
-              const SizedBox(height: 8),
+              SectionHeader(title: 'Layanan Utama'),
+              SizedBox(height: 8),
               _LayananUtama(),
-              const SizedBox(height: 14),
+              SizedBox(height: 14),
             ],
           ),
         ),
@@ -457,24 +457,24 @@ class HomeScreen extends StatelessWidget {
           ),
         ),
         // News preview (3 items)
-        SliverToBoxAdapter(
+        const SliverToBoxAdapter(
           child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 0),
+            padding: EdgeInsets.symmetric(horizontal: 0),
             child: NewsPreview(),
           ),
         ),
 
-        SliverToBoxAdapter(child: const SizedBox(height: 14)),
+        const SliverToBoxAdapter(child: SizedBox(height: 14)),
 
         // PPID banner + Radio (Informasi Publik)
-        SliverToBoxAdapter(
+        const SliverToBoxAdapter(
           child: Column(
             children: [
-              const SectionHeader(title: 'Informasi Publik'),
-              const SizedBox(height: 12),
+              SectionHeader(title: 'Informasi Publik'),
+              SizedBox(height: 12),
               // carousel containing PPID banner(s) and radio slide
-              const _InformasiPublik(),
-              const SizedBox(height: 12),
+              _InformasiPublik(),
+              SizedBox(height: 12),
             ],
           ),
         ),
@@ -508,12 +508,12 @@ class _LayananUtamaState extends State<_LayananUtama> {
       {
         "icon": "assets/images/imgicon/mbangun.png",
         "text": "MBANGUN SWARGA",
-        "page": WebMbangunswarga()
+        "page": const WebMbangunswarga()
       },
       {
         "icon": "assets/images/imgicon/manekin.png",
         "text": "MANEKIN",
-        "page": WebManekin()
+        "page": const WebManekin()
       },
     ];
 
@@ -522,22 +522,22 @@ class _LayananUtamaState extends State<_LayananUtama> {
       {
         "icon": "assets/images/imgicon/puskesmas.png",
         "text": "Layanan Kesehatan",
-        "page": LayananKesehatan()
+        "page": const LayananKesehatan()
       },
       {
         "icon": "assets/images/imgicon/pasaremadiun.png",
         "text": "Layanan Publik",
-        "page": LayananPublik()
+        "page": const LayananPublik()
       },
       {
         "icon": "assets/images/imgicon/wbs.png",
         "text": "Layanan Pengaduan",
-        "page": LayananPengaduan()
+        "page": const LayananPengaduan()
       },
       {
         "icon": "assets/images/imgicon/opendata.png",
         "text": "Layanan Informasi",
-        "page": LayananInformasi()
+        "page": const LayananInformasi()
       },
       {
         "icon": "assets/images/imgicon/cctv.png",
@@ -548,7 +548,7 @@ class _LayananUtamaState extends State<_LayananUtama> {
       {
         "icon": "assets/images/imgicon/ekinerja.png",
         "text": "Layanan ASN",
-        "page": LayananAsn()
+        "page": const LayananAsn()
       },
     ];
 
@@ -630,15 +630,26 @@ class _LayananUtamaState extends State<_LayananUtama> {
                       ),
                       const SizedBox(height: 3),
                       Flexible(
-                        child: Text(
-                          item['text'] as String,
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                            fontSize: MediaQuery.of(context).size.width * 0.030,
-                            fontWeight: FontWeight.w600,
+                        child: MediaQuery(
+                          data: MediaQuery.of(context).copyWith(
+                            textScaler: TextScaler.noScaling,
                           ),
-                          maxLines: 2,
-                          overflow: TextOverflow.ellipsis,
+                          child: FittedBox(
+                            fit: BoxFit.scaleDown,
+                            child: SizedBox(
+                              width: screenWidth * 0.28,
+                              child: Text(
+                                item['text'] as String,
+                                textAlign: TextAlign.center,
+                                style: const TextStyle(
+                                  fontSize: 11,
+                                  fontWeight: FontWeight.w600,
+                                ),
+                                maxLines: 2,
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                            ),
+                          ),
                         ),
                       ),
                     ],
@@ -703,10 +714,10 @@ class _LayananUtamaState extends State<_LayananUtama> {
                 // Gradient colors for each program
                 final gradients = [
                   [
-                    Color(0xFF4A90E2),
-                    Color(0xFF357ABD)
+                    const Color(0xFF4A90E2),
+                    const Color(0xFF357ABD)
                   ], // Blue for Mbangun Swarga
-                  [Color(0xFF50C878), Color(0xFF3D9E5D)], // Green for Manekin
+                  [const Color(0xFF50C878), const Color(0xFF3D9E5D)], // Green for Manekin
                 ];
 
                 return GestureDetector(
@@ -730,9 +741,9 @@ class _LayananUtamaState extends State<_LayananUtama> {
                       borderRadius: BorderRadius.circular(20),
                       boxShadow: [
                         BoxShadow(
-                          color: gradients[index][0].withOpacity(0.3),
+                          color: gradients[index][0].withValues(alpha: 0.3),
                           blurRadius: 12,
-                          offset: Offset(0, 6),
+                          offset: const Offset(0, 6),
                         ),
                       ],
                     ),
@@ -747,7 +758,7 @@ class _LayananUtamaState extends State<_LayananUtama> {
                             height: 120,
                             decoration: BoxDecoration(
                               shape: BoxShape.circle,
-                              color: Colors.white.withOpacity(0.1),
+                              color: Colors.white.withValues(alpha: 0.1),
                             ),
                           ),
                         ),
@@ -759,7 +770,7 @@ class _LayananUtamaState extends State<_LayananUtama> {
                             height: 80,
                             decoration: BoxDecoration(
                               shape: BoxShape.circle,
-                              color: Colors.white.withOpacity(0.05),
+                              color: Colors.white.withValues(alpha: 0.05),
                             ),
                           ),
                         ),
@@ -779,9 +790,10 @@ class _LayananUtamaState extends State<_LayananUtama> {
                                   borderRadius: BorderRadius.circular(16),
                                   boxShadow: [
                                     BoxShadow(
-                                      color: Colors.black.withOpacity(0.1),
+                                      color:
+                                          Colors.black.withValues(alpha: 0.1),
                                       blurRadius: 8,
-                                      offset: Offset(0, 4),
+                                      offset: const Offset(0, 4),
                                     ),
                                   ],
                                 ),
@@ -795,43 +807,67 @@ class _LayananUtamaState extends State<_LayananUtama> {
                               Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Text(
-                                    item['text'] as String,
-                                    style: TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 18,
-                                      fontWeight: FontWeight.bold,
-                                      letterSpacing: 0.5,
+                                  MediaQuery(
+                                    data: MediaQuery.of(context).copyWith(
+                                      textScaler: TextScaler.noScaling,
+                                    ),
+                                    child: FittedBox(
+                                      fit: BoxFit.scaleDown,
+                                      alignment: Alignment.centerLeft,
+                                      child: Text(
+                                        item['text'] as String,
+                                        style: const TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 18,
+                                          fontWeight: FontWeight.bold,
+                                          letterSpacing: 0.5,
+                                        ),
+                                      ),
                                     ),
                                   ),
                                   const SizedBox(height: 4),
-                                  Text(
-                                    index == 0
-                                        ? 'Aspirasi & Pengaduan Warga'
-                                        : 'Manajemen Kinerja ASN',
-                                    style: TextStyle(
-                                      color: Colors.white.withOpacity(0.9),
-                                      fontSize: 12,
+                                  MediaQuery(
+                                    data: MediaQuery.of(context).copyWith(
+                                      textScaler: TextScaler.noScaling,
+                                    ),
+                                    child: FittedBox(
+                                      fit: BoxFit.scaleDown,
+                                      alignment: Alignment.centerLeft,
+                                      child: Text(
+                                        index == 0
+                                            ? 'Aspirasi & Pengaduan Warga'
+                                            : 'Manajemen Kinerja ASN',
+                                        style: TextStyle(
+                                          color: Colors.white
+                                              .withValues(alpha: 0.9),
+                                          fontSize: 12,
+                                        ),
+                                      ),
                                     ),
                                   ),
                                   const SizedBox(height: 8),
-                                  Row(
-                                    children: [
-                                      Text(
-                                        'Akses Sekarang',
-                                        style: TextStyle(
-                                          color: Colors.white,
-                                          fontSize: 12,
-                                          fontWeight: FontWeight.w600,
+                                  MediaQuery(
+                                    data: MediaQuery.of(context).copyWith(
+                                      textScaler: TextScaler.noScaling,
+                                    ),
+                                    child: const Row(
+                                      children: [
+                                        Text(
+                                          'Akses Sekarang',
+                                          style: TextStyle(
+                                            color: Colors.white,
+                                            fontSize: 12,
+                                            fontWeight: FontWeight.w600,
+                                          ),
                                         ),
-                                      ),
-                                      const SizedBox(width: 4),
-                                      Icon(
-                                        Icons.arrow_forward,
-                                        color: Colors.white,
-                                        size: 14,
-                                      ),
-                                    ],
+                                        SizedBox(width: 4),
+                                        Icon(
+                                          Icons.arrow_forward,
+                                          color: Colors.white,
+                                          size: 14,
+                                        ),
+                                      ],
+                                    ),
                                   ),
                                 ],
                               ),
@@ -881,7 +917,7 @@ class _InformasiPublikState extends State<_InformasiPublik> {
         GestureDetector(
           onTap: () => Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => WebPpid()),
+            MaterialPageRoute(builder: (context) => const WebPpid()),
           ),
           child: Card(
             elevation: 2,

@@ -12,10 +12,10 @@ class CircleCategory extends StatelessWidget {
     return Container(
       width: size,
       height: size,
-      decoration: BoxDecoration(
+      decoration: const BoxDecoration(
         color: Colors.white,
         shape: BoxShape.circle,
-        boxShadow: const [
+        boxShadow: [
           BoxShadow(color: Colors.black12, blurRadius: 4, offset: Offset(0, 2)),
         ],
       ),

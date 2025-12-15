@@ -16,4 +16,4 @@ const hPrimaryGradientColor = LinearGradient(
   ],
 );
 
-const AnimationDuration = Duration(milliseconds: 200);
+const animationDuration = Duration(milliseconds: 200);

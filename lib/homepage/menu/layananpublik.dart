@@ -34,7 +34,7 @@ class _LayananPublikState extends State<LayananPublik> {
           gradient: LinearGradient(
             begin: Alignment.topRight,
             end: Alignment.bottomLeft,
-            colors: [
+            colors: const [
               Colors.white,
               Colors.white,
               Color.fromARGB(255, 255, 255, 255),

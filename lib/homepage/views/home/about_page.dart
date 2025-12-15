@@ -23,7 +23,7 @@ class HomeDescription2 extends StatelessWidget {
               color: Colors.black.withAlpha(204),
               fontSize: 18,
               fontWeight: FontWeight.bold),
-          children: [
+          children: const [
             TextSpan(
                 text: "Nikmati kemudahan dengan Aplikasi Pendekar Kota Madiun",
                 style: TextStyle(

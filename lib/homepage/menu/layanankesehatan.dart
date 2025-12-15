@@ -36,7 +36,7 @@ class _LayananKesehatanState extends State<LayananKesehatan> {
           gradient: LinearGradient(
             begin: Alignment.topRight,
             end: Alignment.bottomLeft,
-            colors: [
+            colors: const [
               Colors.white,
               Colors.white,
               Color.fromARGB(255, 255, 255, 255),

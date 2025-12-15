@@ -62,17 +62,17 @@ class _CategoriesState extends State<Categories> with TickerProviderStateMixin {
       {
         "icon": "assets/images/imgicon/mbangun.png",
         "text": "MBANGUN SWARGA",
-        "page": WebMbangunswarga(),
+        "page": const WebMbangunswarga(),
       },
       {
         "icon": "assets/images/imgicon/manekin.png",
         "text": "MANEKIN",
-        "page": WebManekin(),
+        "page": const WebManekin(),
       },
       {
         "icon": "assets/images/imgicon/pecel.png",
         "text": "Layanan Kesehatan",
-        "page": LayananKesehatan(),
+        "page": const LayananKesehatan(),
       },
       {
         "icon": "assets/images/imgicon/ekinerja.png",
@@ -83,7 +83,7 @@ class _CategoriesState extends State<Categories> with TickerProviderStateMixin {
       {
         "icon": "assets/images/imgicon/peceltumpang.png",
         "text": "INFORMASI",
-        "page": LayananInformasi(),
+        "page": const LayananInformasi(),
       },
     ];
 

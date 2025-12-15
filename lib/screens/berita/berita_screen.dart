@@ -259,8 +259,9 @@ class _BeritaPageState extends State<BeritaPage> {
                                             },
                                             loadingBuilder: (context, child,
                                                 loadingProgress) {
-                                              if (loadingProgress == null)
+                                              if (loadingProgress == null) {
                                                 return child;
+                                              }
                                               return Container(
                                                 width: 100,
                                                 height: 100,
@@ -400,7 +401,7 @@ class _BeritaPageState extends State<BeritaPage> {
                     color: Colors.white,
                     boxShadow: [
                       BoxShadow(
-                        color: Colors.black.withOpacity(0.05),
+                        color: Colors.black.withValues(alpha: 0.05),
                         blurRadius: 4,
                         offset: const Offset(0, -2),
                       ),

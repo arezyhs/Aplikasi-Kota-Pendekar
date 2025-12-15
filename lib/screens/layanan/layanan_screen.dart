@@ -761,14 +761,23 @@ class _berandaCard extends StatelessWidget {
           const SizedBox(height: 4),
           SizedBox(
             width: screenWidth * 0.26,
-            child: Text(
-              text,
-              textAlign: TextAlign.center,
-              maxLines: 2,
-              overflow: TextOverflow.ellipsis,
-              style: TextStyle(
-                  fontSize: fontSize.clamp(10, 14),
-                  fontWeight: FontWeight.w600),
+            child: MediaQuery(
+              data: MediaQuery.of(context).copyWith(
+                textScaler: TextScaler.noScaling,
+              ),
+              child: FittedBox(
+                fit: BoxFit.scaleDown,
+                child: SizedBox(
+                  width: screenWidth * 0.26,
+                  child: Text(
+                    text,
+                    textAlign: TextAlign.center,
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                    style: TextStyle(fontSize: 11, fontWeight: FontWeight.w600),
+                  ),
+                ),
+              ),
             ),
           ),
         ],

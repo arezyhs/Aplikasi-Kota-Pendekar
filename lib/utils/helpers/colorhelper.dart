@@ -7,12 +7,12 @@ class ColorHelper {
 
   /// Warna utama dengan transparansi
   static Color primaryWithOpacity(double opacity) {
-    return hPrimaryColor.withOpacity(opacity);
+    return hPrimaryColor.withValues(alpha: opacity);
   }
 
   /// Warna kedua dengan transparansi
   static Color secondaryWithOpacity(double opacity) {
-    return hSecondaryColor.withOpacity(opacity);
+    return hSecondaryColor.withValues(alpha: opacity);
   }
 
   /// Gradient buat app bar
@@ -47,7 +47,7 @@ class ColorHelper {
         end: Alignment.bottomCenter,
         colors: [
           Colors.white,
-          hForthColor.withOpacity(0.1),
+          hForthColor.withValues(alpha: 0.1),
         ],
       );
 }

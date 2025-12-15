@@ -4,7 +4,6 @@ import 'dart:async';
 
 import 'package:audio_session/audio_session.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:just_audio/just_audio.dart';
 
 class HomePlayer extends StatefulWidget {
@@ -119,7 +118,7 @@ class _HomePlayerState extends State<HomePlayer>
 }
 
 class AudioPlayerWidget extends StatefulWidget {
-  AudioPlayerWidget({
+  const AudioPlayerWidget({
     Key? key,
     required this.player,
     required this.audioSamples,
@@ -240,28 +239,26 @@ class _AudioPlayerWidgetState extends State<AudioPlayerWidget> {
                             },
                             highlightColor: Colors.transparent,
                             splashColor: Colors.transparent,
-                            child: Container(
-                              child: AnimatedSwitcher(
-                                duration: const Duration(milliseconds: 300),
-                                transitionBuilder: (Widget child,
-                                    Animation<double> animation) {
-                                  return ScaleTransition(
-                                    scale: animation,
-                                    child: child,
-                                  );
-                                },
-                                child: _isPlaying
-                                    ? Image.asset('assets/images/pause.png',
-                                        key: const ValueKey("pause"),
-                                        width: 50,
-                                        height: 50,
-                                        fit: BoxFit.cover)
-                                    : Image.asset('assets/images/play.png',
-                                        key: const ValueKey("play"),
-                                        width: 50,
-                                        height: 50,
-                                        fit: BoxFit.cover),
-                              ),
+                            child: AnimatedSwitcher(
+                              duration: const Duration(milliseconds: 300),
+                              transitionBuilder:
+                                  (Widget child, Animation<double> animation) {
+                                return ScaleTransition(
+                                  scale: animation,
+                                  child: child,
+                                );
+                              },
+                              child: _isPlaying
+                                  ? Image.asset('assets/images/pause.png',
+                                      key: const ValueKey("pause"),
+                                      width: 50,
+                                      height: 50,
+                                      fit: BoxFit.cover)
+                                  : Image.asset('assets/images/play.png',
+                                      key: const ValueKey("play"),
+                                      width: 50,
+                                      height: 50,
+                                      fit: BoxFit.cover),
                             ),
                           ),
                         ),

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pendekar/utils/services/local_storage_service.dart';
+import 'package:pendekar/utils/accessibility_provider.dart';
 
 class SettingsScreen extends StatefulWidget {
   const SettingsScreen({Key? key}) : super(key: key);
@@ -11,6 +12,9 @@ class SettingsScreen extends StatefulWidget {
 class _SettingsScreenState extends State<SettingsScreen> {
   bool _notificationsEnabled = true;
   bool _darkModeEnabled = false;
+  bool _largeTextEnabled = false;
+  bool _highContrastEnabled = false;
+  bool _reducedAnimationsEnabled = false;
   String _cacheSize = 'Menghitung...';
 
   @override
@@ -22,15 +26,23 @@ class _SettingsScreenState extends State<SettingsScreen> {
   Future<void> _loadSettings() async {
     final notifications = LocalStorageService.getBool('notifications') ?? true;
     final darkMode = LocalStorageService.getBool('dark_mode') ?? false;
+    final largeText = LocalStorageService.getBool('large_text') ?? false;
+    final highContrast = LocalStorageService.getBool('high_contrast') ?? false;
+    final reducedAnimations =
+        LocalStorageService.getBool('reduced_animations') ?? false;
 
     setState(() {
       _notificationsEnabled = notifications;
       _darkModeEnabled = darkMode;
+      _largeTextEnabled = largeText;
+      _highContrastEnabled = highContrast;
+      _reducedAnimationsEnabled = reducedAnimations;
       _cacheSize = '0 MB'; // Placeholder
     });
   }
 
   Future<void> _clearCache() async {
+    final messenger = ScaffoldMessenger.of(context);
     // Show confirmation dialog
     final confirm = await showDialog<bool>(
       context: context,
@@ -52,7 +64,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
     if (confirm == true) {
       // Clear cache logic here
-      ScaffoldMessenger.of(context).showSnackBar(
+      messenger.showSnackBar(
         const SnackBar(content: Text('Cache berhasil dihapus')),
       );
     }
@@ -101,13 +113,58 @@ class _SettingsScreenState extends State<SettingsScreen> {
             subtitle: const Text('Ubah tema menjadi mode gelap'),
             value: _darkModeEnabled,
             onChanged: (value) async {
+              final messenger = ScaffoldMessenger.of(context);
               setState(() => _darkModeEnabled = value);
               await LocalStorageService.setBool('dark_mode', value);
-              ScaffoldMessenger.of(context).showSnackBar(
+              messenger.showSnackBar(
                 const SnackBar(
                   content: Text('Restart aplikasi untuk menerapkan tema baru'),
                 ),
               );
+            },
+          ),
+
+          const Divider(),
+
+          // Aksesibilitas Section
+          const Padding(
+            padding: EdgeInsets.fromLTRB(16, 8, 16, 8),
+            child: Text(
+              'AKSESIBILITAS',
+              style: TextStyle(
+                fontSize: 13,
+                fontWeight: FontWeight.bold,
+                color: Colors.grey,
+              ),
+            ),
+          ),
+          SwitchListTile(
+            title: const Text('Teks Besar'),
+            subtitle: const Text('Perbesar ukuran teks di seluruh aplikasi'),
+            value: _largeTextEnabled,
+            onChanged: (value) async {
+              setState(() => _largeTextEnabled = value);
+              await accessibilityNotifier.updateLargeText(value);
+            },
+          ),
+          SwitchListTile(
+            title: const Text('Kontras Tinggi'),
+            subtitle:
+                const Text('Tingkatkan kontras warna untuk kemudahan membaca'),
+            value: _highContrastEnabled,
+            onChanged: (value) async {
+              setState(() => _highContrastEnabled = value);
+              await accessibilityNotifier.updateHighContrast(value);
+            },
+          ),
+          SwitchListTile(
+            title: const Text('Kurangi Animasi'),
+            subtitle:
+                const Text('Kurangi efek animasi untuk performa lebih baik'),
+            value: _reducedAnimationsEnabled,
+            onChanged: (value) async {
+              setState(() => _reducedAnimationsEnabled = value);
+              await accessibilityNotifier.updateReducedAnimations(value);
             },
           ),
 
@@ -148,10 +205,10 @@ class _SettingsScreenState extends State<SettingsScreen> {
               ),
             ),
           ),
-          ListTile(
-            title: const Text('Versi Aplikasi'),
-            subtitle: const Text('1.2.6+6'),
-            trailing: const Icon(Icons.info_outline),
+          const ListTile(
+            title: Text('Versi Aplikasi'),
+            subtitle: Text('1.2.6+6'),
+            trailing: Icon(Icons.info_outline),
           ),
           ListTile(
             title: const Text('Tentang Aplikasi'),

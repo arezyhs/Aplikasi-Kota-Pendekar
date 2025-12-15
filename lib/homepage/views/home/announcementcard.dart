@@ -16,7 +16,7 @@ class AnnouncementCard extends StatelessWidget {
   Future<void> openWhatsApp() async {
     const phoneNumber =
         '08113577800'; // Ganti dengan nomor telepon WhatsApp yang diinginkan
-    final whatsappUrl = 'https://wa.me/$phoneNumber';
+    const whatsappUrl = 'https://wa.me/$phoneNumber';
     final Uri whatsappUri = Uri.parse(whatsappUrl);
 
     if (await canLaunchUrl(whatsappUri)) {

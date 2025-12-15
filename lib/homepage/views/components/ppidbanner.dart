@@ -3,8 +3,8 @@
 import 'package:flutter/material.dart';
 import 'package:pendekar/daftarAplikasi/aplikasi%20warga/ppid.dart';
 
-class ppidBanner extends StatelessWidget {
-  const ppidBanner({
+class PpidBanner extends StatelessWidget {
+  const PpidBanner({
     Key? key,
   }) : super(key: key);
 

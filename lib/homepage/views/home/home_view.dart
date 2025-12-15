@@ -48,17 +48,17 @@ class _HomePageState extends State<HomePage> {
         appBarTitle = 'Pendekar';
     }
 
-    return WillPopScope(
-      onWillPop: () async {
+    return PopScope(
+      canPop: _navigationHistory.length <= 1,
+      onPopInvokedWithResult: (didPop, result) async {
+        if (didPop) return;
         // If there is navigation history, go back through it instead of exiting
         if (_navigationHistory.length > 1) {
           // remove current
           _navigationHistory.removeLast();
           final prev = _navigationHistory.last;
           setState(() => _selectedIndex = prev);
-          return false; // don't pop the app
         }
-        return true; // allow app exit
       },
       child: NotificationListener<SwitchTabNotification>(
         onNotification: (notification) {
