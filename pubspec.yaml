@@ -45,6 +45,7 @@ dependencies:
   url_launcher: ^6.1.11
   shared_preferences: ^2.1.2
   http: ^1.0.0
+  cached_network_image: ^3.3.0
   desktop_webview_window: ^0.2.3
   font_awesome_flutter: ^10.7.0
   audio_session: ^0.1.19

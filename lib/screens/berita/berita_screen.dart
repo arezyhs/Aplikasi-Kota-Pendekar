@@ -6,6 +6,7 @@ import 'package:url_launcher/url_launcher.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 
 class BeritaPage extends StatefulWidget {
   const BeritaPage({super.key});
@@ -100,9 +101,9 @@ class _BeritaPageState extends State<BeritaPage> {
 
   Future<void> fetchNews() async {
     List<String> urls = [
-      'https://rss.app/feeds/v1.1/rHyalNohjMNACgTx.json',
-      'https://rss.app/feeds/v1.1/YEWvQYsh1VcyU0a6.json',
-      'https://rss.app/feeds/v1.1/oBYCZ1GV2crnFf21.json',
+      'https://rss.app/feeds/v1.1/rHyalNohjMNACgTx.json', // @pemkotmadiun_
+      'https://rss.app/feeds/v1.1/YEWvQYsh1VcyU0a6.json', // @ppidkotamadiun
+      'https://rss.app/feeds/v1.1/oBYCZ1GV2crnFf21.json', // @93fmsuaramadiun
     ];
 
     List<Map<String, dynamic>> fetchedNews = [];
@@ -248,41 +249,34 @@ class _BeritaPageState extends State<BeritaPage> {
                                       ? ClipRRect(
                                           borderRadius:
                                               BorderRadius.circular(8),
-                                          child: Image.network(
-                                            imageUrl,
+                                          child: CachedNetworkImage(
+                                            imageUrl: imageUrl,
                                             width: 100,
                                             height: 100,
                                             fit: BoxFit.cover,
-                                            headers: const {
+                                            httpHeaders: const {
                                               'User-Agent':
-                                                  'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36',
+                                                  'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+                                              'Accept':
+                                                  'image/avif,image/webp,image/apng,image/svg+xml,image/*,*/*;q=0.8',
                                             },
-                                            loadingBuilder: (context, child,
-                                                loadingProgress) {
-                                              if (loadingProgress == null) {
-                                                return child;
-                                              }
-                                              return Container(
-                                                width: 100,
-                                                height: 100,
-                                                color: Colors.grey[100],
-                                                child: Center(
-                                                  child:
-                                                      CircularProgressIndicator(
-                                                    value: loadingProgress
-                                                                .expectedTotalBytes !=
-                                                            null
-                                                        ? loadingProgress
-                                                                .cumulativeBytesLoaded /
-                                                            loadingProgress
-                                                                .expectedTotalBytes!
-                                                        : null,
-                                                    strokeWidth: 2,
-                                                  ),
+                                            placeholder: (context, url) =>
+                                                Container(
+                                              width: 100,
+                                              height: 100,
+                                              color: Theme.of(context)
+                                                          .brightness ==
+                                                      Brightness.dark
+                                                  ? Colors.grey[800]
+                                                  : Colors.grey[100],
+                                              child: const Center(
+                                                child:
+                                                    CircularProgressIndicator(
+                                                  strokeWidth: 2,
                                                 ),
-                                              );
-                                            },
-                                            errorBuilder: (_, __, ___) {
+                                              ),
+                                            ),
+                                            errorWidget: (context, url, error) {
                                               // URL Instagram expired, gunakan placeholder
                                               return Container(
                                                 width: 100,
