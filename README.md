@@ -8,6 +8,7 @@ Aplikasi mobile berbasis Flutter yang memberikan akses mudah kepada warga untuk 
 - **Layanan Pemerintahan** - Akses ke berbagai layanan dan aplikasi kota
 - **Feed Berita** - Berita terbaru dan pengumuman dari pemerintah kota
 - **Aksi Cepat** - Akses langsung ke dukungan WhatsApp dan streaming radio
+- **Chatbot Madiun** (Menyusul)
 
 ## Memulai
 ### Persyaratan
