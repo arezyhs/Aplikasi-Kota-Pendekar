@@ -398,10 +398,12 @@ class _BeritaPageState extends State<BeritaPage> {
                   padding:
                       const EdgeInsets.symmetric(vertical: 8, horizontal: 12),
                   decoration: BoxDecoration(
-                    color: Colors.white,
+                    color: Theme.of(context).colorScheme.surface,
                     boxShadow: [
                       BoxShadow(
-                        color: Colors.black.withValues(alpha: 0.05),
+                        color: Theme.of(context)
+                            .shadowColor
+                            .withValues(alpha: 0.05),
                         blurRadius: 4,
                         offset: const Offset(0, -2),
                       ),
@@ -487,7 +489,9 @@ class _BeritaPageState extends State<BeritaPage> {
                 '$i',
                 style: TextStyle(
                   fontSize: 13,
-                  color: i == _currentPage ? Colors.white : Colors.black87,
+                  color: i == _currentPage
+                      ? Theme.of(context).colorScheme.onPrimary
+                      : Theme.of(context).textTheme.bodyMedium?.color,
                   fontWeight:
                       i == _currentPage ? FontWeight.bold : FontWeight.normal,
                 ),

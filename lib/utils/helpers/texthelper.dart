@@ -5,45 +5,45 @@ class TextHelper {
   TextHelper._();
 
   /// Text style buat header utama
-  static TextStyle get headerStyle => const TextStyle(
+  static TextStyle headerStyle(BuildContext context) => TextStyle(
         fontSize: 24,
         fontWeight: FontWeight.bold,
-        color: Colors.black87,
+        color: Theme.of(context).textTheme.headlineLarge?.color,
       );
 
   /// Text style buat sub header
-  static TextStyle get subHeaderStyle => const TextStyle(
+  static TextStyle subHeaderStyle(BuildContext context) => TextStyle(
         fontSize: 18,
         fontWeight: FontWeight.w600,
-        color: Colors.black87,
+        color: Theme.of(context).textTheme.titleLarge?.color,
       );
 
   /// Text style buat body text
-  static TextStyle get bodyStyle => const TextStyle(
+  static TextStyle bodyStyle(BuildContext context) => TextStyle(
         fontSize: 14,
         fontWeight: FontWeight.normal,
-        color: Colors.black87,
+        color: Theme.of(context).textTheme.bodyMedium?.color,
       );
 
   /// Text style buat caption
-  static TextStyle get captionStyle => const TextStyle(
+  static TextStyle captionStyle(BuildContext context) => TextStyle(
         fontSize: 12,
         fontWeight: FontWeight.normal,
-        color: Colors.black54,
+        color: Theme.of(context).textTheme.bodySmall?.color,
       );
 
   /// Text style buat button
-  static TextStyle get buttonStyle => const TextStyle(
+  static TextStyle buttonStyle(BuildContext context) => TextStyle(
         fontSize: 16,
         fontWeight: FontWeight.w600,
-        color: Colors.white,
+        color: Theme.of(context).colorScheme.onPrimary,
       );
 
   /// Text style buat error message
-  static TextStyle get errorStyle => const TextStyle(
+  static TextStyle errorStyle(BuildContext context) => TextStyle(
         fontSize: 14,
         fontWeight: FontWeight.normal,
-        color: Colors.red,
+        color: Theme.of(context).colorScheme.error,
       );
 
   /// Truncate text dengan ellipsis

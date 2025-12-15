@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:pendekar/utils/services/local_storage_service.dart';
 import 'package:pendekar/utils/accessibility_provider.dart';
+import 'package:pendekar/utils/theme_provider.dart';
 import 'package:pendekar/screens/settings/privacy_policy_page.dart';
 import 'package:pendekar/screens/settings/terms_conditions_page.dart';
 
@@ -27,7 +28,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
   Future<void> _loadSettings() async {
     final notifications = LocalStorageService.getBool('notifications') ?? true;
-    final darkMode = LocalStorageService.getBool('dark_mode') ?? false;
     final largeText = LocalStorageService.getBool('large_text') ?? false;
     final highContrast = LocalStorageService.getBool('high_contrast') ?? false;
     final reducedAnimations =
@@ -35,7 +35,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
     setState(() {
       _notificationsEnabled = notifications;
-      _darkModeEnabled = darkMode;
+      _darkModeEnabled = themeNotifier.isDarkMode;
       _largeTextEnabled = largeText;
       _highContrastEnabled = highContrast;
       _reducedAnimationsEnabled = reducedAnimations;
@@ -79,13 +79,10 @@ class _SettingsScreenState extends State<SettingsScreen> {
         title: const Text(
           'Pengaturan',
           style: TextStyle(
-            color: Colors.black87,
             fontWeight: FontWeight.w700,
           ),
         ),
-        backgroundColor: Colors.white,
         elevation: 0,
-        iconTheme: const IconThemeData(color: Colors.black87),
       ),
       body: ListView(
         children: [
@@ -115,14 +112,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
             subtitle: const Text('Ubah tema menjadi mode gelap'),
             value: _darkModeEnabled,
             onChanged: (value) async {
-              final messenger = ScaffoldMessenger.of(context);
               setState(() => _darkModeEnabled = value);
-              await LocalStorageService.setBool('dark_mode', value);
-              messenger.showSnackBar(
-                const SnackBar(
-                  content: Text('Restart aplikasi untuk menerapkan tema baru'),
-                ),
-              );
+              await themeNotifier.toggleTheme(value);
             },
           ),
 

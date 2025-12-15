@@ -10,22 +10,14 @@ class SplashScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     SizeConfig().init(context);
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'Pendekar Kota Madiun',
-      home: AnimatedSplashScreen(
-        splash: 'assets/images/splash.gif',
-        nextScreen: const HomePage(),
-        duration: 5000,
-        splashTransition: SplashTransition.fadeTransition,
-        pageTransitionType: PageTransitionType.fade,
-        splashIconSize: double.infinity,
-        // alignment: Alignment.topCenter,
-        backgroundColor: const Color(0xffe5e5e5),
-      ),
-      // routes: {
-      //   otp.routeName: (context) => otp(),
-      // }
+    return AnimatedSplashScreen(
+      splash: 'assets/images/splash.gif',
+      nextScreen: const HomePage(),
+      duration: 5000,
+      splashTransition: SplashTransition.fadeTransition,
+      pageTransitionType: PageTransitionType.fade,
+      splashIconSize: double.infinity,
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
     );
   }
 }

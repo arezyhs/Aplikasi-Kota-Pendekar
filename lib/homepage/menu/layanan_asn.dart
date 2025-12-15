@@ -51,17 +51,24 @@ class _LayananAsnState extends State<LayananAsn> {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     return Scaffold(
       body: Container(
         decoration: BoxDecoration(
           gradient: LinearGradient(
             begin: Alignment.topRight,
             end: Alignment.bottomLeft,
-            colors: const [
-              Colors.white,
-              Colors.white,
-              Color.fromARGB(255, 255, 255, 255),
-            ],
+            colors: isDark
+                ? [
+                    const Color(0xFF1A1A1A),
+                    const Color(0xFF121212),
+                    const Color(0xFF121212),
+                  ]
+                : const [
+                    Colors.white,
+                    Colors.white,
+                    Color.fromARGB(255, 255, 255, 255),
+                  ],
           ),
         ),
         padding: EdgeInsets.all(20.0),
@@ -108,7 +115,7 @@ class _LayananAsnState extends State<LayananAsn> {
           "LAYANAN ASN",
           textAlign: TextAlign.left,
           style: TextStyle(
-            color: Color.fromARGB(255, 11, 11, 11),
+            color: Theme.of(context).textTheme.titleLarge?.color,
             fontSize: fontSize,
             fontWeight: FontWeight.bold,
           ),

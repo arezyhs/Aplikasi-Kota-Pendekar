@@ -102,19 +102,18 @@ class AccessibilitySettings {
   ThemeData applyToTheme(ThemeData base) {
     if (!highContrast) return base;
 
-    // High contrast theme modifications
+    // High contrast theme modifications - respect dark mode
+    final isDark = base.brightness == Brightness.dark;
+
     return base.copyWith(
       colorScheme: base.colorScheme.copyWith(
-        primary: Colors.blue.shade900,
-        secondary: Colors.orange.shade800,
-        surface: Colors.white,
+        primary: isDark ? Colors.blue.shade400 : Colors.blue.shade900,
+        secondary: isDark ? Colors.orange.shade400 : Colors.orange.shade800,
       ),
-      scaffoldBackgroundColor: Colors.white,
-      cardColor: Colors.white,
-      dividerColor: Colors.black87,
+      dividerColor: isDark ? Colors.white70 : Colors.black87,
       textTheme: base.textTheme.apply(
-        bodyColor: Colors.black,
-        displayColor: Colors.black,
+        bodyColor: isDark ? Colors.white : Colors.black,
+        displayColor: isDark ? Colors.white : Colors.black,
       ),
     );
   }

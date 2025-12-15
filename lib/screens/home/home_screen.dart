@@ -609,11 +609,12 @@ class _LayananUtamaState extends State<_LayananUtama> {
                         height: screenWidth * 0.16,
                         padding: const EdgeInsets.all(8),
                         decoration: BoxDecoration(
-                          color: Colors.white,
+                          color: Theme.of(context).colorScheme.surface,
                           borderRadius: BorderRadius.circular(14),
                           boxShadow: [
                             BoxShadow(
-                              color: Colors.black.withAlpha(15),
+                              color:
+                                  Theme.of(context).shadowColor.withAlpha(15),
                               blurRadius: 8,
                               offset: const Offset(0, 4),
                             ),
@@ -672,7 +673,8 @@ class _LayananUtamaState extends State<_LayananUtama> {
             },
             style: OutlinedButton.styleFrom(
               padding: const EdgeInsets.symmetric(vertical: 14),
-              side: BorderSide(color: Colors.blue[700]!, width: 1.5),
+              side: BorderSide(
+                  color: Theme.of(context).colorScheme.primary, width: 1.5),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(12),
               ),
@@ -680,12 +682,13 @@ class _LayananUtamaState extends State<_LayananUtama> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Icon(Icons.grid_view, color: Colors.blue[700], size: 18),
+                Icon(Icons.grid_view,
+                    color: Theme.of(context).colorScheme.primary, size: 18),
                 const SizedBox(width: 8),
                 Text(
                   'Lihat Semua Layanan',
                   style: TextStyle(
-                    color: Colors.blue[700],
+                    color: Theme.of(context).colorScheme.primary,
                     fontWeight: FontWeight.w600,
                     fontSize: 14,
                   ),
@@ -717,7 +720,10 @@ class _LayananUtamaState extends State<_LayananUtama> {
                     const Color(0xFF4A90E2),
                     const Color(0xFF357ABD)
                   ], // Blue for Mbangun Swarga
-                  [const Color(0xFF50C878), const Color(0xFF3D9E5D)], // Green for Manekin
+                  [
+                    const Color(0xFF50C878),
+                    const Color(0xFF3D9E5D)
+                  ], // Green for Manekin
                 ];
 
                 return GestureDetector(
@@ -786,12 +792,13 @@ class _LayananUtamaState extends State<_LayananUtama> {
                                 width: 64,
                                 height: 64,
                                 decoration: BoxDecoration(
-                                  color: Colors.white,
+                                  color: Theme.of(context).colorScheme.surface,
                                   borderRadius: BorderRadius.circular(16),
                                   boxShadow: [
                                     BoxShadow(
-                                      color:
-                                          Colors.black.withValues(alpha: 0.1),
+                                      color: Theme.of(context)
+                                          .shadowColor
+                                          .withValues(alpha: 0.1),
                                       blurRadius: 8,
                                       offset: const Offset(0, 4),
                                     ),

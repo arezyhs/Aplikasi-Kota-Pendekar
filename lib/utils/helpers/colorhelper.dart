@@ -42,12 +42,15 @@ class ColorHelper {
   static Color get warningColor => Colors.orange.shade600;
 
   /// Background gradient buat card
-  static LinearGradient get cardGradient => LinearGradient(
-        begin: Alignment.topCenter,
-        end: Alignment.bottomCenter,
-        colors: [
-          Colors.white,
-          hForthColor.withValues(alpha: 0.1),
-        ],
-      );
+  static LinearGradient cardGradient(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    return LinearGradient(
+      begin: Alignment.topCenter,
+      end: Alignment.bottomCenter,
+      colors: [
+        isDark ? const Color(0xFF2A2A2A) : Colors.white,
+        hForthColor.withValues(alpha: isDark ? 0.2 : 0.1),
+      ],
+    );
+  }
 }

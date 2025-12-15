@@ -64,16 +64,22 @@ class _SemuaaplikasiState extends State<Semuaaplikasi> {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     // Return a body only (we already have an AppBar in the parent LayananPage)
     return Container(
       decoration: BoxDecoration(
         gradient: LinearGradient(
           begin: Alignment.topRight,
           end: Alignment.bottomLeft,
-          colors: const [
-            Color(0xFFF7F9FC),
-            Color(0xFFFFFFFF),
-          ],
+          colors: isDark
+              ? [
+                  const Color(0xFF1A1A1A),
+                  const Color(0xFF121212),
+                ]
+              : const [
+                  Color(0xFFF7F9FC),
+                  Color(0xFFFFFFFF),
+                ],
         ),
       ),
       padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 12.0),
@@ -88,7 +94,7 @@ class _SemuaaplikasiState extends State<Semuaaplikasi> {
               hintText: 'Cari aplikasi...',
               prefixIcon: const Icon(Icons.search),
               filled: true,
-              fillColor: Colors.white,
+              fillColor: Theme.of(context).colorScheme.surface,
               contentPadding: const EdgeInsets.symmetric(vertical: 12.0),
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(12.0),
@@ -145,7 +151,11 @@ class _SemuaaplikasiState extends State<Semuaaplikasi> {
           padding: const EdgeInsets.only(right: 8.0),
           child: Icon(
             Icons.apps,
-            color: Colors.black54,
+            color: Theme.of(context)
+                .textTheme
+                .bodyMedium
+                ?.color
+                ?.withValues(alpha: 0.6),
             size: 20,
           ),
         ),
@@ -156,7 +166,7 @@ class _SemuaaplikasiState extends State<Semuaaplikasi> {
           "Layanan ASN",
           textAlign: TextAlign.left,
           style: TextStyle(
-            color: Color.fromARGB(255, 11, 11, 11),
+            color: Theme.of(context).textTheme.titleLarge?.color,
             fontSize: fontSize,
             fontWeight: FontWeight.bold,
           ),
@@ -314,7 +324,11 @@ class _SemuaaplikasiState extends State<Semuaaplikasi> {
           padding: const EdgeInsets.only(right: 8.0),
           child: Icon(
             Icons.public,
-            color: Colors.black54,
+            color: Theme.of(context)
+                .textTheme
+                .bodyMedium
+                ?.color
+                ?.withValues(alpha: 0.6),
             size: 20,
           ),
         ),
@@ -325,7 +339,7 @@ class _SemuaaplikasiState extends State<Semuaaplikasi> {
           "Layanan Publik",
           textAlign: TextAlign.left,
           style: TextStyle(
-            color: Color.fromARGB(255, 11, 11, 11),
+            color: Theme.of(context).textTheme.titleLarge?.color,
             fontSize: fontSize,
             fontWeight: FontWeight.bold,
           ),
@@ -417,7 +431,11 @@ class _SemuaaplikasiState extends State<Semuaaplikasi> {
           padding: const EdgeInsets.only(right: 8.0),
           child: Icon(
             Icons.report,
-            color: Colors.black54,
+            color: Theme.of(context)
+                .textTheme
+                .bodyMedium
+                ?.color
+                ?.withValues(alpha: 0.6),
             size: 20,
           ),
         ),
@@ -428,7 +446,7 @@ class _SemuaaplikasiState extends State<Semuaaplikasi> {
           "Layanan Pengaduan",
           textAlign: TextAlign.left,
           style: TextStyle(
-            color: Color.fromARGB(255, 11, 11, 11),
+            color: Theme.of(context).textTheme.titleLarge?.color,
             fontSize: fontSize,
             fontWeight: FontWeight.bold,
           ),
@@ -518,7 +536,11 @@ class _SemuaaplikasiState extends State<Semuaaplikasi> {
           padding: const EdgeInsets.only(right: 8.0),
           child: Icon(
             Icons.local_hospital,
-            color: Colors.black54,
+            color: Theme.of(context)
+                .textTheme
+                .bodyMedium
+                ?.color
+                ?.withValues(alpha: 0.6),
             size: 20,
           ),
         ),
@@ -529,7 +551,7 @@ class _SemuaaplikasiState extends State<Semuaaplikasi> {
           "Layanan Kesehatan",
           textAlign: TextAlign.left,
           style: TextStyle(
-            color: Color.fromARGB(255, 11, 11, 11),
+            color: Theme.of(context).textTheme.titleLarge?.color,
             fontSize: fontSize,
             fontWeight: FontWeight.bold,
           ),
@@ -614,7 +636,11 @@ class _SemuaaplikasiState extends State<Semuaaplikasi> {
           padding: const EdgeInsets.only(right: 8.0),
           child: Icon(
             Icons.info,
-            color: Colors.black54,
+            color: Theme.of(context)
+                .textTheme
+                .bodyMedium
+                ?.color
+                ?.withValues(alpha: 0.6),
             size: 20,
           ),
         ),
@@ -625,7 +651,7 @@ class _SemuaaplikasiState extends State<Semuaaplikasi> {
           "Layanan Informasi",
           textAlign: TextAlign.left,
           style: TextStyle(
-            color: Color.fromARGB(255, 11, 11, 11),
+            color: Theme.of(context).textTheme.titleLarge?.color,
             fontSize: fontSize,
             fontWeight: FontWeight.bold,
           ),
@@ -739,11 +765,11 @@ class _berandaCard extends StatelessWidget {
             height: screenWidth * 0.18,
             padding: const EdgeInsets.all(8),
             decoration: BoxDecoration(
-              color: Colors.white,
+              color: Theme.of(context).colorScheme.surface,
               borderRadius: BorderRadius.circular(14),
               boxShadow: [
                 BoxShadow(
-                  color: Colors.black.withAlpha(15),
+                  color: Theme.of(context).shadowColor.withAlpha(15),
                   blurRadius: 8,
                   offset: Offset(0, 4),
                 ),

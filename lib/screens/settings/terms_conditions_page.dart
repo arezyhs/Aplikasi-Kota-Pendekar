@@ -10,13 +10,10 @@ class TermsConditionsPage extends StatelessWidget {
         title: const Text(
           'Syarat & Ketentuan',
           style: TextStyle(
-            color: Colors.black87,
             fontWeight: FontWeight.w700,
           ),
         ),
-        backgroundColor: Colors.white,
         elevation: 0,
-        iconTheme: const IconThemeData(color: Colors.black87),
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16),

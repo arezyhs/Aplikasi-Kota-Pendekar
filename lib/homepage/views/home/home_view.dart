@@ -72,18 +72,15 @@ class _HomePageState extends State<HomePage> {
         },
         child: Scaffold(
           appBar: AppBar(
-            backgroundColor: Colors.white,
             elevation: 0,
             centerTitle: false,
-            iconTheme: const IconThemeData(color: Colors.black87),
             title: Text(
               appBarTitle,
-              style: const TextStyle(
-                  color: Colors.black87, fontWeight: FontWeight.w700),
+              style: const TextStyle(fontWeight: FontWeight.w700),
             ),
             actions: [
               IconButton(
-                icon: const Icon(Icons.settings, color: Colors.black87),
+                icon: const Icon(Icons.settings),
                 onPressed: () {
                   Navigator.push(
                     context,
@@ -112,7 +109,6 @@ class _HomePageState extends State<HomePage> {
               ),
             ],
             currentIndex: _selectedIndex,
-            selectedItemColor: Colors.blue,
             onTap: _onItemTapped,
           ),
         ),

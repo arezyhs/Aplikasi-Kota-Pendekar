@@ -8,6 +8,7 @@ import 'package:pendekar/homepage/views/splash/splashscreen.dart';
 import 'package:pendekar/constants/navigation.dart';
 import 'package:pendekar/utils/services/local_storage_service.dart';
 import 'package:pendekar/utils/accessibility_provider.dart';
+import 'package:pendekar/utils/theme_provider.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -50,34 +51,37 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AnimatedBuilder(
-      animation: accessibilityNotifier,
-      builder: (context, child) {
-        final darkMode = LocalStorageService.getBool('dark_mode') ?? false;
-        final settings = accessibilityNotifier.settings;
-
-        ThemeData baseTheme = ThemeData(
-          primarySwatch: Colors.blue,
-          brightness: darkMode ? Brightness.dark : Brightness.light,
-          scaffoldBackgroundColor: darkMode ? Colors.grey[900] : Colors.white,
-        );
-
-        ThemeData theme = settings.applyToTheme(baseTheme);
-
-        return MaterialApp(
-          navigatorKey: navigatorKey,
-          debugShowCheckedModeBanner: false,
-          title: 'Aplikasi Kota Pendekar',
-          theme: theme,
+      animation: themeNotifier,
+      builder: (context, _) {
+        return AnimatedBuilder(
+          animation: accessibilityNotifier,
           builder: (context, child) {
-            // Apply text scale factor globally
-            return MediaQuery(
-              data: MediaQuery.of(context).copyWith(
-                textScaler: TextScaler.linear(settings.getFontScale()),
-              ),
-              child: child!,
+            final settings = accessibilityNotifier.settings;
+            final isDark = themeNotifier.isDarkMode;
+
+            debugPrint('🎨 Building app with dark mode: $isDark');
+
+            ThemeData baseTheme =
+                isDark ? themeNotifier.darkTheme : themeNotifier.lightTheme;
+            ThemeData theme = settings.applyToTheme(baseTheme);
+
+            return MaterialApp(
+              navigatorKey: navigatorKey,
+              debugShowCheckedModeBanner: false,
+              title: 'Aplikasi Kota Pendekar',
+              theme: theme,
+              builder: (context, child) {
+                // Apply text scale factor globally
+                return MediaQuery(
+                  data: MediaQuery.of(context).copyWith(
+                    textScaler: TextScaler.linear(settings.getFontScale()),
+                  ),
+                  child: child!,
+                );
+              },
+              home: SplashScreen(),
             );
           },
-          home: SplashScreen(),
         );
       },
     );
