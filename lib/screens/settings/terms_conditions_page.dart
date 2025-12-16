@@ -89,7 +89,7 @@ class TermsConditionsPage extends StatelessWidget {
                   'Dinas Komunikasi dan Informatika\n'
                   'Pemerintah Kota Madiun\n'
                   'Email: diskominfo@madiunkota.go.id\n'
-                  'Telepon: (0351) 464197',
+                  'Telepon: (0351) 467327',
             ),
             const SizedBox(height: 24),
           ],

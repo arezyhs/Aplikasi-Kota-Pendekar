@@ -200,12 +200,12 @@ class _SettingsScreenState extends State<SettingsScreen> {
           ),
           const ListTile(
             title: Text('Versi Aplikasi'),
-            subtitle: Text('1.2.6+6'),
+            subtitle: Text('1.3.2'),
             trailing: Icon(Icons.info_outline),
           ),
           ListTile(
             title: const Text('Tentang Aplikasi'),
-            subtitle: const Text('Informasi lengkap tentang Kota Pendekar'),
+            subtitle: const Text('Informasi lengkap tentang Aplikasi Pendekar'),
             trailing: const Icon(Icons.arrow_forward_ios, size: 16),
             onTap: () {
               showAboutDialog(

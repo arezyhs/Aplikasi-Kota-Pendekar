@@ -75,7 +75,7 @@ class PrivacyPolicyPage extends StatelessWidget {
               'Hubungi Kami',
               'Jika Anda memiliki pertanyaan tentang Kebijakan Privasi ini, silakan hubungi:\n\n'
                   'Pemerintah Kota Madiun\n'
-                  'Email: diskominfo@madiunkota.go.id\n'
+                  'Email: kominfo@madiunkota.go.id\n'
                   'Telepon: (0351) 464197',
             ),
             const SizedBox(height: 24),
