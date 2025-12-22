@@ -284,12 +284,12 @@ class _SemuaaplikasiState extends State<Semuaaplikasi> {
         .toList();
     return GridView.builder(
       shrinkWrap: true,
-      physics: BouncingScrollPhysics(),
-      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+      physics: const NeverScrollableScrollPhysics(),
+      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
         crossAxisCount: 3,
-        childAspectRatio: 1,
-        crossAxisSpacing: 10.0,
-        mainAxisSpacing: 10.0,
+        childAspectRatio: 1.0,
+        crossAxisSpacing: 12.0,
+        mainAxisSpacing: 12.0,
       ),
       itemCount: filteredCategories.length,
       itemBuilder: (context, index) => _berandaCard(
@@ -391,12 +391,12 @@ class _SemuaaplikasiState extends State<Semuaaplikasi> {
         .toList();
     return GridView.builder(
       shrinkWrap: true,
-      physics: BouncingScrollPhysics(),
-      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+      physics: const NeverScrollableScrollPhysics(),
+      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
         crossAxisCount: 3,
-        childAspectRatio: 1,
-        crossAxisSpacing: 1.0,
-        mainAxisSpacing: 10.0,
+        childAspectRatio: 1.0,
+        crossAxisSpacing: 12.0,
+        mainAxisSpacing: 12.0,
       ),
       itemCount: filteredCategories.length,
       itemBuilder: (context, index) => _berandaCard(
@@ -496,12 +496,12 @@ class _SemuaaplikasiState extends State<Semuaaplikasi> {
         .toList();
     return GridView.builder(
       shrinkWrap: true,
-      physics: BouncingScrollPhysics(),
-      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+      physics: const NeverScrollableScrollPhysics(),
+      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
         crossAxisCount: 3,
-        childAspectRatio: 1,
-        crossAxisSpacing: 1.0,
-        mainAxisSpacing: 10.0,
+        childAspectRatio: 1.0,
+        crossAxisSpacing: 12.0,
+        mainAxisSpacing: 12.0,
       ),
       itemCount: filteredCategories.length,
       itemBuilder: (context, index) => _berandaCard(
@@ -596,12 +596,12 @@ class _SemuaaplikasiState extends State<Semuaaplikasi> {
         .toList();
     return GridView.builder(
       shrinkWrap: true,
-      physics: BouncingScrollPhysics(),
-      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+      physics: const NeverScrollableScrollPhysics(),
+      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
         crossAxisCount: 3,
-        childAspectRatio: 1,
-        crossAxisSpacing: 1.0,
-        mainAxisSpacing: 10.0,
+        childAspectRatio: 1.0,
+        crossAxisSpacing: 12.0,
+        mainAxisSpacing: 12.0,
       ),
       itemCount: filteredCategories.length,
       itemBuilder: (context, index) => _berandaCard(
@@ -701,12 +701,12 @@ class _SemuaaplikasiState extends State<Semuaaplikasi> {
         .toList();
     return GridView.builder(
       shrinkWrap: true,
-      physics: BouncingScrollPhysics(),
-      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+      physics: const NeverScrollableScrollPhysics(),
+      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
         crossAxisCount: 3,
-        childAspectRatio: 1,
-        crossAxisSpacing: 10.0,
-        mainAxisSpacing: 10.0,
+        childAspectRatio: 1.0,
+        crossAxisSpacing: 12.0,
+        mainAxisSpacing: 12.0,
       ),
       itemCount: filteredCategories.length,
       itemBuilder: (context, index) => _berandaCard(
@@ -750,9 +750,6 @@ class _berandaCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
-    final screenHeight = MediaQuery.of(context).size.height;
-
-    double fontSize = screenWidth * 0.032;
     return InkWell(
       onTap: press,
       borderRadius: BorderRadius.circular(16),
@@ -760,9 +757,8 @@ class _berandaCard extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         children: [
           Container(
-            width: screenWidth * 0.26,
-            // limit height so the card doesn't overflow in tight constraints
-            height: screenWidth * 0.18,
+            width: screenWidth * 0.20,
+            height: screenWidth * 0.16,
             padding: const EdgeInsets.all(8),
             decoration: BoxDecoration(
               color: Theme.of(context).colorScheme.surface,
@@ -771,7 +767,7 @@ class _berandaCard extends StatelessWidget {
                 BoxShadow(
                   color: Theme.of(context).shadowColor.withAlpha(15),
                   blurRadius: 8,
-                  offset: Offset(0, 4),
+                  offset: const Offset(0, 4),
                 ),
               ],
             ),
@@ -784,26 +780,17 @@ class _berandaCard extends StatelessWidget {
               ),
             ),
           ),
-          const SizedBox(height: 4),
-          SizedBox(
-            width: screenWidth * 0.26,
-            child: MediaQuery(
-              data: MediaQuery.of(context).copyWith(
-                textScaler: TextScaler.noScaling,
+          const SizedBox(height: 6),
+          Flexible(
+            child: Text(
+              text,
+              textAlign: TextAlign.center,
+              style: const TextStyle(
+                fontSize: 11,
+                fontWeight: FontWeight.w600,
               ),
-              child: FittedBox(
-                fit: BoxFit.scaleDown,
-                child: SizedBox(
-                  width: screenWidth * 0.26,
-                  child: Text(
-                    text,
-                    textAlign: TextAlign.center,
-                    maxLines: 2,
-                    overflow: TextOverflow.ellipsis,
-                    style: TextStyle(fontSize: 11, fontWeight: FontWeight.w600),
-                  ),
-                ),
-              ),
+              maxLines: 2,
+              overflow: TextOverflow.ellipsis,
             ),
           ),
         ],

@@ -39,7 +39,7 @@ class _HomePageState extends State<HomePage> {
     String appBarTitle;
     switch (_selectedIndex) {
       case 1:
-        appBarTitle = 'Layanan Publik';
+        appBarTitle = 'Layanan Kota Madiun';
         break;
       case 2:
         appBarTitle = 'Berita & Informasi';
