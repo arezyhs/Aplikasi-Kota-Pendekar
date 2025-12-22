@@ -158,17 +158,14 @@ class _AudioPlayerWidgetState extends State<AudioPlayerWidget> {
     // so it can be cancelled in dispose.
     _playerStateSub = widget.player.playerStateStream.listen((playerState) {
       if (!mounted) return;
-      if (playerState.processingState == ProcessingState.completed ||
-          playerState.processingState == ProcessingState.idle) {
-        setState(() {
-          _isPlaying = false;
-        });
-      } else if (playerState.processingState == ProcessingState.ready ||
-          playerState.processingState == ProcessingState.buffering) {
-        setState(() {
-          _isPlaying = true;
-        });
-      }
+      // Only set playing when actually playing, not just ready/buffering from preload
+      final isActuallyPlaying = playerState.playing &&
+          (playerState.processingState == ProcessingState.ready ||
+              playerState.processingState == ProcessingState.buffering);
+
+      setState(() {
+        _isPlaying = isActuallyPlaying;
+      });
     });
   }
 
@@ -191,82 +188,73 @@ class _AudioPlayerWidgetState extends State<AudioPlayerWidget> {
     // Parent padding is provided by HomeScreen; avoid extra horizontal margin
     return Container(
       margin: EdgeInsets.zero,
-      child: GestureDetector(
-        onTap: () {
-          if (_isPlaying) {
-            widget.player.stop(); // Stop audio if it's playing
-          } else {
-            widget.player.play(); // Start audio if it's not playing
-          }
-        },
-        child: Card(
-          elevation: 2,
-          color: Colors.blue,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(20),
-          ),
-          child: SizedBox(
-            height: 120,
-            child: Container(
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(20),
-                image: const DecorationImage(
-                  image: AssetImage('assets/images/bannerlppl.png'),
-                  fit: BoxFit.fitWidth,
-                ),
+      child: Card(
+        elevation: 2,
+        color: Colors.blue,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(20),
+        ),
+        child: SizedBox(
+          height: 120,
+          child: Container(
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(20),
+              image: const DecorationImage(
+                image: AssetImage('assets/images/bannerlppl.png'),
+                fit: BoxFit.fitWidth,
               ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                crossAxisAlignment: CrossAxisAlignment.end,
-                children: [
-                  Padding(
-                    padding: EdgeInsets.zero,
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      crossAxisAlignment: CrossAxisAlignment.end,
-                      children: [
-                        Container(
-                          height: 96,
-                          child: MaterialButton(
-                            onPressed: () {
-                              if (_isPlaying) {
-                                widget.player
-                                    .stop(); // Stop audio if it's playing
-                              } else {
-                                widget.player
-                                    .play(); // Start audio if it's not playing
-                              }
+            ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              crossAxisAlignment: CrossAxisAlignment.end,
+              children: [
+                Padding(
+                  padding: EdgeInsets.zero,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: [
+                      Container(
+                        height: 96,
+                        child: MaterialButton(
+                          onPressed: () {
+                            if (_isPlaying) {
+                              widget.player
+                                  .stop(); // Stop audio if it's playing
+                            } else {
+                              widget.player
+                                  .play(); // Start audio if it's not playing
+                            }
+                          },
+                          highlightColor: Colors.transparent,
+                          splashColor: Colors.transparent,
+                          child: AnimatedSwitcher(
+                            duration: const Duration(milliseconds: 300),
+                            transitionBuilder:
+                                (Widget child, Animation<double> animation) {
+                              return ScaleTransition(
+                                scale: animation,
+                                child: child,
+                              );
                             },
-                            highlightColor: Colors.transparent,
-                            splashColor: Colors.transparent,
-                            child: AnimatedSwitcher(
-                              duration: const Duration(milliseconds: 300),
-                              transitionBuilder:
-                                  (Widget child, Animation<double> animation) {
-                                return ScaleTransition(
-                                  scale: animation,
-                                  child: child,
-                                );
-                              },
-                              child: _isPlaying
-                                  ? Image.asset('assets/images/pause.png',
-                                      key: const ValueKey("pause"),
-                                      width: 50,
-                                      height: 50,
-                                      fit: BoxFit.cover)
-                                  : Image.asset('assets/images/play.png',
-                                      key: const ValueKey("play"),
-                                      width: 50,
-                                      height: 50,
-                                      fit: BoxFit.cover),
-                            ),
+                            child: _isPlaying
+                                ? Image.asset('assets/images/pause.png',
+                                    key: const ValueKey("pause"),
+                                    width: 50,
+                                    height: 50,
+                                    fit: BoxFit.cover)
+                                : Image.asset('assets/images/play.png',
+                                    key: const ValueKey("play"),
+                                    width: 50,
+                                    height: 50,
+                                    fit: BoxFit.cover),
                           ),
                         ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
           ),
         ),

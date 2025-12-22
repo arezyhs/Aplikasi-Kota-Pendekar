@@ -467,15 +467,56 @@ class HomeScreen extends StatelessWidget {
 
         const SliverToBoxAdapter(child: SizedBox(height: 14)),
 
-        // PPID banner + Radio (Informasi Publik)
-        const SliverToBoxAdapter(
+        // PPID banner + Radio (Informasi Publik) - displayed separately, not in carousel
+        SliverToBoxAdapter(
           child: Column(
             children: [
-              SectionHeader(title: 'Informasi Publik'),
-              SizedBox(height: 12),
-              // carousel containing PPID banner(s) and radio slide
-              _InformasiPublik(),
-              SizedBox(height: 12),
+              const SectionHeader(title: 'Informasi Publik'),
+              const SizedBox(height: 12),
+              // PPID banner
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                child: GestureDetector(
+                  onTap: () => Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => const WebPpid()),
+                  ),
+                  child: Card(
+                    elevation: 2,
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(16)),
+                    clipBehavior: Clip.hardEdge,
+                    child: SizedBox(
+                      height: 160,
+                      width: double.infinity,
+                      child: Center(
+                        child: Image.asset(
+                          'assets/images/ppidbanner.png',
+                          fit: BoxFit.fitWidth,
+                          width: double.infinity,
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+              const SizedBox(height: 12),
+              // Radio - displayed separately for better visibility
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                child: Card(
+                  elevation: 2,
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(16)),
+                  clipBehavior: Clip.hardEdge,
+                  child: SizedBox(
+                    height: 160,
+                    width: double.infinity,
+                    child: HomePlayer(),
+                  ),
+                ),
+              ),
+              const SizedBox(height: 12),
             ],
           ),
         ),
