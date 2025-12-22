@@ -207,7 +207,7 @@ class _NewsPreviewState extends State<NewsPreview> {
             const SizedBox(height: 10),
             // Gambar + Judul (larger image)
             Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 // Gambar - Larger size
                 imageUrl != null
@@ -535,17 +535,49 @@ class HomeScreen extends StatelessWidget {
 }
 
 // ----- Embedded Layanan Utama (home-only) -----
-class _LayananUtama extends StatefulWidget {
+class _LayananUtama extends StatelessWidget {
   const _LayananUtama({Key? key}) : super(key: key);
 
   @override
-  State<_LayananUtama> createState() => _LayananUtamaState();
-}
-
-class _LayananUtamaState extends State<_LayananUtama> {
-  @override
   Widget build(BuildContext context) {
-    // featured services (Mbangun Swarga & Manekin) — keep these separate
+    // Featured categories - top 6 dari Layanan Utama
+    final categories = [
+      {
+        "icon": "assets/images/imgicon/puskesmas.png",
+        "text": "Kesehatan",
+        "page": const LayananKesehatan()
+      },
+      {
+        "icon": "assets/images/imgicon/pasaremadiun.png",
+        "text": "Publik",
+        "page": const LayananPublik()
+      },
+      {
+        "icon": "assets/images/imgicon/wbs.png",
+        "text": "Pengaduan",
+        "page": const LayananPengaduan()
+      },
+      {
+        "icon": "assets/images/imgicon/opendata.png",
+        "text": "Informasi",
+        "page": const LayananInformasi()
+      },
+      {
+        "icon": "assets/images/imgicon/cctv.png",
+        "text": "CCTV",
+        "page": const BaseWebViewPage(
+          url: "http://103.149.120.205/cctv/",
+          title: "CCTV",
+        ),
+      },
+      {
+        "icon": "assets/images/imgicon/ekinerja.png",
+        "text": "ASN",
+        "page": const LayananAsn()
+      },
+    ];
+
+    // Featured programs: Mbangun Swarga & Manekin
     final featured = [
       {
         "icon": "assets/images/imgicon/mbangun.png",
@@ -559,49 +591,9 @@ class _LayananUtamaState extends State<_LayananUtama> {
       },
     ];
 
-    // categories grid (exclude featured) - top 6 most important services
-    final combined = [
-      {
-        "icon": "assets/images/imgicon/puskesmas.png",
-        "text": "Layanan Kesehatan",
-        "page": const LayananKesehatan()
-      },
-      {
-        "icon": "assets/images/imgicon/pasaremadiun.png",
-        "text": "Layanan Publik",
-        "page": const LayananPublik()
-      },
-      {
-        "icon": "assets/images/imgicon/wbs.png",
-        "text": "Layanan Pengaduan",
-        "page": const LayananPengaduan()
-      },
-      {
-        "icon": "assets/images/imgicon/opendata.png",
-        "text": "Layanan Informasi",
-        "page": const LayananInformasi()
-      },
-      {
-        "icon": "assets/images/imgicon/cctv.png",
-        "text": "CCTV",
-        "page": const BaseWebViewPage(
-          url: "http://103.149.120.205/cctv/",
-          title: "CCTV",
-        ),
-      },
-      {
-        "icon": "assets/images/imgicon/ekinerja.png",
-        "text": "Layanan ASN",
-        "page": const LayananAsn()
-      },
-    ];
-
-    // Show only top 6 services
-    final categories = combined.take(6).toList();
-
     return Column(
       children: [
-        // categories grid 3x2
+        // Categories grid 3x2
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16.0),
           child: GridView.count(
@@ -619,27 +611,7 @@ class _LayananUtamaState extends State<_LayananUtama> {
                 return InkWell(
                   onTap: () async {
                     final page = item['page'];
-                    final appId = item['appId'] as String?;
-
-                    if (appId != null) {
-                      // Handle external app (CCTV)
-                      final playStoreUrl =
-                          'https://play.google.com/store/apps/details?id=$appId';
-                      final uri = Uri.parse(playStoreUrl);
-                      final messenger = ScaffoldMessenger.of(context);
-
-                      if (await canLaunchUrl(uri)) {
-                        await launchUrl(uri,
-                            mode: LaunchMode.externalApplication);
-                      } else {
-                        messenger.showSnackBar(
-                          const SnackBar(
-                              content: Text('Tidak dapat membuka Play Store')),
-                        );
-                      }
-                    } else if (page is DialogWarning) {
-                      DialogWarning.show(context);
-                    } else if (page is Widget) {
+                    if (page is Widget) {
                       Navigator.push(
                           context, MaterialPageRoute(builder: (_) => page));
                     }
