@@ -18,6 +18,7 @@ import 'package:pendekar/daftarAplikasi/aplikasi%20warga/awaksigap.dart';
 import 'package:pendekar/daftarAplikasi/aplikasi%20warga/madiuntoday.dart';
 import 'package:pendekar/daftarAplikasi/aplikasi%20warga/mbangunswarga.dart';
 import 'package:pendekar/daftarAplikasi/aplikasi%20warga/opendata.dart';
+import 'package:pendekar/utils/web_container_page.dart';
 import 'package:pendekar/daftarAplikasi/aplikasi%20warga/peceltumpang.dart';
 import 'package:pendekar/homepage/menu/layanan_asn.dart';
 import 'package:pendekar/homepage/menu/layanankesehatan.dart';
@@ -77,8 +78,10 @@ class _CategoriesState extends State<Categories> with TickerProviderStateMixin {
       {
         "icon": "assets/images/imgicon/ekinerja.png",
         "text": "CCTV",
-        "appId": "id.olean.cctv_madiun",
-        "uriScheme": "cctv://",
+        "page": const BaseWebViewPage(
+          url: "http://103.149.120.205/cctv/",
+          title: "CCTV",
+        ),
       },
       {
         "icon": "assets/images/imgicon/peceltumpang.png",

@@ -18,6 +18,7 @@ import 'package:http/http.dart' as http;
 import 'package:url_launcher/url_launcher.dart';
 import 'package:pendekar/homepage/views/components/switch_tab_notification.dart';
 import 'package:pendekar/daftarAplikasi/aplikasi%20warga/ppid.dart';
+import 'package:pendekar/utils/web_container_page.dart';
 
 // Small news preview widget (fetches top 3 news from configured RSS json feeds)
 class NewsPreview extends StatefulWidget {
@@ -542,8 +543,10 @@ class _LayananUtamaState extends State<_LayananUtama> {
       {
         "icon": "assets/images/imgicon/cctv.png",
         "text": "CCTV",
-        "appId": "id.olean.cctv_madiun",
-        "uriScheme": "cctv://",
+        "page": const BaseWebViewPage(
+          url: "http://103.149.120.205/cctv/",
+          title: "CCTV",
+        ),
       },
       {
         "icon": "assets/images/imgicon/ekinerja.png",

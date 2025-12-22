@@ -1,9 +1,6 @@
 // ignore_for_file: prefer_const_constructors, unused_field, camel_case_types, sized_box_for_whitespace
 
 import 'package:flutter/material.dart';
-import 'package:pendekar/constants/constant.dart';
-// import 'package:pendekar/daftarAplikasi/aplikasi%20ASN/ewaris.dart';
-import 'package:pendekar/homepage/size_config.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class Lainnya extends StatefulWidget {
@@ -28,28 +25,39 @@ class _LainnyaState extends State<Lainnya> {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     return Scaffold(
       body: Container(
         decoration: BoxDecoration(
           gradient: LinearGradient(
             begin: Alignment.topRight,
             end: Alignment.bottomLeft,
-            colors: const [
-              Colors.white,
-              Colors.white,
-              Color.fromARGB(255, 255, 255, 255),
-            ],
+            colors: isDark
+                ? [
+                    const Color(0xFF1A1A1A),
+                    const Color(0xFF121212),
+                  ]
+                : const [
+                    Color(0xFFF7F9FC),
+                    Color(0xFFFFFFFF),
+                  ],
           ),
         ),
-        padding: EdgeInsets.all(20.0),
+        padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 12.0),
         child: ListView(
           children: <Widget>[
-            _tittleLainnya(),
-            const SizedBox(height: 20.0),
+            const SizedBox(height: 8.0),
             TextField(
               decoration: InputDecoration(
-                labelText: 'Cari Aplikasi',
-                border: OutlineInputBorder(),
+                hintText: 'Cari aplikasi...',
+                prefixIcon: const Icon(Icons.search),
+                filled: true,
+                fillColor: Theme.of(context).colorScheme.surface,
+                contentPadding: const EdgeInsets.symmetric(vertical: 12.0),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(12.0),
+                  borderSide: BorderSide.none,
+                ),
               ),
               onChanged: (value) {
                 setState(() {
@@ -57,38 +65,11 @@ class _LainnyaState extends State<Lainnya> {
                 });
               },
             ),
-            const SizedBox(height: 20.0),
+            const SizedBox(height: 16.0),
             _appLainnya(context),
           ],
         ),
       ),
-    );
-  }
-
-  Widget _tittleLainnya() {
-    final screenWidth = MediaQuery.of(context).size.width;
-    double fontSize = screenWidth * 0.05;
-    return Row(
-      children: <Widget>[
-        IconButton(
-          icon: Icon(Icons.api),
-          onPressed: () {
-            // Aksi ketika tombol "arrow_back" diklik
-          },
-        ),
-        Padding(
-          padding: EdgeInsets.only(top: 12.0, left: 4.0),
-        ),
-        Text(
-          "Layanan Lainnya",
-          textAlign: TextAlign.left,
-          style: TextStyle(
-            color: Color.fromARGB(255, 11, 11, 11),
-            fontSize: fontSize,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-      ],
     );
   }
 
@@ -132,11 +113,11 @@ class _LainnyaState extends State<Lainnya> {
     return GridView.builder(
       shrinkWrap: true,
       physics: BouncingScrollPhysics(),
-      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
         crossAxisCount: 3,
-        childAspectRatio: 1,
-        crossAxisSpacing: 1.0,
-        mainAxisSpacing: 10.0,
+        childAspectRatio: 1.0,
+        crossAxisSpacing: 12.0,
+        mainAxisSpacing: 12.0,
       ),
       itemCount: filteredCategories.length,
       itemBuilder: (context, index) => _berandaCard(
@@ -177,50 +158,50 @@ class _berandaCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
-    final screenHeight = MediaQuery.of(context).size.height;
-
-    double fontSize = screenWidth * 0.032;
-    return GestureDetector(
+    return InkWell(
       onTap: press,
-      child: Container(
-        width: getProportionateScreenWidth(10),
-        height: getProportionateScreenWidth(10),
-        child: Column(
-          children: [
-            Card(
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(20), // Sudut melengkung
-              ),
-              elevation: 5, // Bayangan untuk efek 3D
-              shadowColor: Colors.black, // Warna bayangan
-              child: Container(
-                padding: EdgeInsets.all(getProportionateScreenWidth(10)),
-                height: screenHeight * 0.08,
-                width: screenWidth * 0.22,
-                decoration: BoxDecoration(
-                  color: hThirdColor.withAlpha(128),
-                  borderRadius: BorderRadius.circular(20),
+      borderRadius: BorderRadius.circular(16),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Container(
+            width: screenWidth * 0.20,
+            height: screenWidth * 0.16,
+            padding: const EdgeInsets.all(8),
+            decoration: BoxDecoration(
+              color: Theme.of(context).colorScheme.surface,
+              borderRadius: BorderRadius.circular(14),
+              boxShadow: [
+                BoxShadow(
+                  color: Theme.of(context).shadowColor.withAlpha(15),
+                  blurRadius: 8,
+                  offset: const Offset(0, 4),
                 ),
-                child: Center(
-                  child: Image.asset(
-                    icon,
-                    width: getProportionateScreenWidth(70),
-                    height: getProportionateScreenWidth(70),
-                  ),
-                ),
+              ],
+            ),
+            child: Center(
+              child: Image.asset(
+                icon,
+                width: screenWidth * 0.14,
+                height: screenWidth * 0.14,
+                fit: BoxFit.contain,
               ),
             ),
-            const SizedBox(height: 5),
-            Expanded(
-              child: Text(
-                text,
-                textAlign: TextAlign.center,
-                style:
-                    TextStyle(fontSize: fontSize, fontWeight: FontWeight.bold),
+          ),
+          const SizedBox(height: 6),
+          Flexible(
+            child: Text(
+              text,
+              textAlign: TextAlign.center,
+              style: const TextStyle(
+                fontSize: 11,
+                fontWeight: FontWeight.w600,
               ),
+              maxLines: 2,
+              overflow: TextOverflow.ellipsis,
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
