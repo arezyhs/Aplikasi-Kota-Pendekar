@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:pendekar/utils/services/local_storage_service.dart';
 import 'package:pendekar/utils/accessibility_provider.dart';
 import 'package:pendekar/utils/theme_provider.dart';
@@ -65,10 +66,31 @@ class _SettingsScreenState extends State<SettingsScreen> {
     );
 
     if (confirm == true) {
-      // Clear cache logic here
-      messenger.showSnackBar(
-        const SnackBar(content: Text('Cache berhasil dihapus')),
-      );
+      try {
+        // Clear WebView cache
+        await InAppWebViewController.clearAllCache();
+
+        // Clear cookies
+        CookieManager cookieManager = CookieManager.instance();
+        await cookieManager.deleteAllCookies();
+
+        debugPrint('Cache cleared successfully');
+
+        messenger.showSnackBar(
+          const SnackBar(
+            content: Text('Cache dan cookies berhasil dihapus'),
+            backgroundColor: Colors.green,
+          ),
+        );
+      } catch (e) {
+        debugPrint('Error clearing cache: $e');
+        messenger.showSnackBar(
+          SnackBar(
+            content: Text('Gagal menghapus cache: $e'),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
     }
   }
 
