@@ -562,6 +562,11 @@ class _LayananUtama extends StatelessWidget {
         "text": "Informasi",
         "page": const LayananInformasi()
       },
+            {
+        "icon": "assets/images/imgicon/ekinerja.png",
+        "text": "ASN",
+        "page": const LayananAsn()
+      },
       {
         "icon": "assets/images/imgicon/cctv.png",
         "text": "CCTV",
@@ -569,11 +574,6 @@ class _LayananUtama extends StatelessWidget {
           url: "http://103.149.120.205/cctv/",
           title: "CCTV",
         ),
-      },
-      {
-        "icon": "assets/images/imgicon/ekinerja.png",
-        "text": "ASN",
-        "page": const LayananAsn()
       },
     ];
 
