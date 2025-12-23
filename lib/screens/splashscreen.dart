@@ -3,6 +3,7 @@ import 'package:pendekar/homepage/size_config.dart';
 import 'package:pendekar/homepage/views/home/home_view.dart';
 
 class SplashScreen extends StatefulWidget {
+  static String routeName = "/";
   const SplashScreen({super.key});
 
   @override
@@ -17,9 +18,7 @@ class _SplashScreenState extends State<SplashScreen> {
     // Navigate after 3 seconds
     Future.delayed(const Duration(seconds: 3), () {
       if (mounted) {
-        Navigator.of(context).pushReplacement(
-          MaterialPageRoute(builder: (_) => const HomePage()),
-        );
+        Navigator.of(context).pushReplacementNamed(HomePage.routeName);
       }
     });
   }

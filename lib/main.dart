@@ -4,7 +4,8 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_downloader/flutter_downloader.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
-import 'package:pendekar/homepage/views/splash/splashscreen.dart';
+import 'package:pendekar/screens/splashscreen.dart';
+import 'package:pendekar/routes.dart';
 import 'package:pendekar/constants/navigation.dart';
 import 'package:pendekar/utils/services/local_storage_service.dart';
 import 'package:pendekar/utils/accessibility_provider.dart';
@@ -79,7 +80,8 @@ class MyApp extends StatelessWidget {
                   child: child!,
                 );
               },
-              home: SplashScreen(),
+              routes: route,
+              initialRoute: SplashScreen.routeName,
             );
           },
         );
