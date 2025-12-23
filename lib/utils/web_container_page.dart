@@ -123,70 +123,91 @@ class _BaseWebViewPageState extends State<BaseWebViewPage> {
   Widget build(BuildContext context) {
     final screenHeight = MediaQuery.of(context).size.height;
 
-    return Scaffold(
-      backgroundColor: Colors.white,
-      appBar: widget.showAppBar
-          ? AppBar(
-              backgroundColor: Colors.white,
-              elevation: 0,
-              iconTheme: const IconThemeData(color: Colors.black87),
-              title: Text(
-                widget.title,
-                style: const TextStyle(
-                  color: Colors.black87,
-                  fontWeight: FontWeight.w700,
+    return PopScope(
+      canPop: false,
+      onPopInvokedWithResult: (bool didPop, dynamic result) async {
+        if (didPop) return;
+
+        // Cek apakah WebView bisa back
+        if (_webViewController != null) {
+          final canGoBack = await _webViewController!.canGoBack();
+          if (canGoBack) {
+            // Jika masih ada history di WebView, back di dalam WebView
+            await _webViewController!.goBack();
+            return;
+          }
+        }
+
+        // Jika tidak bisa back lagi di WebView, keluar dari halaman
+        if (context.mounted) {
+          Navigator.of(context).pop();
+        }
+      },
+      child: Scaffold(
+        backgroundColor: Colors.white,
+        appBar: widget.showAppBar
+            ? AppBar(
+                backgroundColor: Colors.white,
+                elevation: 0,
+                iconTheme: const IconThemeData(color: Colors.black87),
+                title: Text(
+                  widget.title,
+                  style: const TextStyle(
+                    color: Colors.black87,
+                    fontWeight: FontWeight.w700,
+                  ),
+                ),
+                actions: _buildAppBarActions(),
+              )
+            : null,
+        body: SafeArea(
+          child: Column(
+            children: [
+              if (widget.showAppBar) SizedBox(height: screenHeight * 0.01),
+              Expanded(
+                child: Stack(
+                  children: [
+                    InAppWebView(
+                      initialUrlRequest: URLRequest(url: WebUri(widget.url)),
+                      initialSettings: InAppWebViewSettings(
+                        clearCache: false,
+                        cacheEnabled: true,
+                        transparentBackground: true,
+                        supportZoom: true,
+                        useOnDownloadStart: true,
+                        mediaPlaybackRequiresUserGesture: false,
+                        allowFileAccessFromFileURLs: true,
+                        allowUniversalAccessFromFileURLs: true,
+                        javaScriptCanOpenWindowsAutomatically: true,
+                        javaScriptEnabled: true,
+                      ),
+                      onWebViewCreated: (controller) {
+                        _webViewController = controller;
+                      },
+                      onPermissionRequest: (controller, request) async {
+                        return PermissionResponse(
+                          resources: request.resources,
+                          action: PermissionResponseAction.GRANT,
+                        );
+                      },
+                      onLoadStop: (controller, url) async {
+                        setState(() {
+                          isLoading = false;
+                        });
+                        widget.onLoadComplete?.call();
+                      },
+                      onLoadStart: (controller, url) {
+                        setState(() {
+                          isLoading = true;
+                        });
+                      },
+                    ),
+                    if (isLoading) _buildLoadingWidget(),
+                  ],
                 ),
               ),
-              actions: _buildAppBarActions(),
-            )
-          : null,
-      body: SafeArea(
-        child: Column(
-          children: [
-            if (widget.showAppBar) SizedBox(height: screenHeight * 0.01),
-            Expanded(
-              child: Stack(
-                children: [
-                  InAppWebView(
-                    initialUrlRequest: URLRequest(url: WebUri(widget.url)),
-                    initialSettings: InAppWebViewSettings(
-                      clearCache: false,
-                      cacheEnabled: true,
-                      transparentBackground: true,
-                      supportZoom: true,
-                      useOnDownloadStart: true,
-                      mediaPlaybackRequiresUserGesture: false,
-                      allowFileAccessFromFileURLs: true,
-                      allowUniversalAccessFromFileURLs: true,
-                      javaScriptCanOpenWindowsAutomatically: true,
-                      javaScriptEnabled: true,
-                    ),
-                    onWebViewCreated: (controller) {
-                      _webViewController = controller;
-                    },
-                    onPermissionRequest: (controller, request) async {
-                      return PermissionResponse(
-                        resources: request.resources,
-                        action: PermissionResponseAction.GRANT,
-                      );
-                    },
-                    onLoadStop: (controller, url) async {
-                      setState(() {
-                        isLoading = false;
-                      });
-                      widget.onLoadComplete?.call();
-                    },
-                    onLoadStart: (controller, url) {
-                      setState(() {
-                        isLoading = true;
-                      });
-                    },
-                  ),
-                  if (isLoading) _buildLoadingWidget(),
-                ],
-              ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
