@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:pendekar/homepage/size_config.dart';
-import 'package:pendekar/homepage/views/home/home_view.dart';
+import 'package:pendekar/utils/size_config.dart';
+import 'package:pendekar/screens/home/home_shell.dart';
 
 class SplashScreen extends StatefulWidget {
   static String routeName = "/";
@@ -18,7 +18,7 @@ class _SplashScreenState extends State<SplashScreen> {
     // Navigate after 3 seconds
     Future.delayed(const Duration(seconds: 3), () {
       if (mounted) {
-        Navigator.of(context).pushReplacementNamed(HomePage.routeName);
+        Navigator.of(context).pushReplacementNamed(HomeShell.routeName);
       }
     });
   }

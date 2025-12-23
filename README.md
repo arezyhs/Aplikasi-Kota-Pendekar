@@ -6,20 +6,26 @@ Aplikasi mobile smart governance untuk layanan pemerintahan Kota Madiun berbasis
 
 **Pendekar** (Peceland) adalah aplikasi mobile yang menyediakan akses terintegrasi ke berbagai layanan pemerintahan Kota Madiun. Aplikasi ini menggabungkan portal layanan online, feed berita real-time, radio streaming, dan dukungan pelanggan dalam satu platform yang mudah digunakan.
 
+## 📸 Screenshots
+
+| ![](screenshots/splash.jpg) | ![](screenshots/home.jpg) | ![](screenshots/layanan.jpg) |
+|:---:|:---:|:---:|
+| ![](screenshots/berita.jpg) | ![](screenshots/radio.jpg) | ![](screenshots/settings.jpg) |
+
 ## Fitur
 
-- **Beranda** - Banner informasi, quick actions, dan grid menu 50+ layanan pemerintahan
-- **Feed Berita** - Agregasi berita dari Instagram (@pemkotmadiun_, @ppidkotamadiun, @93fmsuaramadiun) dengan pagination
-- **Radio Streaming** - Suara Madiun 93FM dengan visualisasi audio
-- **Layanan** - Akses ke aplikasi warga (JDIH, Open Data, Pengaduan), ASN (E-Office, Absen Rapat), Edukasi, dan UMKM
-- **Pengaturan** - Privacy policy, terms & conditions, informasi aplikasi
+- **Beranda** - Banner carousel, grid menu 50+ layanan, preview berita terbaru, dan radio player 93FM
+- **Layanan** - 6 kategori layanan: ASN (E-Office, Absen Rapat), Publik (JDIH, Open Data), Kesehatan, Pengaduan, Informasi, dan UMKM
+- **Feed Berita** - Agregasi berita dari 3 RSS feeds dengan infinite scroll pagination
+- **Radio Streaming** - Live streaming Suara Madiun 93FM dengan visualisasi audio waveform
+- **Pengaturan** - Dark mode, aksesibilitas (font scaling, high contrast), privacy policy, terms & conditions, informasi aplikasi
 
 ## Teknologi
 
 - Flutter 3.0.5+
 - Android (minimum API 21)
 - WebView integration
-- Audio streaming
+- Audio streaming (just_audio)
 - RSS feed aggregation
 
 ## Instalasi
@@ -47,12 +53,6 @@ flutter pub get
 flutter run
 ```
 
-## 📸 Screenshots
-
-| ![](screenshots/splash.jpg) | ![](screenshots/home.jpg) | ![](screenshots/layanan.jpg) |
-|:---:|:---:|:---:|
-| ![](screenshots/berita.jpg) | ![](screenshots/radio.jpg) | ![](screenshots/settings.jpg) |
-
 ## Build Release
 
 ### Universal APK (85.8 MB)
@@ -74,29 +74,34 @@ flutter build appbundle --release
 
 ```
 Aplikasi-Kota-Pendekar/
+├── android/                # Konfigurasi native Android
+├── ios/                    # Konfigurasi native iOS
+├── assets/                 # Fonts, icons, images (34 MB)
 │
-├── android/                    # Konfigurasi Android native
-├── ios/                        # Konfigurasi iOS native
-│
-├── assets/                     # Asset statis (34 MB)
-│   ├── fonts/                  # Custom fonts
-│   ├── icons/                  # App icons
-│   ├── images/                 # UI images & banners
-│   └── imgOpendata/            # Open data images
-│
-├── lib/                        # Source code Dart
-│   ├── main.dart              # Entry point
-│   ├── routes.dart            # App routes
-│   ├── api/                   # API services
-│   ├── constants/             # App constants
-│   ├── daftarAplikasi/        # Menu aplikasi (50+ screens)
-│   ├── homepage/              # Home screen
-│   ├── screens/               # Main screens (berita, layanan, settings)
-│   └── utils/                 # Helpers & utilities
-│
-├── pubspec.yaml               # Dependencies
-└── README.md
+└── lib/
+    ├── main.dart          # Entry point aplikasi
+    ├── routes.dart        # Definisi routing
+    │
+    ├── screens/           # UI screens
+    │   ├── home/          # Home shell & content
+    │   ├── layanan/       # 6 kategori layanan screens
+    │   ├── berita/        # News feed
+    │   └── settings/      # Settings & info pages
+    │
+    ├── widgets/           # Komponen reusable
+    │   ├── home_banner.dart
+    │   ├── radio_player.dart
+    │   ├── news_preview_widget.dart
+    │   └── layanan_utama_widget.dart
+    │
+    ├── models/            # Data models & structures
+    ├── constants/         # Static data & configurations
+    ├── api/               # API service layers
+    ├── utils/             # Helpers, services & utilities
+    └── daftarAplikasi/    # 50+ webview service screens
 ```
+
+**Arsitektur**: Clean code dengan separation of concerns - screens untuk UI, widgets untuk komponen reusable, models untuk data structures, dan utils untuk helper functions.
 
 ## Kontribusi
 

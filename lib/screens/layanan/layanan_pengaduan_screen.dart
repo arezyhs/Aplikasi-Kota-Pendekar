@@ -4,8 +4,8 @@
 import 'package:flutter/material.dart';
 import 'package:pendekar/widgets/category_menu_screen.dart';
 
-class LayananPengaduan extends StatelessWidget {
-  const LayananPengaduan({super.key});
+class LayananPengaduanScreen extends StatelessWidget {
+  const LayananPengaduanScreen({super.key});
 
   @override
   Widget build(BuildContext context) {

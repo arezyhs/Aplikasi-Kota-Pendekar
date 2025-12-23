@@ -3,12 +3,12 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 
-class HomeCaraousel extends StatefulWidget {
+class HomeCarousel extends StatefulWidget {
   @override
-  State<StatefulWidget> createState() => _HomeCraouselState();
+  State<StatefulWidget> createState() => _HomeCarouselState();
 }
 
-class _HomeCraouselState extends State<HomeCaraousel> {
+class _HomeCarouselState extends State<HomeCarousel> {
   @override
   Widget build(BuildContext context) {
     final items = <Widget>[];

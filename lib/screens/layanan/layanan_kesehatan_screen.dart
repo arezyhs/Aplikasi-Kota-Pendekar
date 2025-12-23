@@ -4,14 +4,14 @@
 import 'package:flutter/material.dart';
 import 'package:pendekar/widgets/category_menu_screen.dart';
 
-class LayananPublik extends StatelessWidget {
-  const LayananPublik({super.key});
+class LayananKesehatanScreen extends StatelessWidget {
+  const LayananKesehatanScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
     return CategoryMenuScreen(
-      categoryId: 'publik',
-      title: 'Layanan Publik',
+      categoryId: 'kesehatan',
+      title: 'Layanan Kesehatan',
     );
   }
 }

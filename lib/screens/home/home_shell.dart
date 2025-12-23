@@ -2,19 +2,21 @@ import 'package:flutter/material.dart';
 import 'package:pendekar/screens/home/home_screen.dart';
 import 'package:pendekar/screens/berita/berita_screen.dart';
 import 'package:pendekar/screens/layanan/layanan_screen.dart';
-import 'package:pendekar/homepage/views/components/switch_tab_notification.dart';
+import 'package:pendekar/utils/notifications/switch_tab_notification.dart';
 import 'package:pendekar/screens/settings/settings_screen.dart';
 
-class HomePage extends StatefulWidget {
+/// Shell halaman utama dengan BottomNavigationBar
+/// Mengelola navigasi antar tab: Home, Layanan, Berita
+class HomeShell extends StatefulWidget {
   static String routeName = "/home";
 
-  const HomePage({super.key});
+  const HomeShell({super.key});
 
   @override
-  State<HomePage> createState() => _HomePageState();
+  State<HomeShell> createState() => _HomeShellState();
 }
 
-class _HomePageState extends State<HomePage> {
+class _HomeShellState extends State<HomeShell> {
   int _selectedIndex = 0;
   // maintain navigation history of tapped indices to support back navigation
   final List<int> _navigationHistory = [0];
@@ -116,66 +118,3 @@ class _HomePageState extends State<HomePage> {
     );
   }
 }
-
-// class HomePage extends StatelessWidget {
-//   static String routeName = "/home";
-
-//   const HomePage({super.key});
-//   @override
-//   Widget build(BuildContext context) {
-//     return const Scaffold(
-//       body: BodyV2(),
-//     );
-//   }
-// }
-
-// class HomePage extends StatefulWidget {
-//   const HomePage({super.key, required this.title});
-
-//   final String title;
-
-//   @override
-//   State<HomePage> createState() => _HomePageState();
-// }
-
-// class _HomePageState extends State<HomePage> {
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       body: getBody(),
-//     );
-//   }
-
-//   Widget getBody() {
-//     var size = MediaQuery.of(context).size;
-//     return ListView(
-//       children: [
-//         Column(
-//           crossAxisAlignment: CrossAxisAlignment.start,
-//           children: [
-//             SizedBox(
-//               height: 15,
-//             ),
-//             Row(
-//               mainAxisAlignment: MainAxisAlignment.center,
-//               children: [
-//                 Container(
-//                   decoration: BoxDecoration(
-//                       color: Colors.black,
-//                       borderRadius: BorderRadius.circular(30)),
-//                   child: Padding(
-//                     padding:
-//                         EdgeInsets.only(left: 15, right: 15, bottom: 8, top: 8),
-//                     child: Row(
-//                       children: [Text("data")],
-//                     ),
-//                   ),
-//                 )
-//               ],
-//             )
-//           ],
-//         )
-//       ],
-//     );
-//   }
-// }
