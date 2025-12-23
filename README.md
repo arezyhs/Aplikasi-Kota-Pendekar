@@ -47,6 +47,12 @@ flutter pub get
 flutter run
 ```
 
+## 📸 Screenshots
+
+| ![](screenshots/splash.jpg) | ![](screenshots/home.jpg) | ![](screenshots/layanan.jpg) |
+|:---:|:---:|:---:|
+| ![](screenshots/berita.jpg) | ![](screenshots/radio.jpg) | ![](screenshots/settings.jpg) |
+
 ## Build Release
 
 ### Universal APK (85.8 MB)
