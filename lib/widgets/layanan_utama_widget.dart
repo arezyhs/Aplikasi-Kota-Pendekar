@@ -72,8 +72,8 @@ class LayananUtamaWidget extends StatelessWidget {
           padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg),
           child: GridView.count(
             crossAxisCount: 3,
-            crossAxisSpacing: 8,
-            mainAxisSpacing: 4,
+            crossAxisSpacing: AppSpacing.sm,
+            mainAxisSpacing: AppSpacing.xxs,
             childAspectRatio: 1.0,
             shrinkWrap: true,
             physics: const NeverScrollableScrollPhysics(),
@@ -97,7 +97,7 @@ class LayananUtamaWidget extends StatelessWidget {
                       Container(
                         width: screenWidth * 0.20,
                         height: screenWidth * 0.16,
-                        padding: const EdgeInsets.all(8),
+                        padding: const EdgeInsets.all(AppSpacing.sm),
                         decoration: BoxDecoration(
                           color: Theme.of(context).colorScheme.surface,
                           borderRadius: BorderRadius.circular(14),
@@ -156,7 +156,7 @@ class LayananUtamaWidget extends StatelessWidget {
               const SwitchTabNotification(1).dispatch(context);
             },
             style: OutlinedButton.styleFrom(
-              padding: const EdgeInsets.symmetric(vertical: 14),
+              padding: const EdgeInsets.symmetric(vertical: AppSpacing.md),
               side: BorderSide(
                   color: Theme.of(context).colorScheme.primary, width: 1.5),
               shape: RoundedRectangleBorder(
@@ -168,7 +168,7 @@ class LayananUtamaWidget extends StatelessWidget {
               children: [
                 Icon(Icons.grid_view,
                     color: Theme.of(context).colorScheme.primary, size: 18),
-                const SizedBox(width: 8),
+                const SizedBox(width: AppSpacing.sm),
                 Text(
                   'Lihat Semua Layanan',
                   style: TextStyle(
@@ -192,7 +192,7 @@ class LayananUtamaWidget extends StatelessWidget {
             child: ListView.separated(
               scrollDirection: Axis.horizontal,
               itemCount: featured.length,
-              separatorBuilder: (_, __) => const SizedBox(width: 16),
+              separatorBuilder: (_, __) => const SizedBox(width: AppSpacing.lg),
               itemBuilder: (context, index) {
                 final item = featured[index];
                 final screenWidth = MediaQuery.of(context).size.width;
@@ -259,7 +259,7 @@ class LayananUtamaWidget extends StatelessWidget {
                         ),
                         // Content
                         Padding(
-                          padding: const EdgeInsets.all(16),
+                          padding: const EdgeInsets.all(AppSpacing.lg),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -281,7 +281,7 @@ class LayananUtamaWidget extends StatelessWidget {
                                     ),
                                   ],
                                 ),
-                                padding: const EdgeInsets.all(12),
+                                padding: const EdgeInsets.all(AppSpacing.md),
                                 child: Image.asset(
                                   item['icon'] as String,
                                   fit: BoxFit.contain,
