@@ -1,27 +1,28 @@
-// ignore_for_file: avoid_print, deprecated_member_use, prefer_const_constructors, unused_element, sized_box_for_whitespace, prefer_typing_uninitialized_variables, constant_identifier_names, must_call_super, unused_local_variable, non_constant_identifier_names, use_key_in_widget_constructors, unused_field
+// ignore_for_file: deprecated_member_use, constant_identifier_names
 
 import 'dart:async';
 
 import 'package:audio_session/audio_session.dart';
 import 'package:flutter/material.dart';
 import 'package:just_audio/just_audio.dart';
+import 'package:pendekar/utils/services/logger_service.dart';
 
 class RadioPlayer extends StatefulWidget {
+  const RadioPlayer({super.key});
+
   @override
   _RadioPlayerState createState() => _RadioPlayerState();
 }
 
 class _RadioPlayerState extends State<RadioPlayer>
     with AutomaticKeepAliveClientMixin {
-  static const int MAX_SAMPLES = 44100; // Ubah nilai sesuai kebutuhan Anda
-
   static String url = "https://play-93fm.madiunkota.go.id/live";
 
   late AudioSession session;
 
   List<double> audioSamples = []; // Data sampel audio
 
-  var duration;
+  Duration? duration;
 
   final player = AudioPlayer();
 
@@ -39,7 +40,7 @@ class _RadioPlayerState extends State<RadioPlayer>
 
   Future<void> initAudioSession() async {
     final session = await AudioSession.instance;
-    await session.configure(AudioSessionConfiguration(
+    await session.configure(const AudioSessionConfiguration(
       avAudioSessionCategory: AVAudioSessionCategory.playback,
       avAudioSessionMode: AVAudioSessionMode.defaultMode,
       avAudioSessionCategoryOptions:
@@ -86,7 +87,7 @@ class _RadioPlayerState extends State<RadioPlayer>
         });
       } catch (e) {
         // ignore errors if widget disposed or player closed
-        debugPrint('playAudio error: $e');
+        Logger.error('playAudio error', error: e);
       }
     }
   }
@@ -105,6 +106,7 @@ class _RadioPlayerState extends State<RadioPlayer>
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     return AudioPlayerWidget(
       player: player,
       audioSamples: audioSamples,
@@ -169,20 +171,6 @@ class _AudioPlayerWidgetState extends State<AudioPlayerWidget> {
     });
   }
 
-  void _togglePlayback() async {
-    if (_isPlaying) {
-      widget.stopAudio(); // Stop audio if it's playing
-      setState(() {
-        _isPlaying = false; // Update playback status
-      });
-    } else {
-      widget.playAudio(); // Start audio if it's not playing
-      setState(() {
-        _isPlaying = true; // Update playback status
-      });
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     // Parent padding is provided by HomeScreen; avoid extra horizontal margin
@@ -214,7 +202,7 @@ class _AudioPlayerWidgetState extends State<AudioPlayerWidget> {
                     mainAxisAlignment: MainAxisAlignment.end,
                     crossAxisAlignment: CrossAxisAlignment.end,
                     children: [
-                      Container(
+                      SizedBox(
                         height: 96,
                         child: MaterialButton(
                           onPressed: () {

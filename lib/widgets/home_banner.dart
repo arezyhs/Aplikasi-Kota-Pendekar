@@ -1,5 +1,3 @@
-// ignore_for_file: library_private_types_in_public_api, unused_local_variable
-
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 
@@ -22,9 +20,6 @@ class _HomeBannerState extends State<HomeBanner> {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-    final screenWidth = size.width;
-    double fontSize = screenWidth * 0.03;
-
     // Make banner full-width and cover-style so it spans edge-to-edge
     return Column(
       children: [

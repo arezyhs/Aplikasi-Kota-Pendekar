@@ -24,6 +24,7 @@ import 'package:pendekar/daftarAplikasi/aplikasi%20ASN/wbs.dart';
 import 'package:pendekar/daftarAplikasi/aplikasi%20warga/antrian_puskesmas.dart';
 import 'package:pendekar/daftarAplikasi/aplikasi%20warga/antrian_rs.dart';
 import 'package:pendekar/daftarAplikasi/aplikasi%20warga/awaksigap.dart';
+import 'package:pendekar/daftarAplikasi/aplikasi%20warga/cctv.dart';
 import 'package:pendekar/daftarAplikasi/aplikasi%20warga/esayur.dart';
 import 'package:pendekar/daftarAplikasi/aplikasi%20warga/madiuntoday.dart';
 import 'package:pendekar/daftarAplikasi/aplikasi%20warga/matawarga.dart';
@@ -236,6 +237,11 @@ class LayananData {
       icon: "assets/images/imgicon/sicakep.png",
       text: "AGENDA KOTA MADIUN",
       page: WebSicakep(),
+    ),
+    LayananApp(
+      icon: "assets/images/imgicon/cctv.png",
+      text: "CCTV",
+      page: WebCctv(),
     ),
   ];
 

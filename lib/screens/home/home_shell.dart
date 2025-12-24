@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:pendekar/constants/constant.dart';
 import 'package:pendekar/screens/home/home_screen.dart';
 import 'package:pendekar/screens/berita/berita_screen.dart';
 import 'package:pendekar/screens/layanan/layanan_screen.dart';
@@ -78,7 +79,7 @@ class _HomeShellState extends State<HomeShell> {
             centerTitle: false,
             title: Text(
               appBarTitle,
-              style: const TextStyle(fontWeight: FontWeight.w700),
+              style: const TextStyle(fontWeight: AppFontWeight.bold),
             ),
             actions: [
               IconButton(

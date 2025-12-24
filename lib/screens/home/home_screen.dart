@@ -8,6 +8,7 @@ import 'package:pendekar/daftarAplikasi/aplikasi%20warga/ppid.dart';
 import 'package:pendekar/widgets/news_preview_widget.dart';
 import 'package:pendekar/widgets/layanan_utama_widget.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:pendekar/constants/constant.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -22,12 +23,12 @@ class HomeScreen extends StatelessWidget {
         // Banner (clean, no overlay)
         const SliverToBoxAdapter(child: HomeBanner()),
 
-        const SliverToBoxAdapter(child: SizedBox(height: 12)),
+        const SliverToBoxAdapter(child: SizedBox(height: AppSpacing.md)),
 
         // Emergency Bar: Awak Sigap
         SliverToBoxAdapter(
           child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16.0),
+            padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg),
             child: GestureDetector(
               onTap: () async {
                 final whatsappUrl = Uri.parse('https://wa.me/08113577800');
@@ -37,8 +38,8 @@ class HomeScreen extends StatelessWidget {
                 }
               },
               child: Container(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 20, vertical: 14),
+                padding: const EdgeInsets.symmetric(
+                    horizontal: AppSpacing.xl, vertical: AppSpacing.md),
                 decoration: BoxDecoration(
                   gradient: const LinearGradient(
                     colors: [
@@ -60,7 +61,7 @@ class HomeScreen extends StatelessWidget {
                 child: Row(
                   children: [
                     Container(
-                      padding: const EdgeInsets.all(10),
+                      padding: const EdgeInsets.all(AppSpacing.sm),
                       decoration: BoxDecoration(
                         color: Colors.white.withValues(alpha: 0.2),
                         borderRadius: BorderRadius.circular(12),
@@ -71,7 +72,7 @@ class HomeScreen extends StatelessWidget {
                         height: 32,
                       ),
                     ),
-                    const SizedBox(width: 16),
+                    const SizedBox(width: AppSpacing.lg),
                     Expanded(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -80,17 +81,17 @@ class HomeScreen extends StatelessWidget {
                             'AWAK SIGAP',
                             style: TextStyle(
                               color: Colors.white,
-                              fontSize: 16,
-                              fontWeight: FontWeight.bold,
+                              fontSize: AppTextSize.subtitle,
+                              fontWeight: AppFontWeight.bold,
                               letterSpacing: 0.5,
                             ),
                           ),
-                          const SizedBox(height: 2),
+                          const SizedBox(height: AppSpacing.xxs),
                           Text(
                             'Anda WA, Kami Siap Segera Tanggap!',
                             style: TextStyle(
                               color: Colors.white.withValues(alpha: 0.95),
-                              fontSize: 11,
+                              fontSize: AppTextSize.caption,
                               fontStyle: FontStyle.italic,
                             ),
                           ),
@@ -100,7 +101,7 @@ class HomeScreen extends StatelessWidget {
                     const Icon(
                       Icons.arrow_forward_ios,
                       color: Colors.white,
-                      size: 18,
+                      size: 20,
                     ),
                   ],
                 ),
@@ -109,16 +110,16 @@ class HomeScreen extends StatelessWidget {
           ),
         ),
 
-        const SliverToBoxAdapter(child: SizedBox(height: 14)),
+        const SliverToBoxAdapter(child: SizedBox(height: AppSpacing.md)),
 
         // Featured Programs & Layanan Utama Grid
         const SliverToBoxAdapter(
           child: Column(
             children: [
               SectionHeader(title: 'Layanan Utama'),
-              SizedBox(height: 8),
+              SizedBox(height: AppSpacing.sm),
               LayananUtamaWidget(),
-              SizedBox(height: 14),
+              SizedBox(height: AppSpacing.lg),
             ],
           ),
         ),
@@ -135,29 +136,29 @@ class HomeScreen extends StatelessWidget {
                   const SwitchTabNotification(2).dispatch(context);
                 },
               ),
-              const SizedBox(height: 8),
+              const SizedBox(height: AppSpacing.sm),
             ],
           ),
         ),
         // News preview (3 items)
         const SliverToBoxAdapter(
           child: Padding(
-            padding: EdgeInsets.symmetric(horizontal: 0),
+            padding: EdgeInsets.symmetric(horizontal: AppSpacing.lg),
             child: NewsPreview(),
           ),
         ),
 
-        const SliverToBoxAdapter(child: SizedBox(height: 14)),
+        const SliverToBoxAdapter(child: SizedBox(height: AppSpacing.lg)),
 
         // PPID banner + Radio (Informasi Publik) - displayed separately, not in carousel
         SliverToBoxAdapter(
           child: Column(
             children: [
               const SectionHeader(title: 'Informasi Publik'),
-              const SizedBox(height: 12),
+              const SizedBox(height: AppSpacing.sm),
               // PPID banner
               Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg),
                 child: GestureDetector(
                   onTap: () => Navigator.push(
                     context,
@@ -182,35 +183,35 @@ class HomeScreen extends StatelessWidget {
                   ),
                 ),
               ),
-              const SizedBox(height: 12),
+              const SizedBox(height: AppSpacing.md),
               // Radio - displayed separately for better visibility
               Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg),
                 child: Card(
                   elevation: 2,
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(16)),
                   clipBehavior: Clip.hardEdge,
-                  child: SizedBox(
+                  child: const SizedBox(
                     height: 160,
                     width: double.infinity,
                     child: RadioPlayer(),
                   ),
                 ),
               ),
-              const SizedBox(height: 12),
+              const SizedBox(height: AppSpacing.md),
             ],
           ),
         ),
 
         // Home Carousel
-        SliverToBoxAdapter(
+        const SliverToBoxAdapter(
           child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16.0),
+            padding: EdgeInsets.symmetric(horizontal: AppSpacing.lg),
             child: HomeCarousel(),
           ),
         ),
-        const SliverToBoxAdapter(child: SizedBox(height: 16)),
+        const SliverToBoxAdapter(child: SizedBox(height: AppSpacing.lg)),
       ],
     );
   }

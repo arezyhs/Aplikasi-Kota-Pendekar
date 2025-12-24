@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:pendekar/utils/web_container_page.dart';
+import 'package:pendekar/constants/constant.dart';
 
 class WebJdih extends StatelessWidget {
   final List<Map<String, String>> cardData = const [
@@ -75,7 +76,7 @@ class WebJdih extends StatelessWidget {
         title: const Text(
           "JDIH Kota Madiun",
           style: TextStyle(
-            fontWeight: FontWeight.bold,
+            fontWeight: AppFontWeight.bold,
             color: Colors.white,
           ),
         ),
@@ -139,8 +140,8 @@ class WebJdih extends StatelessWidget {
                                       cardData[index]['name']!,
                                       style: const TextStyle(
                                         color: Colors.white,
-                                        fontSize: 18,
-                                        fontWeight: FontWeight.bold,
+                                        fontSize: AppTextSize.heading,
+                                        fontWeight: AppFontWeight.bold,
                                       ),
                                     ),
                                   ),

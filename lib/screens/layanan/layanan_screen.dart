@@ -4,6 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:pendekar/constants/layanan_data.dart';
 import 'package:pendekar/models/layanan_category.dart';
 import 'package:pendekar/widgets/layanan_widgets.dart';
+import 'package:pendekar/widgets/layanan_search_widget.dart';
+import 'package:pendekar/widgets/layanan_filter_widget.dart';
+import 'package:pendekar/constants/constant.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class LayananPage extends StatefulWidget {
@@ -29,11 +32,19 @@ class Semuaaplikasi extends StatefulWidget {
 
 class _SemuaaplikasiState extends State<Semuaaplikasi> {
   String _searchText = '';
+  String? _selectedCategory;
+  final TextEditingController _searchController = TextEditingController();
+
+  @override
+  void dispose() {
+    _searchController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
-    
+
     return Container(
       decoration: BoxDecoration(
         gradient: LinearGradient(
@@ -44,44 +55,60 @@ class _SemuaaplikasiState extends State<Semuaaplikasi> {
               : const [Color(0xFFF7F9FC), Color(0xFFFFFFFF)],
         ),
       ),
-      padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 12.0),
       child: ListView(
+        padding: const EdgeInsets.symmetric(
+            horizontal: AppSpacing.lg, vertical: AppSpacing.md),
         children: [
-          const SizedBox(height: 8.0),
-          _buildSearchField(),
-          const SizedBox(height: 20.0),
-          
+          LayananSearchWidget(
+            controller: _searchController,
+            searchText: _searchText,
+            resultCount: _getTotalResults(),
+            onChanged: (value) =>
+                setState(() => _searchText = value.toLowerCase()),
+            onClear: () {
+              _searchController.clear();
+              setState(() => _searchText = '');
+            },
+          ),
+          const SizedBox(height: AppSpacing.md),
+          LayananFilterWidget(
+            selectedCategory: _selectedCategory,
+            onCategorySelected: (category) =>
+                setState(() => _selectedCategory = category),
+          ),
+          const SizedBox(height: AppSpacing.lg),
+
           // Generate sections dynamically from data
-          ...LayananData.categories.map((category) => Column(
-            children: [
-              SectionHeader(title: category.title, icon: category.icon),
-              const SizedBox(height: 12.0),
-              _buildAppGrid(category),
-              const SizedBox(height: 18.0),
-            ],
-          )),
-          
-          const SizedBox(height: 24.0),
+          ...LayananData.categories
+              .where((category) =>
+                  _selectedCategory == null || _selectedCategory == category.id)
+              .map((category) => Column(
+                    children: [
+                      SectionHeader(title: category.title, icon: category.icon),
+                      const SizedBox(height: AppSpacing.sm),
+                      _buildAppGrid(category),
+                      const SizedBox(height: AppSpacing.lg),
+                    ],
+                  )),
         ],
       ),
     );
   }
 
-  Widget _buildSearchField() {
-    return TextField(
-      decoration: InputDecoration(
-        hintText: 'Cari aplikasi...',
-        prefixIcon: const Icon(Icons.search),
-        filled: true,
-        fillColor: Theme.of(context).colorScheme.surface,
-        contentPadding: const EdgeInsets.symmetric(vertical: 12.0),
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12.0),
-          borderSide: BorderSide.none,
-        ),
-      ),
-      onChanged: (value) => setState(() => _searchText = value.toLowerCase()),
-    );
+  int _getTotalResults() {
+    if (_searchText.isEmpty) return 0;
+
+    return LayananData.categories
+        .where((category) =>
+            _selectedCategory == null || _selectedCategory == category.id)
+        .fold(
+            0,
+            (sum, category) =>
+                sum +
+                category.apps
+                    .where(
+                        (app) => app.text.toLowerCase().contains(_searchText))
+                    .length);
   }
 
   Widget _buildAppGrid(LayananCategory category) {
@@ -100,8 +127,8 @@ class _SemuaaplikasiState extends State<Semuaaplikasi> {
       gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
         crossAxisCount: 3,
         childAspectRatio: 1.0,
-        crossAxisSpacing: 12.0,
-        mainAxisSpacing: 12.0,
+        crossAxisSpacing: AppSpacing.md,
+        mainAxisSpacing: AppSpacing.md,
       ),
       itemCount: filteredApps.length,
       itemBuilder: (context, index) {

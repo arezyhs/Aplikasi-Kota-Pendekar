@@ -1,10 +1,10 @@
-// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, use_build_context_synchronously
-
 import 'package:flutter/material.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:pendekar/utils/services/logger_service.dart';
 import 'package:pendekar/utils/helpers/colorhelper.dart';
+import 'package:pendekar/constants/constant.dart';
 
 /// Base WebView widget yang dapat digunakan oleh semua aplikasi
 class BaseWebViewPage extends StatefulWidget {
@@ -52,11 +52,11 @@ class _BaseWebViewPageState extends State<BaseWebViewPage> {
       // Log denied permissions for debugging
       statuses.forEach((permission, status) {
         if (status.isDenied) {
-          debugPrint('Permission ${permission.toString()} denied');
+          Logger.warning('Permission ${permission.toString()} denied');
         }
       });
     } catch (e) {
-      debugPrint('Error requesting permissions: $e');
+      Logger.error('Error requesting permissions', error: e);
     }
   }
 
@@ -67,10 +67,11 @@ class _BaseWebViewPageState extends State<BaseWebViewPage> {
         await launchUrl(uri, mode: LaunchMode.externalApplication);
       }
     } catch (e) {
-      debugPrint('Error launching URL: $e');
+      Logger.error('Error launching URL', error: e);
+      if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text('Tidak dapat membuka di browser eksternal'),
+          content: const Text('Tidak dapat membuka di browser eksternal'),
           backgroundColor: ColorHelper.errorColor,
         ),
       );
@@ -89,7 +90,7 @@ class _BaseWebViewPageState extends State<BaseWebViewPage> {
           Text(
             'Memuat ${widget.title}...',
             style: const TextStyle(
-              fontSize: 16,
+              fontSize: AppTextSize.subtitle,
               color: Colors.black54,
             ),
           ),
@@ -154,7 +155,7 @@ class _BaseWebViewPageState extends State<BaseWebViewPage> {
                   widget.title,
                   style: const TextStyle(
                     color: Colors.black87,
-                    fontWeight: FontWeight.w700,
+                    fontWeight: AppFontWeight.bold,
                   ),
                 ),
                 actions: _buildAppBarActions(),

@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:pendekar/utils/web_container_page.dart';
 import 'package:pendekar/constants/navigation.dart';
+import 'package:pendekar/constants/constant.dart';
 
 class WebOpendata extends StatelessWidget {
   final List<Map<String, String>> cardData = const [
@@ -81,7 +82,7 @@ class WebOpendata extends StatelessWidget {
         title: const Text(
           "Open Data Kota Madiun",
           style: TextStyle(
-            fontWeight: FontWeight.bold,
+            fontWeight: AppFontWeight.bold,
             color: Colors.white,
           ),
         ),
@@ -145,8 +146,8 @@ class WebOpendata extends StatelessWidget {
                                       cardData[index]['name']!,
                                       style: const TextStyle(
                                         color: Colors.white,
-                                        fontSize: 18,
-                                        fontWeight: FontWeight.bold,
+                                        fontSize: AppTextSize.heading,
+                                        fontWeight: AppFontWeight.bold,
                                       ),
                                     ),
                                   ),

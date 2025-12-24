@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:pendekar/constants/constant.dart';
 
 class SectionHeader extends StatelessWidget {
   const SectionHeader({
     super.key,
     required this.title,
     this.onSeeAll,
-    this.padding = const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+    this.padding = const EdgeInsets.symmetric(
+        horizontal: AppSpacing.lg, vertical: AppSpacing.sm),
   });
 
   final String title;
@@ -22,7 +24,7 @@ class SectionHeader extends StatelessWidget {
           Text(
             title,
             style: theme.textTheme.titleMedium?.copyWith(
-              fontWeight: FontWeight.w700,
+              fontWeight: AppFontWeight.bold,
             ),
           ),
           const Spacer(),

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:pendekar/constants/constant.dart';
 
 class TermsConditionsPage extends StatelessWidget {
   const TermsConditionsPage({Key? key}) : super(key: key);
@@ -10,7 +11,7 @@ class TermsConditionsPage extends StatelessWidget {
         title: const Text(
           'Syarat & Ketentuan',
           style: TextStyle(
-            fontWeight: FontWeight.w700,
+            fontWeight: AppFontWeight.bold,
           ),
         ),
         elevation: 0,
@@ -23,7 +24,7 @@ class TermsConditionsPage extends StatelessWidget {
             const Text(
               'Syarat dan Ketentuan Penggunaan',
               style: TextStyle(
-                fontSize: 20,
+                fontSize: AppTextSize.display,
                 fontWeight: FontWeight.bold,
               ),
             ),
@@ -31,7 +32,7 @@ class TermsConditionsPage extends StatelessWidget {
             const Text(
               'Aplikasi Kota Pendekar',
               style: TextStyle(
-                fontSize: 14,
+                fontSize: AppTextSize.subtitle,
                 color: Colors.grey,
               ),
             ),
@@ -86,9 +87,9 @@ class TermsConditionsPage extends StatelessWidget {
             _buildSection(
               'Kontak',
               'Untuk pertanyaan mengenai Syarat & Ketentuan, hubungi:\n\n'
-                  'Dinas Komunikasi dan Informatika\n'
-                  'Pemerintah Kota Madiun\n'
-                  'Email: diskominfo@madiunkota.go.id\n'
+                  'Dinas Komunikasi dan Informatika Kota Madiun\n'
+                  'Jln. Perintis Kemerdekaan, No.32, Madiun\n'
+                  'Email: kominfo@madiunkota.go.id\n'
                   'Telepon: (0351) 467327',
             ),
             const SizedBox(height: 24),
@@ -107,15 +108,15 @@ class TermsConditionsPage extends StatelessWidget {
           Text(
             title,
             style: const TextStyle(
-              fontSize: 16,
-              fontWeight: FontWeight.bold,
+              fontSize: AppTextSize.subtitle,
+              fontWeight: AppFontWeight.bold,
             ),
           ),
           const SizedBox(height: 8),
           Text(
             content,
             style: const TextStyle(
-              fontSize: 14,
+              fontSize: AppTextSize.subtitle,
               height: 1.5,
             ),
           ),

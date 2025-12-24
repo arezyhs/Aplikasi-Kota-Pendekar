@@ -147,6 +147,13 @@ class AppConfig {
   static const int maxNewsItems = 10;
   static const int newsPreviewItems = 5;
 
+  // RSS Feed URLs (centralized for consistency)
+  static const List<String> rssFeedUrls = [
+    'https://rss.app/feeds/v1.1/rHyalNohjMNACgTx.json', // @pemkotmadiun_
+    'https://rss.app/feeds/v1.1/YEWvQYsh1VcyU0a6.json', // @ppidkotamadiun
+    'https://rss.app/feeds/v1.1/oBYCZ1GV2crnFf21.json', // @93fmsuaramadiun
+  ];
+
   // Feature flags
   static const bool enableAnalytics = true;
   static const bool enableCrashReporting = true;

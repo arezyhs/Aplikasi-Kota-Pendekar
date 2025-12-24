@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:pendekar/constants/constant.dart';
 
 /// Reusable section header untuk layanan
 class SectionHeader extends StatelessWidget {
@@ -16,7 +17,7 @@ class SectionHeader extends StatelessWidget {
     return Row(
       children: [
         Padding(
-          padding: const EdgeInsets.only(right: 8.0),
+          padding: const EdgeInsets.only(right: AppSpacing.sm),
           child: Icon(
             icon,
             color: Theme.of(context)
@@ -31,7 +32,7 @@ class SectionHeader extends StatelessWidget {
           title,
           textAlign: TextAlign.left,
           style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                fontWeight: FontWeight.w700,
+                fontWeight: AppFontWeight.bold,
               ),
         ),
       ],
@@ -86,14 +87,14 @@ class AppCard extends StatelessWidget {
               ),
             ),
           ),
-          const SizedBox(height: 6),
+          const SizedBox(height: AppSpacing.xs),
           Flexible(
             child: Text(
               text,
               textAlign: TextAlign.center,
               style: const TextStyle(
-                fontSize: 11,
-                fontWeight: FontWeight.w600,
+                fontSize: AppTextSize.caption,
+                fontWeight: AppFontWeight.medium,
               ),
               maxLines: 2,
               overflow: TextOverflow.ellipsis,

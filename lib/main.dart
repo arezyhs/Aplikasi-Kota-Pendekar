@@ -1,6 +1,5 @@
-// ignore_for_file: prefer_const_constructors
-
 import 'dart:io';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_downloader/flutter_downloader.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
@@ -8,6 +7,7 @@ import 'package:pendekar/screens/splashscreen.dart';
 import 'package:pendekar/routes.dart';
 import 'package:pendekar/constants/navigation.dart';
 import 'package:pendekar/utils/services/local_storage_service.dart';
+import 'package:pendekar/utils/services/logger_service.dart';
 import 'package:pendekar/utils/accessibility_provider.dart';
 import 'package:pendekar/utils/theme_provider.dart';
 
@@ -22,11 +22,11 @@ Future<void> main() async {
 
   // Inisialisasi FlutterDownloader
   await FlutterDownloader.initialize(
-    debug: true, // debug: false untuk versi produksi
+    debug: kDebugMode, // Automatically false in production builds
   );
 
   if (Platform.isAndroid) {
-    await InAppWebViewController.setWebContentsDebuggingEnabled(true);
+    await InAppWebViewController.setWebContentsDebuggingEnabled(kDebugMode);
     var swAvailable = await WebViewFeature.isFeatureSupported(
         WebViewFeature.SERVICE_WORKER_BASIC_USAGE);
     var swInterceptAvailable = await WebViewFeature.isFeatureSupported(
@@ -36,7 +36,7 @@ Future<void> main() async {
           ServiceWorkerController.instance();
       serviceWorkerController.setServiceWorkerClient(ServiceWorkerClient(
         shouldInterceptRequest: (request) async {
-          debugPrint(request.toString());
+          Logger.debug(request.toString());
           return null;
         },
       ));

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:pendekar/utils/services/local_storage_service.dart';
+import 'package:pendekar/utils/services/logger_service.dart';
+import 'package:pendekar/constants/constant.dart';
 
 class ThemeNotifier extends ChangeNotifier {
   bool _isDarkMode = false;
@@ -17,7 +19,7 @@ class ThemeNotifier extends ChangeNotifier {
   Future<void> toggleTheme(bool isDark) async {
     _isDarkMode = isDark;
     await LocalStorageService.setBool('dark_mode', isDark);
-    debugPrint('🌙 Dark mode toggled to: $isDark');
+    Logger.info('🌙 Dark mode toggled to: $isDark');
     notifyListeners();
   }
 
@@ -39,8 +41,8 @@ class ThemeNotifier extends ChangeNotifier {
         iconTheme: IconThemeData(color: Colors.black87),
         titleTextStyle: TextStyle(
           color: Colors.black87,
-          fontSize: 20,
-          fontWeight: FontWeight.w700,
+          fontSize: AppTextSize.display,
+          fontWeight: AppFontWeight.bold,
         ),
       ),
       bottomNavigationBarTheme: BottomNavigationBarThemeData(
@@ -69,8 +71,8 @@ class ThemeNotifier extends ChangeNotifier {
         iconTheme: IconThemeData(color: Colors.white),
         titleTextStyle: TextStyle(
           color: Colors.white,
-          fontSize: 20,
-          fontWeight: FontWeight.w700,
+          fontSize: AppTextSize.display,
+          fontWeight: AppFontWeight.bold,
         ),
       ),
       bottomNavigationBarTheme: const BottomNavigationBarThemeData(

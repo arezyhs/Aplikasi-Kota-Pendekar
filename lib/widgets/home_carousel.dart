@@ -1,9 +1,11 @@
-// ignore_for_file: sized_box_for_whitespace, prefer_const_constructors, sort_child_properties_last, deprecated_member_use, prefer_const_literals_to_create_immutables, use_key_in_widget_constructors, unused_field
+// ignore_for_file: deprecated_member_use
 
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 
 class HomeCarousel extends StatefulWidget {
+  const HomeCarousel({super.key});
+
   @override
   State<StatefulWidget> createState() => _HomeCarouselState();
 }

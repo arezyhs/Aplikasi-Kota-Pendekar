@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:pendekar/utils/services/local_storage_service.dart';
+import 'package:pendekar/utils/services/logger_service.dart';
 import 'package:pendekar/utils/accessibility_provider.dart';
 import 'package:pendekar/utils/theme_provider.dart';
 import 'package:pendekar/screens/settings/privacy_policy_page.dart';
 import 'package:pendekar/screens/settings/terms_conditions_page.dart';
+import 'package:pendekar/constants/constant.dart';
 
 class SettingsScreen extends StatefulWidget {
   const SettingsScreen({Key? key}) : super(key: key);
@@ -74,7 +76,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
         CookieManager cookieManager = CookieManager.instance();
         await cookieManager.deleteAllCookies();
 
-        debugPrint('Cache cleared successfully');
+        Logger.info('Cache cleared successfully');
 
         messenger.showSnackBar(
           const SnackBar(
@@ -83,7 +85,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
           ),
         );
       } catch (e) {
-        debugPrint('Error clearing cache: $e');
+        Logger.error('Error clearing cache', error: e);
         messenger.showSnackBar(
           SnackBar(
             content: Text('Gagal menghapus cache: $e'),
@@ -101,7 +103,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
         title: const Text(
           'Pengaturan',
           style: TextStyle(
-            fontWeight: FontWeight.w700,
+            fontWeight: AppFontWeight.bold,
           ),
         ),
         elevation: 0,
@@ -114,8 +116,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
             child: Text(
               'APLIKASI',
               style: TextStyle(
-                fontSize: 13,
-                fontWeight: FontWeight.bold,
+                fontSize: AppTextSize.body,
+                fontWeight: AppFontWeight.bold,
                 color: Colors.grey,
               ),
             ),
@@ -147,8 +149,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
             child: Text(
               'AKSESIBILITAS',
               style: TextStyle(
-                fontSize: 13,
-                fontWeight: FontWeight.bold,
+                fontSize: AppTextSize.body,
+                fontWeight: AppFontWeight.bold,
                 color: Colors.grey,
               ),
             ),
@@ -191,8 +193,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
             child: Text(
               'PENYIMPANAN',
               style: TextStyle(
-                fontSize: 13,
-                fontWeight: FontWeight.bold,
+                fontSize: AppTextSize.body,
+                fontWeight: AppFontWeight.bold,
                 color: Colors.grey,
               ),
             ),
@@ -214,15 +216,15 @@ class _SettingsScreenState extends State<SettingsScreen> {
             child: Text(
               'TENTANG',
               style: TextStyle(
-                fontSize: 13,
-                fontWeight: FontWeight.bold,
+                fontSize: AppTextSize.body,
+                fontWeight: AppFontWeight.bold,
                 color: Colors.grey,
               ),
             ),
           ),
           const ListTile(
             title: Text('Versi Aplikasi'),
-            subtitle: Text('1.3.2'),
+            subtitle: Text('1.2.6+6'),
             trailing: Icon(Icons.info_outline),
           ),
           ListTile(
@@ -239,6 +241,14 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   const SizedBox(height: 16),
                   const Text(
                     'Aplikasi resmi Pemerintah Kota Madiun untuk melayani masyarakat dengan lebih baik.',
+                  ),
+                  const SizedBox(height: 16),
+                  const Text(
+                    'Dinas Komunikasi dan Informatika Kota Madiun\n'
+                    'Jln. Perintis Kemerdekaan, No.32, Madiun\n'
+                    'Telepon: (0351) 467327\n'
+                    'Email: kominfo@madiunkota.go.id',
+                    style: TextStyle(fontSize: AppTextSize.body),
                   ),
                 ],
               );

@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:url_launcher/url_launcher.dart';
+import 'package:pendekar/utils/helpers/date_helper.dart';
+import 'package:pendekar/utils/services/app_config.dart';
+import 'package:pendekar/constants/constant.dart';
 
 /// Widget untuk menampilkan preview 3 berita terbaru dari RSS feeds
 class NewsPreview extends StatefulWidget {
@@ -15,49 +18,6 @@ class _NewsPreviewState extends State<NewsPreview> {
   List<Map<String, dynamic>> news = [];
   bool loading = true;
 
-  final List<String> _rss = [
-    'https://rss.app/feeds/v1.1/rHyalNohjMNACgTx.json',
-    'https://rss.app/feeds/v1.1/YEWvQYsh1VcyU0a6.json',
-    'https://rss.app/feeds/v1.1/oBYCZ1GV2crnFf21.json',
-  ];
-
-  String _formatDate(String dateString) {
-    try {
-      final date = DateTime.parse(dateString);
-      final now = DateTime.now();
-      final diff = now.difference(date);
-
-      if (diff.inDays == 0) {
-        if (diff.inHours == 0) {
-          return '${diff.inMinutes} menit lalu';
-        }
-        return '${diff.inHours} jam lalu';
-      } else if (diff.inDays == 1) {
-        return 'Kemarin';
-      } else if (diff.inDays < 7) {
-        return '${diff.inDays} hari lalu';
-      } else {
-        final months = [
-          'Jan',
-          'Feb',
-          'Mar',
-          'Apr',
-          'Mei',
-          'Jun',
-          'Jul',
-          'Ags',
-          'Sep',
-          'Okt',
-          'Nov',
-          'Des'
-        ];
-        return '${date.day} ${months[date.month - 1]} ${date.year}';
-      }
-    } catch (e) {
-      return '';
-    }
-  }
-
   @override
   void initState() {
     super.initState();
@@ -66,7 +26,7 @@ class _NewsPreviewState extends State<NewsPreview> {
 
   Future<void> _fetch() async {
     List<Map<String, dynamic>> fetched = [];
-    for (var url in _rss) {
+    for (var url in AppConfig.rssFeedUrls) {
       try {
         final res = await http.get(Uri.parse(url));
         if (res.statusCode == 200) {
@@ -121,7 +81,7 @@ class _NewsPreviewState extends State<NewsPreview> {
           _buildNewsTile(context, news[i]),
           if (i < news.length - 1)
             const Padding(
-              padding: EdgeInsets.symmetric(vertical: 4.0),
+              padding: EdgeInsets.symmetric(vertical: AppSpacing.xs),
               child: Divider(height: 1, thickness: 1),
             ),
         ],
@@ -152,7 +112,8 @@ class _NewsPreviewState extends State<NewsPreview> {
         }
       },
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
+        padding: const EdgeInsets.symmetric(
+            horizontal: AppSpacing.lg, vertical: AppSpacing.sm),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -160,26 +121,26 @@ class _NewsPreviewState extends State<NewsPreview> {
             Row(
               children: [
                 const Icon(Icons.account_circle, size: 16, color: Colors.grey),
-                const SizedBox(width: 6),
+                const SizedBox(width: AppSpacing.sm),
                 Expanded(
                   child: Text(
                     author,
                     style: TextStyle(
-                      fontSize: 13,
+                      fontSize: AppTextSize.body,
                       color: Colors.grey[700],
-                      fontWeight: FontWeight.w500,
+                      fontWeight: AppFontWeight.medium,
                     ),
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                   ),
                 ),
-                const SizedBox(width: 8),
+                const SizedBox(width: AppSpacing.md),
                 Icon(Icons.access_time, size: 13, color: Colors.grey[500]),
-                const SizedBox(width: 4),
+                const SizedBox(width: AppSpacing.xs),
                 Text(
-                  _formatDate(pubDate),
+                  DateHelper.formatRelativeDate(pubDate),
                   style: TextStyle(
-                    fontSize: 11,
+                    fontSize: AppTextSize.caption,
                     color: Colors.grey[500],
                   ),
                 ),
@@ -226,9 +187,9 @@ class _NewsPreviewState extends State<NewsPreview> {
                                 Text(
                                   'Berita',
                                   style: TextStyle(
-                                    fontSize: 12,
+                                    fontSize: AppTextSize.body,
                                     color: Colors.blue[400],
-                                    fontWeight: FontWeight.w500,
+                                    fontWeight: AppFontWeight.medium,
                                   ),
                                 ),
                               ],
@@ -259,9 +220,9 @@ class _NewsPreviewState extends State<NewsPreview> {
                             Text(
                               'Berita',
                               style: TextStyle(
-                                fontSize: 12,
+                                fontSize: AppTextSize.body,
                                 color: Colors.blue[400],
-                                fontWeight: FontWeight.w500,
+                                fontWeight: AppFontWeight.medium,
                               ),
                             ),
                           ],
@@ -280,8 +241,8 @@ class _NewsPreviewState extends State<NewsPreview> {
                             child: Text(
                               title,
                               style: const TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 15,
+                                fontWeight: AppFontWeight.bold,
+                                fontSize: AppTextSize.subtitle,
                                 height: 1.4,
                               ),
                               maxLines: 5,

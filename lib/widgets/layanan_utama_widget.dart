@@ -5,10 +5,11 @@ import 'package:pendekar/screens/layanan/layanan_publik_screen.dart';
 import 'package:pendekar/screens/layanan/layanan_pengaduan_screen.dart';
 import 'package:pendekar/screens/layanan/layanan_asn_screen.dart';
 import 'package:pendekar/daftarAplikasi/aplikasi%20warga/mbangunswarga.dart';
+import 'package:pendekar/daftarAplikasi/aplikasi%20warga/cctv.dart';
 import 'package:pendekar/daftarAplikasi/aplikasi%20ASN/manekin.dart';
 import 'package:pendekar/widgets/dialog_warning.dart';
 import 'package:pendekar/utils/notifications/switch_tab_notification.dart';
-import 'package:pendekar/utils/web_container_page.dart';
+import 'package:pendekar/constants/constant.dart';
 
 /// Widget untuk menampilkan grid Layanan Utama dan Featured Programs
 class LayananUtamaWidget extends StatelessWidget {
@@ -46,10 +47,7 @@ class LayananUtamaWidget extends StatelessWidget {
       {
         "icon": "assets/images/imgicon/cctv.png",
         "text": "CCTV",
-        "page": const BaseWebViewPage(
-          url: "http://103.149.120.205/cctv/",
-          title: "CCTV",
-        ),
+        "page": const WebCctv(),
       },
     ];
 
@@ -71,7 +69,7 @@ class LayananUtamaWidget extends StatelessWidget {
       children: [
         // Categories grid 3x2
         Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16.0),
+          padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg),
           child: GridView.count(
             crossAxisCount: 3,
             crossAxisSpacing: 8,
@@ -123,24 +121,19 @@ class LayananUtamaWidget extends StatelessWidget {
                       ),
                       const SizedBox(height: 3),
                       Flexible(
-                        child: MediaQuery(
-                          data: MediaQuery.of(context).copyWith(
-                            textScaler: TextScaler.noScaling,
-                          ),
-                          child: FittedBox(
-                            fit: BoxFit.scaleDown,
-                            child: SizedBox(
-                              width: screenWidth * 0.28,
-                              child: Text(
-                                item['text'] as String,
-                                textAlign: TextAlign.center,
-                                style: const TextStyle(
-                                  fontSize: 11,
-                                  fontWeight: FontWeight.w600,
-                                ),
-                                maxLines: 2,
-                                overflow: TextOverflow.ellipsis,
+                        child: FittedBox(
+                          fit: BoxFit.scaleDown,
+                          child: SizedBox(
+                            width: screenWidth * 0.28,
+                            child: Text(
+                              item['text'] as String,
+                              textAlign: TextAlign.center,
+                              style: const TextStyle(
+                                fontSize: AppTextSize.caption,
+                                fontWeight: AppFontWeight.medium,
                               ),
+                              maxLines: 2,
+                              overflow: TextOverflow.ellipsis,
                             ),
                           ),
                         ),
@@ -157,7 +150,7 @@ class LayananUtamaWidget extends StatelessWidget {
 
         // "Lihat Semua Layanan" button
         Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16.0),
+          padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg),
           child: OutlinedButton(
             onPressed: () {
               const SwitchTabNotification(1).dispatch(context);
@@ -180,8 +173,8 @@ class LayananUtamaWidget extends StatelessWidget {
                   'Lihat Semua Layanan',
                   style: TextStyle(
                     color: Theme.of(context).colorScheme.primary,
-                    fontWeight: FontWeight.w600,
-                    fontSize: 14,
+                    fontWeight: AppFontWeight.medium,
+                    fontSize: AppTextSize.subtitle,
                   ),
                 ),
               ],
@@ -193,9 +186,9 @@ class LayananUtamaWidget extends StatelessWidget {
 
         // Featured Programs: Mbangun Swarga & Manekin
         Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16.0),
+          padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg),
           child: SizedBox(
-            height: 180,
+            height: 190,
             child: ListView.separated(
               scrollDirection: Axis.horizontal,
               itemCount: featured.length,
@@ -266,15 +259,15 @@ class LayananUtamaWidget extends StatelessWidget {
                         ),
                         // Content
                         Padding(
-                          padding: const EdgeInsets.all(20),
+                          padding: const EdgeInsets.all(16),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               // Icon
                               Container(
-                                width: 64,
-                                height: 64,
+                                width: 56,
+                                height: 56,
                                 decoration: BoxDecoration(
                                   color: Theme.of(context).colorScheme.surface,
                                   borderRadius: BorderRadius.circular(16),
@@ -295,60 +288,45 @@ class LayananUtamaWidget extends StatelessWidget {
                                 ),
                               ),
                               // Text
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  MediaQuery(
-                                    data: MediaQuery.of(context).copyWith(
-                                      textScaler: TextScaler.noScaling,
-                                    ),
-                                    child: FittedBox(
-                                      fit: BoxFit.scaleDown,
-                                      alignment: Alignment.centerLeft,
-                                      child: Text(
-                                        item['text'] as String,
-                                        style: const TextStyle(
-                                          color: Colors.white,
-                                          fontSize: 18,
-                                          fontWeight: FontWeight.bold,
-                                          letterSpacing: 0.5,
-                                        ),
+                              Flexible(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    Text(
+                                      item['text'] as String,
+                                      style: const TextStyle(
+                                        color: Colors.white,
+                                        fontSize: AppTextSize.heading,
+                                        fontWeight: AppFontWeight.bold,
+                                        letterSpacing: 0.5,
                                       ),
+                                      maxLines: 1,
+                                      overflow: TextOverflow.ellipsis,
                                     ),
-                                  ),
-                                  const SizedBox(height: 4),
-                                  MediaQuery(
-                                    data: MediaQuery.of(context).copyWith(
-                                      textScaler: TextScaler.noScaling,
-                                    ),
-                                    child: FittedBox(
-                                      fit: BoxFit.scaleDown,
-                                      alignment: Alignment.centerLeft,
-                                      child: Text(
-                                        index == 0
-                                            ? 'Aspirasi & Pengaduan Warga'
-                                            : 'Manajemen Kinerja ASN',
-                                        style: TextStyle(
-                                          color: Colors.white
-                                              .withValues(alpha: 0.9),
-                                          fontSize: 12,
-                                        ),
+                                    const SizedBox(height: 4),
+                                    Text(
+                                      index == 0
+                                          ? 'Aspirasi & Pengaduan Warga'
+                                          : 'Manajemen Kinerja ASN',
+                                      style: TextStyle(
+                                        color:
+                                            Colors.white.withValues(alpha: 0.9),
+                                        fontSize: AppTextSize.body,
                                       ),
+                                      maxLines: 1,
+                                      overflow: TextOverflow.ellipsis,
                                     ),
-                                  ),
-                                  const SizedBox(height: 8),
-                                  MediaQuery(
-                                    data: MediaQuery.of(context).copyWith(
-                                      textScaler: TextScaler.noScaling,
-                                    ),
-                                    child: const Row(
+                                    const SizedBox(height: 6),
+                                    const Row(
+                                      mainAxisSize: MainAxisSize.min,
                                       children: [
                                         Text(
                                           'Akses Sekarang',
                                           style: TextStyle(
                                             color: Colors.white,
-                                            fontSize: 12,
-                                            fontWeight: FontWeight.w600,
+                                            fontSize: AppTextSize.body,
+                                            fontWeight: AppFontWeight.medium,
                                           ),
                                         ),
                                         SizedBox(width: 4),
@@ -359,8 +337,8 @@ class LayananUtamaWidget extends StatelessWidget {
                                         ),
                                       ],
                                     ),
-                                  ),
-                                ],
+                                  ],
+                                ),
                               ),
                             ],
                           ),
