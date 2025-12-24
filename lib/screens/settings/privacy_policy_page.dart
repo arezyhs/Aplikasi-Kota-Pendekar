@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pendekar/widgets/policy_page_widget.dart';
+import 'package:pendekar/models/policy_section.dart';
 
 class PrivacyPolicyPage extends StatelessWidget {
   const PrivacyPolicyPage({Key? key}) : super(key: key);

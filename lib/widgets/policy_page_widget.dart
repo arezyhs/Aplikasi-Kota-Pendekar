@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pendekar/constants/constant.dart';
+import 'package:pendekar/models/policy_section.dart';
 
 /// Generic widget untuk halaman kebijakan (Privacy Policy, Terms & Conditions, dll)
 class PolicyPageWidget extends StatelessWidget {
@@ -82,15 +83,4 @@ class PolicyPageWidget extends StatelessWidget {
       ),
     );
   }
-}
-
-/// Model untuk section di policy page
-class PolicySection {
-  final String title;
-  final String content;
-
-  const PolicySection({
-    required this.title,
-    required this.content,
-  });
 }

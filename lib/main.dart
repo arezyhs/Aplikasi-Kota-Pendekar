@@ -8,8 +8,8 @@ import 'package:pendekar/routes.dart';
 import 'package:pendekar/constants/navigation.dart';
 import 'package:pendekar/utils/services/local_storage_service.dart';
 import 'package:pendekar/utils/services/logger_service.dart';
-import 'package:pendekar/utils/accessibility_provider.dart';
-import 'package:pendekar/utils/theme_provider.dart';
+import 'package:pendekar/providers/accessibility_provider.dart';
+import 'package:pendekar/providers/theme_provider.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();

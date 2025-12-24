@@ -122,8 +122,21 @@ lib/
 │       ├── ppid.dart
 │       └── esayur.dart
 │
-└── utils/services/
-    └── app_config.dart                ← Tambahkan URL di sini
+├── models/
+│   ├── layanan_category.dart          ← Model kategori layanan
+│   └── policy_section.dart            ← Model section policy
+│
+├── providers/
+│   ├── theme_provider.dart            ← State management theme
+│   └── accessibility_provider.dart    ← State management aksesibilitas
+│
+├── utils/services/
+│   └── app_config.dart                ← Tambahkan URL di sini
+│
+└── widgets/
+    ├── layanan_search_widget.dart     ← Search bar component
+    ├── layanan_filter_widget.dart     ← Filter chips component
+    └── policy_page_widget.dart        ← Generic policy page
 ```
 
 ---

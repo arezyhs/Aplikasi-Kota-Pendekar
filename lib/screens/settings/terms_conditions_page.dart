@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pendekar/widgets/policy_page_widget.dart';
+import 'package:pendekar/models/policy_section.dart';
 
 class TermsConditionsPage extends StatelessWidget {
   const TermsConditionsPage({Key? key}) : super(key: key);

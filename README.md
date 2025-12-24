@@ -77,31 +77,58 @@ Aplikasi-Kota-Pendekar/
 ├── android/                # Konfigurasi native Android
 ├── ios/                    # Konfigurasi native iOS
 ├── assets/                 # Fonts, icons, images (34 MB)
+│   ├── fonts/              # Font files (Muli)
+│   ├── icons/              # App icons
+│   └── images/             # Banners, service icons
 │
 └── lib/
-    ├── main.dart          # Entry point aplikasi
-    ├── routes.dart        # Definisi routing
+    ├── main.dart           # Entry point aplikasi
+    ├── routes.dart         # Definisi routing
     │
-    ├── screens/           # UI screens
-    │   ├── home/          # Home shell & content
-    │   ├── layanan/       # 6 kategori layanan screens
-    │   ├── berita/        # News feed
-    │   └── settings/      # Settings & info pages
+    ├── api/                # API service layers
+    │   ├── apiedu.dart
+    │   ├── apimarketplace.dart
+    │   └── apiproumkm.dart
     │
-    ├── widgets/           # Komponen reusable
-    │   ├── home_banner.dart
-    │   ├── radio_player.dart
-    │   ├── news_preview_widget.dart
-    │   └── layanan_utama_widget.dart
+    ├── constants/          # Static data & configurations
+    │   ├── constant.dart   # Typography, spacing, colors
+    │   ├── layanan_data.dart
+    │   └── navigation.dart
     │
-    ├── models/            # Data models & structures
-    ├── constants/         # Static data & configurations
-    ├── api/               # API service layers
-    ├── utils/             # Helpers, services & utilities
-    └── daftarAplikasi/    # 50+ webview service screens
+    ├── daftarAplikasi/     # 50+ webview service screens
+    │   ├── aplikasi ASN/   # ASN apps (absenrapat, jdih, etc)
+    │   └── aplikasi warga/ # Public apps (ppid, esayur, etc)
+    │
+    ├── models/             # Data models
+    │   ├── layanan_category.dart
+    │   └── policy_section.dart
+    │
+    ├── providers/          # State management
+    │   ├── theme_provider.dart
+    │   └── accessibility_provider.dart
+    │
+    ├── screens/            # UI screens
+    │   ├── home/           # Home shell & content
+    │   ├── layanan/        # 6 kategori layanan screens
+    │   ├── berita/         # News feed
+    │   └── settings/       # Settings & info pages
+    │
+    ├── utils/              # Helpers & utilities
+    │   ├── services/       # App config, storage, logger
+    │   ├── helpers/        # Date, color helpers
+    │   └── notifications/  # Event notifications
+    │
+    └── widgets/            # Komponen reusable
+        ├── home_banner.dart
+        ├── radio_player.dart
+        ├── news_preview_widget.dart
+        ├── layanan_utama_widget.dart
+        ├── layanan_search_widget.dart
+        ├── layanan_filter_widget.dart
+        └── policy_page_widget.dart
 ```
 
-**Arsitektur**: Clean code dengan separation of concerns - screens untuk UI, widgets untuk komponen reusable, models untuk data structures, dan utils untuk helper functions.
+**Arsitektur**: Clean Architecture dengan separation of concerns - screens untuk UI, widgets untuk komponen reusable, models untuk data structures, providers untuk state management, dan utils untuk helper functions.
 
 ## Kontribusi
 
